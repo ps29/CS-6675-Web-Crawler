@@ -1,70 +1,57 @@
-# focused-crawler
+# CS 6675 Web Crawler
 
-CS 6675 course project. Three packages under `src/`:
+Course project for CS 6675 (Advanced Internet Computing Systems, Fall 2026), made up of three
+crawling and serving systems:
 
-| Package | Milestone | Status |
-|---|---|---|
-| `focused_crawler` | M1: academic-domain focused crawler and ranking | baseline done (`v0.1.0`) |
-| `crawl_ledger` | M2/M3: decentralized Python-docs crawler with signed records, Merkle blocks, audits | imported from `../crawl-ledger` |
-| `edge_serving` | M4: edge caching and revocation for verified crawl records | baseline, R1, R2, HTTP and evaluation done |
+| Package | Milestone | What it does | Status |
+|---|---|---|---|
+| [`focused_crawler`](src/focused_crawler) | M1 | Focused crawler and search engine for one university domain (`gatech.edu`): labels pages COURSE / FACULTY / LAB / OTHER, extracts structured fields, ranks results | Baseline done (`v0.1.0`) |
+| [`crawl_ledger`](src/crawl_ledger) | M2/M3 | Decentralized Python-docs crawler: peers on a Chord ring publish Ed25519-signed, hash-chained records, which are committed in Merkle blocks and audited by re-fetching | Baseline, R1, R2 |
+| [`edge_serving`](src/edge_serving) | M4 | Edge caching for verified crawl records: immutable proofs, signed statuses, R1 revocation deltas, R2 Bloom-filter proof sharing | Baseline, R1, R2, HTTP, evaluation (`v0.2.0`) |
 
-## edge_serving (M4)
-
-```
-python -m edge_serving.sim --compare --out results/m4/compare.json   # baseline vs R1/R2/both
-python -m edge_serving.http_app demo                                  # gateway + 3 edges on :8080-8083
-```
-
-Design: `M4-Pravesh-Shrestha.docx`; plan: `docs/plans/01-m4-serving-layer.md`; results:
-`docs/m4-results.md`.
-
-## crawl_ledger (M2/M3)
-
-```
-python -m crawl_ledger.sim --offline
-python -m crawl_ledger.sim_m3 --compare --peers 100 --dishonest 0.2 --forge-rate 0.05
-```
-
-Seed packages are in `config/ledger_seeds.txt`; earlier results are in `results/m3/`; the original
-README is `docs/design/crawl-ledger-README.md`.
-
-## focused_crawler (M1)
-
-Academic-domain focused crawler and ranking engine for university search, implementing the
-M1 design "An Academic-Domain Focused Crawler and Ranking Method for University Search".
-
-The crawler stays inside one institutional domain (default `gatech.edu`), classifies each page as
-`COURSE`, `FACULTY`, `LAB` or `OTHER`, prioritizes the frontier toward academic pages, extracts
-structured fields, and serves ranked, type-labeled search results from a SQLite index.
-
-## Setup
+## Quick start
 
 ```
 python -m venv .venv
-.venv\Scripts\activate          # Windows  (source .venv/bin/activate elsewhere)
+.venv\Scripts\activate              # Windows; `source .venv/bin/activate` elsewhere
 pip install -e ".[dev]"
-pre-commit install
+python -m pytest                    # 138 offline tests
 ```
 
-## Usage
-
 ```
-fcrawl crawl --config config/default.yaml --max-pages 200
+# M1: crawl Georgia Tech academic pages and search them
+fcrawl crawl --max-pages 200
 fcrawl stats
 fcrawl search "CS 6675"
-fcrawl export --format json --out data/pages.json
+
+# M2/M3: live crawl of PyPI + docs sites, with forging peers and audits
+python -m crawl_ledger.sim --peers 20 --dishonest 0.2 --forge-rate 0.2
+
+# M4: compare the serving baseline against R1/R2
+python -m edge_serving.sim --compare
+python -m edge_serving.http_app demo
 ```
 
-## Development
+## Headline results
 
-- Tests run offline: `python -m pytest`
-- Lint/format: `ruff check . && ruff format .`
-- Plans live in `docs/plans/`; see `docs/plans/00-overview.md`.
-- Commits follow [Conventional Commits](https://www.conventionalcommits.org/); work happens on
-  `feat/*` / `fix/*` branches merged into `main` with `--no-ff`.
+| System | Result |
+|---|---|
+| M1 focused crawl (500 pages) | 98.1% of HTML pages were academic (FACULTY 331, COURSE 87, LAB 41, OTHER 9) |
+| M2/M3 live ledger crawl (25 packages) | 44 records, 4/4 forged records caught; 2 honest false FAILs caused by CDN per-response nonces |
+| M4 serving simulation | R1 cuts the revoked-record window from up to 1791 s (TTL baseline) to 3 s, with about 75x less gateway load |
+
+Details and caveats: [docs/FINDINGS.md](docs/FINDINGS.md).
+
+## Documentation
+
+- [Architecture](docs/architecture.md): components, data model and protocols for each package
+- [Usage](docs/usage.md): every command, option and config key
+- [Development](docs/development.md): setup, tests, layout and git workflow
+- [Findings](docs/FINDINGS.md) and [M4 results](docs/m4-results.md)
+- [Plans](docs/plans/) and the [changelog](CHANGELOG.md)
 
 ## Politeness
 
-The crawler honors robots.txt, waits at least 1 s between requests to the same host, sends an
-identifying User-Agent, stays strictly within the configured domain, and enforces page and depth
-budgets.
+Both crawlers honor robots.txt, wait at least 1 s between requests to the same host and send an
+identifying User-Agent. The M1 crawler stays inside the configured domain and enforces page, depth
+and per-host budgets.
