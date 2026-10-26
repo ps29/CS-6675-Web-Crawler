@@ -14,6 +14,8 @@ All notable changes to this project are documented here. Format follows
   coalescing, and a trace-driven evaluation (`docs/m4-results.md`).
 - `crawl_ledger` link extractor follows self-hosted documentation sites (source `docs`) and
   `readthedocs.org` links. The live crawl went from 2 to 17 docs records (`results/m3/live_run4.json`).
+- Project documentation: `docs/architecture.md`, `docs/usage.md`, `docs/development.md`, a docs
+  index, and a rewritten top-level README.
 
 ## [0.1.0] - 2026-10-26
 
