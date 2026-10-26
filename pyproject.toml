@@ -14,10 +14,11 @@ dependencies = [
   "beautifulsoup4>=4.12",
   "lxml>=5.0",
   "pyyaml>=6.0",
+  "nltk>=3.8",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.6", "pre-commit>=3.7"]
+dev = ["pytest>=8", "pytest-cov>=5", "ruff==0.17.2", "pre-commit>=3.7"]
 
 [project.scripts]
 fcrawl = "focused_crawler.cli:main"
@@ -36,3 +37,4 @@ src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "SIM"]
+ignore = ["SIM905"]  # whitespace-split word lists read better than long literals
