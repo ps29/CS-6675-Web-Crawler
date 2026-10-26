@@ -12,6 +12,7 @@ from crawl_ledger.r2 import Reputation
 from crawl_ledger.record import Record
 from crawl_ledger.ring import Ring
 
+from .delta import Delta
 from .objects import INCLUDED, PASS, PENDING, REVOKED, Proof
 
 AUDIT_FAIL, AUDIT_PASS = "FAIL", "PASS"
@@ -44,7 +45,7 @@ class Ledger:
         self._queued: list[str] = []
         self._final: set[str] = set()
         self._changes = EpochChanges()
-        self.sealed_changes: dict[int, EpochChanges] = {}
+        self.deltas: dict[int, Delta] = {}
         self.epoch = 0
 
     # --- writes (crawl peers, block proposers, auditors) ------------------------
@@ -58,10 +59,17 @@ class Ledger:
         """Build the next block from queued records; then apply any newly reached finality."""
         proposer = proposer or self.peers[self.epoch % len(self.peers)]
         changes, self._changes = self._changes, EpochChanges()
-        hdr, ids = build_header(self.epoch, self._queued, proposer, self.chain.head)
+        delta = Delta(
+            self.epoch,
+            tuple((rid, s) for rid, s in changes.status_changes if s != INCLUDED),
+            tuple(changes.new_latest),
+        )
+        hdr, ids = build_header(
+            self.epoch, self._queued, proposer, self.chain.head, delta_root=delta.root()
+        )
         if not self.chain.add(hdr):
             raise RuntimeError("proposed header rejected by the chain")
-        self.sealed_changes[hdr.epoch] = changes
+        self.deltas[hdr.epoch] = delta
         self.headers.append(hdr)
         self.block_ids[hdr.id] = ids
         for rid in ids:
@@ -119,6 +127,12 @@ class Ledger:
 
     def head_epoch(self) -> int:
         return self.headers[-1].epoch if self.headers else -1
+
+    def header_and_delta(self, epoch: int) -> tuple[Header, Delta] | None:
+        """Gap fetch for R1 edges that missed an epoch's gossip."""
+        if 0 <= epoch < len(self.headers):
+            return self.headers[epoch], self.deltas[epoch]
+        return None
 
 
 def build_demo_ledger(
