@@ -6,6 +6,12 @@ All notable changes to this project are documented here. Format follows
 ## [Unreleased]
 
 ### Added
+- `crawl_ledger` package (M2/M3) imported from `../crawl-ledger`, with its 21 tests, seeds and
+  results; lint fixes only, plus the seeds path now pointing at `config/ledger_seeds.txt`.
+
+## [0.1.0] - 2026-10-26
+
+### Added
 - Project scaffold: packaging, lint/test tooling, pre-commit hooks, plans.
 - YAML config loader, URL normalization/scope checks, polite fetcher (robots.txt,
   per-host delay, retries) and priority frontier with depth and per-host limits.
