@@ -1,6 +1,7 @@
 """Source router, polite downloader and link extractor (the M2 crawler components).
 
-Sources: PyPI JSON API, Read the Docs (discovered from PyPI project URLs),
+Sources: PyPI JSON API, Read the Docs or a self-hosted docs site (discovered from PyPI
+project URLs),
 docs.python.org (standard-library modules), GitHub README via the REST API
 (only when GITHUB_TOKEN is set, because unauthenticated access allows 60 requests/hour)."""
 
@@ -35,8 +36,28 @@ def source_urls(pkg: str) -> dict:
     return {"pypi": f"https://pypi.org/pypi/{pkg}/json"}
 
 
+DOCS_KEYS = {"documentation", "docs", "doc"}
+NOT_DOCS_HOSTS = {"github.com", "gitlab.com", "pypi.org", "pypi.python.org"}
+RTD = re.compile(r"https?://([a-z0-9-]+)\.readthedocs\.(?:io|org)", re.I)
+
+
+def _docs_url(project_urls: dict, home_page: str) -> str | None:
+    """Self-hosted docs site: the 'Documentation' project URL, else a docs-looking homepage."""
+    labelled = [v for k, v in project_urls.items() if k.strip().lower() in DOCS_KEYS]
+    homepages = [*project_urls.values(), home_page]
+    looks_like_docs = [u for u in homepages if re.match(r"https?://docs\.", u or "", re.I)]
+    for u in labelled + looks_like_docs:
+        is_http = (u or "").startswith(("http://", "https://"))
+        if is_http and urlparse(u).netloc.lower() not in NOT_DOCS_HOSTS:
+            return u
+    return None
+
+
 def extract_links(source: str, content: bytes) -> dict:
-    """URL/Package Extractor: Read the Docs and GitHub links found in PyPI metadata."""
+    """URL/Package Extractor: docs and GitHub links found in PyPI metadata.
+
+    Read the Docs sites become source "rtd". Any other documentation site linked from the
+    metadata becomes source "docs" (most projects host docs on their own domain)."""
     out = {}
     if source != "pypi":
         return out
@@ -44,17 +65,22 @@ def extract_links(source: str, content: bytes) -> dict:
         info = json.loads(content).get("info", {})
     except ValueError:
         return out
-    urls = list((info.get("project_urls") or {}).values()) + [info.get("home_page") or ""]
+    project_urls = info.get("project_urls") or {}
+    urls = list(project_urls.values()) + [info.get("home_page") or ""]
     for u in urls:
         if not u:
             continue
-        m = re.match(r"https?://([a-z0-9-]+)\.readthedocs\.io", u)
+        m = RTD.match(u)
         if m and "rtd" not in out:
-            out["rtd"] = f"https://{m.group(1)}.readthedocs.io/en/latest/"
+            out["rtd"] = f"https://{m.group(1).lower()}.readthedocs.io/en/latest/"
         m = re.match(r"https?://github\.com/([^/]+)/([^/#?]+)", u)
         if m and "github" not in out and os.environ.get("GITHUB_TOKEN"):
             repo = m.group(2).removesuffix(".git")
             out["github"] = f"https://api.github.com/repos/{m.group(1)}/{repo}/readme"
+    if "rtd" not in out:
+        docs = _docs_url(project_urls, info.get("home_page") or "")
+        if docs:
+            out["docs"] = docs
     return out
 
 

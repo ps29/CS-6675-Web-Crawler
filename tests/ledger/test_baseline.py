@@ -69,6 +69,35 @@ class TestBaseline(unittest.TestCase):
             extract_links("pypi", body)["rtd"], "https://requests.readthedocs.io/en/latest/"
         )
 
+    def test_extract_links_rtd_org_domain(self):
+        body = b'{"info": {"home_page": "https://Pathlib.readthedocs.org/"}}'
+        self.assertEqual(
+            extract_links("pypi", body), {"rtd": "https://pathlib.readthedocs.io/en/latest/"}
+        )
+
+    def test_extract_links_self_hosted_docs(self):
+        body = (
+            b'{"info": {"project_urls": {"Homepage": "https://numpy.org",'
+            b' "documentation": "https://numpy.org/doc/",'
+            b' "source": "https://github.com/numpy/numpy"}}}'
+        )
+        self.assertEqual(extract_links("pypi", body), {"docs": "https://numpy.org/doc/"})
+
+    def test_extract_links_docs_homepage_fallback(self):
+        body = b'{"info": {"project_urls": {"Homepage": "https://docs.pytest.org/en/latest/"}}}'
+        self.assertEqual(
+            extract_links("pypi", body), {"docs": "https://docs.pytest.org/en/latest/"}
+        )
+
+    def test_extract_links_rtd_preferred_and_repo_not_docs(self):
+        both = (
+            b'{"info": {"project_urls": {"Documentation": "https://rich.readthedocs.io/en/latest/",'
+            b' "Docs mirror": "https://rich.example.org/"}}}'
+        )
+        self.assertEqual(set(extract_links("pypi", both)), {"rtd"})
+        repo = b'{"info": {"project_urls": {"Documentation": "https://github.com/a/b#readme"}}}'
+        self.assertEqual(extract_links("pypi", repo), {})
+
 
 if __name__ == "__main__":
     unittest.main()
