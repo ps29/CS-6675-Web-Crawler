@@ -19,15 +19,13 @@ crawl:
 storage:
   db_path: data/crawl.db
 
-# Optional CSS selectors per page label; each field becomes a structured value.
+# Optional CSS selectors per page label ("*" applies to every label). A value is
+# "css" for element text or "css@attr" for an attribute. Matches override built-in fields.
 selectors:
-  COURSE:
-    title: "h1"
+  "*":
+    canonical: "link[rel=canonical]@href"
   FACULTY:
-    name: "h1"
-    email: "a[href^='mailto:']"
-  LAB:
-    name: "h1"
+    photo: "img.profile-photo@src"
 
 ranking:
   w_tf: 1.0
