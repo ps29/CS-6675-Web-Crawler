@@ -13,3 +13,5 @@ All notable changes to this project are documented here. Format follows
   structured-field extractor with configurable CSS selectors.
 - SQLite storage (pages, link graph, Courses/Faculty/Labs, postings) with duplicate
   detection, and a stemming tokenizer/indexer.
+- Focused crawl loop, baseline TF-IDF ranker and `fcrawl` CLI (crawl/search/stats/export).
+  Live smoke test on cc.gatech.edu: 30 pages, 88.5% academic yield, 0 errors.
