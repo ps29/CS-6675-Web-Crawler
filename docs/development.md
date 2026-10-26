@@ -14,7 +14,7 @@ pre-commit install
 ## Tests and linting
 
 ```
-python -m pytest                  # 138 tests, fully offline
+python -m pytest                  # 172 tests, fully offline
 python -m pytest --cov            # with coverage
 ruff check . && ruff format .
 pre-commit run --all-files
@@ -25,14 +25,15 @@ Tests never touch the network: M1 uses fixture HTML and a fake fetcher, the ledg
 
 | Directory | Covers |
 |---|---|
-| `tests/` | `focused_crawler` (12 modules) |
+| `tests/` | `focused_crawler` (14 modules, both profiles) |
 | `tests/ledger/` | `crawl_ledger` baseline and M3 refinements |
 | `tests/edge/` | `edge_serving` objects, gateway, edge/client, R1, R2, HTTP, simulation |
 
 ## Repository layout
 
 ```
-config/            default.yaml (M1 crawler), ledger_seeds.txt (M2/M3 seed packages)
+config/            default.yaml (M1 Python-docs crawl), academic.yaml (M1 gatech.edu crawl),
+                   ledger_seeds.txt (M2/M3 seed packages)
 docs/              architecture, usage, findings, results, plans/, design/
 results/           raw run outputs: m3/ (live ledger runs), m4/ (serving simulation)
 src/focused_crawler/   M1

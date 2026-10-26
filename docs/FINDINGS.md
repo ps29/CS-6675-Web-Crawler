@@ -37,6 +37,31 @@ detection). Search uses a TF-IDF baseline through the `fcrawl` CLI.
 **Not built yet:** M1 Refinement 1 (learned classifier), Refinement 2 (metadata-aware
 ranking), and the judged-query evaluation (P@5, MRR, coverage).
 
+## 1b. Focused crawler retargeted to Python documentation
+
+The crawler now has profiles. The default `python_docs` profile (`config/default.yaml`) crawls
+docs.python.org/3/ plus the docs sites of the 19 non-stdlib ledger seed packages. Each scope is
+pinned to one docs version by a path prefix. Live runs: `fcrawl crawl --max-pages 150`.
+
+| Run | Hosts reached | Pages per host (min-max) | Yield | Labels | Time |
+|---|---|---|---|---|---|
+| First run (no host penalty) | 20 (13 got only the seed) | 1-40 | 89.1% | REFERENCE 97, CHANGELOG 16, TUTORIAL 12, HOWTO 6, OTHER 16 | 151 s |
+| + `host_penalty: 0.02`, fixes | 20 | 2-17 | 89.2% | REFERENCE 59, TUTORIAL 29, CHANGELOG 26, HOWTO 18, OTHER 16 | 108 s |
+
+- **Crawling many sites needs host diversity.** With priority alone, the two sites whose links
+  scored highest (docs.python.org, matplotlib) used their whole 40-page cap before most other
+  sites got a second page. A per-host penalty of 0.02 per crawled page spreads the budget.
+  Different hosts' politeness delays can then overlap, so the run was also 28% faster.
+- **Encoding bug found and fixed.** docs.python.org sends `Content-Type: text/html` without a
+  charset, so requests decoded UTF-8 as ISO-8859-1 (`sys â System-specific ...`). The fetcher now
+  tries UTF-8 first. The academic crawl was affected the same way on such hosts.
+- **Fields are rich on Sphinx sites:** module and API symbols (e.g. `ctypes` 275 symbols,
+  `sys` 177) and the docs version (`python 3.15.2`, `numpy 2.5`, `django 6.1`). MkDocs sites
+  (FastAPI, Typer, HTTPX) carry no version in the title, so `version` is empty for them.
+- **Remaining mislabels:** docs home pages are OTHER, which is acceptable since they are only
+  hubs. Matplotlib's "API Changes for 3.11.0" is a tie at the 1.0 cap between REFERENCE (many
+  API blocks) and CHANGELOG, and resolves to REFERENCE.
+
 ## 2. Crawl ledger (M2/M3), imported
 
 `../crawl-ledger` was copied into `src/crawl_ledger` (21 tests, seeds and earlier results in
