@@ -1,0 +1,26 @@
+# Seed packages: popular third-party packages, then standard-library modules
+requests
+numpy
+pandas
+flask
+django
+fastapi
+pydantic
+sqlalchemy
+scipy
+matplotlib
+pytest
+click
+jinja2
+httpx
+attrs
+rich
+typer
+beautifulsoup4
+scrapy
+celery
+json
+asyncio
+pathlib
+re
+logging

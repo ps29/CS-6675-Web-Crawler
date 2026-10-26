@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "focused-crawler"
 version = "0.1.0"
-description = "Academic-domain focused crawler and ranking engine (CS 6675 course project)"
+description = "CS 6675 course project: focused crawler (M1), verifiable crawl ledger (M2/M3), edge serving (M4)"
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [{ name = "Pravesh Shrestha" }]
@@ -15,6 +15,7 @@ dependencies = [
   "lxml>=5.0",
   "pyyaml>=6.0",
   "nltk>=3.8",
+  "cryptography>=41",
 ]
 
 [project.optional-dependencies]

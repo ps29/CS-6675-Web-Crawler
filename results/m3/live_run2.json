@@ -1,0 +1,322 @@
+{
+  "summary": {
+    "records": 27,
+    "forged_records": 8,
+    "audited": 27,
+    "detection_rate": 1.0,
+    "false_rejection_rate": 0.0,
+    "honest_inconclusive_rate": 0.0,
+    "honest_by_source": {
+      "pypi": {
+        "n": 13,
+        "PASS": 13,
+        "FAIL": 0,
+        "INCONCLUSIVE": 0
+      },
+      "rtd": {
+        "n": 2,
+        "PASS": 2,
+        "FAIL": 0,
+        "INCONCLUSIVE": 0
+      },
+      "pydocs": {
+        "n": 4,
+        "PASS": 4,
+        "FAIL": 0,
+        "INCONCLUSIVE": 0
+      }
+    },
+    "mean_record_bytes": 537.3,
+    "mean_record_build_ms": 0.768,
+    "mean_verify_ms": 0.107,
+    "fetch_failures": 0,
+    "crawl_seconds": 23.9,
+    "requests": 54,
+    "config": {
+      "peers": 20,
+      "dishonest": 0.5,
+      "forge_rate": 0.5,
+      "audit_rate": 1.0,
+      "packages": "/sessions/rcw-01uzxc2dk6mz3rtzn3zrpgkc/mnt/Advance Internet Computing system/crawl-ledger/seeds.txt",
+      "limit": 25,
+      "delay": 1.0,
+      "wait": 0.0,
+      "seed": 7,
+      "offline": false,
+      "out": "results/live_run2.json",
+      "quiet": true
+    }
+  },
+  "audits": [
+    {
+      "pkg": "requests",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.5:7000",
+      "result": "PASS",
+      "age_s": 24.0,
+      "audit_s": 0.228
+    },
+    {
+      "pkg": "requests",
+      "source": "rtd",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.3:7000",
+      "result": "PASS",
+      "age_s": 23.9,
+      "audit_s": 0.032
+    },
+    {
+      "pkg": "numpy",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.19:7000",
+      "result": "PASS",
+      "age_s": 24.1,
+      "audit_s": 1.169
+    },
+    {
+      "pkg": "pandas",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.19:7000",
+      "result": "PASS",
+      "age_s": 23.9,
+      "audit_s": 0.671
+    },
+    {
+      "pkg": "flask",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.6:7000",
+      "result": "PASS",
+      "age_s": 24.0,
+      "audit_s": 1.094
+    },
+    {
+      "pkg": "django",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.11:7000",
+      "result": "PASS",
+      "age_s": 23.9,
+      "audit_s": 0.93
+    },
+    {
+      "pkg": "fastapi",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": false,
+      "auditor": "10.0.0.3:7000",
+      "result": "PASS",
+      "age_s": 23.8,
+      "audit_s": 0.916
+    },
+    {
+      "pkg": "pydantic",
+      "source": "pypi",
+      "forged": true,
+      "owner_honest": false,
+      "auditor": "10.0.0.18:7000",
+      "result": "FAIL",
+      "age_s": 23.8,
+      "audit_s": 1.022
+    },
+    {
+      "pkg": "sqlalchemy",
+      "source": "pypi",
+      "forged": true,
+      "owner_honest": false,
+      "auditor": "10.0.0.3:7000",
+      "result": "FAIL",
+      "age_s": 23.8,
+      "audit_s": 1.077
+    },
+    {
+      "pkg": "scipy",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.19:7000",
+      "result": "PASS",
+      "age_s": 23.8,
+      "audit_s": 0.929
+    },
+    {
+      "pkg": "matplotlib",
+      "source": "pypi",
+      "forged": true,
+      "owner_honest": false,
+      "auditor": "10.0.0.1:7000",
+      "result": "FAIL",
+      "age_s": 24.1,
+      "audit_s": 1.268
+    },
+    {
+      "pkg": "pytest",
+      "source": "pypi",
+      "forged": true,
+      "owner_honest": false,
+      "auditor": "10.0.0.7:7000",
+      "result": "FAIL",
+      "age_s": 24.0,
+      "audit_s": 0.922
+    },
+    {
+      "pkg": "click",
+      "source": "pypi",
+      "forged": true,
+      "owner_honest": false,
+      "auditor": "10.0.0.16:7000",
+      "result": "FAIL",
+      "age_s": 23.9,
+      "audit_s": 0.878
+    },
+    {
+      "pkg": "jinja2",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.18:7000",
+      "result": "PASS",
+      "age_s": 23.7,
+      "audit_s": 0.918
+    },
+    {
+      "pkg": "httpx",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.14:7000",
+      "result": "PASS",
+      "age_s": 23.8,
+      "audit_s": 1.002
+    },
+    {
+      "pkg": "attrs",
+      "source": "pypi",
+      "forged": true,
+      "owner_honest": false,
+      "auditor": "10.0.0.11:7000",
+      "result": "FAIL",
+      "age_s": 23.6,
+      "audit_s": 1.035
+    },
+    {
+      "pkg": "rich",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.14:7000",
+      "result": "PASS",
+      "age_s": 23.7,
+      "audit_s": 0.953
+    },
+    {
+      "pkg": "rich",
+      "source": "rtd",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.18:7000",
+      "result": "PASS",
+      "age_s": 23.4,
+      "audit_s": 0.221
+    },
+    {
+      "pkg": "typer",
+      "source": "pypi",
+      "forged": true,
+      "owner_honest": false,
+      "auditor": "10.0.0.15:7000",
+      "result": "FAIL",
+      "age_s": 23.7,
+      "audit_s": 0.875
+    },
+    {
+      "pkg": "beautifulsoup4",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.12:7000",
+      "result": "PASS",
+      "age_s": 23.6,
+      "audit_s": 0.903
+    },
+    {
+      "pkg": "scrapy",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.9:7000",
+      "result": "PASS",
+      "age_s": 23.7,
+      "audit_s": 1.007
+    },
+    {
+      "pkg": "celery",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.7:7000",
+      "result": "PASS",
+      "age_s": 23.7,
+      "audit_s": 1.0
+    },
+    {
+      "pkg": "json",
+      "source": "pydocs",
+      "forged": false,
+      "owner_honest": false,
+      "auditor": "10.0.0.5:7000",
+      "result": "PASS",
+      "age_s": 22.9,
+      "audit_s": 0.022
+    },
+    {
+      "pkg": "asyncio",
+      "source": "pydocs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.7:7000",
+      "result": "PASS",
+      "age_s": 23.0,
+      "audit_s": 1.001
+    },
+    {
+      "pkg": "pathlib",
+      "source": "pydocs",
+      "forged": false,
+      "owner_honest": false,
+      "auditor": "10.0.0.3:7000",
+      "result": "PASS",
+      "age_s": 23.1,
+      "audit_s": 1.001
+    },
+    {
+      "pkg": "re",
+      "source": "pydocs",
+      "forged": true,
+      "owner_honest": false,
+      "auditor": "10.0.0.19:7000",
+      "result": "FAIL",
+      "age_s": 22.7,
+      "audit_s": 1.006
+    },
+    {
+      "pkg": "logging",
+      "source": "pydocs",
+      "forged": false,
+      "owner_honest": false,
+      "auditor": "10.0.0.10:7000",
+      "result": "PASS",
+      "age_s": 23.1,
+      "audit_s": 0.999
+    }
+  ]
+}
