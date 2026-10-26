@@ -17,13 +17,18 @@ class Header:
     proposer: str
     sig: str = ""
     id: str = ""
+    delta_root: str = ""  # M4 R1: commits to the epoch's revocation delta
 
     def compute_id(self) -> str:
-        blob = json.dumps(
-            {"prev": self.prev, "epoch": self.epoch, "root": self.root, "proposer": self.proposer},
-            sort_keys=True,
-            separators=(",", ":"),
-        )
+        fields = {
+            "prev": self.prev,
+            "epoch": self.epoch,
+            "root": self.root,
+            "proposer": self.proposer,
+        }
+        if self.delta_root:  # absent in M3-only headers, so their IDs are unchanged
+            fields["delta_root"] = self.delta_root
+        blob = json.dumps(fields, sort_keys=True, separators=(",", ":"))
         return sha256_hex(blob.encode())
 
     def size_bytes(self) -> int:
@@ -31,11 +36,11 @@ class Header:
 
 
 def build_header(
-    epoch: int, record_ids: list[str], proposer, prev_hash: str
+    epoch: int, record_ids: list[str], proposer, prev_hash: str, delta_root: str = ""
 ) -> tuple[Header, list[str]]:
     """BUILD_BLOCK(): sorted ids, Merkle root, signed header. Returns (header, sorted ids)."""
     ids = sorted(record_ids)
-    hdr = Header(prev_hash, epoch, merkle_root(ids), proposer.id)
+    hdr = Header(prev_hash, epoch, merkle_root(ids), proposer.id, delta_root=delta_root)
     hdr.id = hdr.compute_id()
     hdr.sig = proposer.sign(bytes.fromhex(hdr.id)).hex()
     return hdr, ids
