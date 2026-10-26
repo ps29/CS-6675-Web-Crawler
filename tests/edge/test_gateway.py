@@ -54,7 +54,8 @@ def test_audits_change_status_and_queue_delta(ledger):
     assert ledger.state[passed] == PASS and ledger.state[failed] == REVOKED
     assert (failed, REVOKED) in ledger.pending_changes().status_changes
     hdr = ledger.seal_epoch()
-    assert (failed, REVOKED) in ledger.sealed_changes[hdr.epoch].status_changes
+    assert (failed, REVOKED) in ledger.deltas[hdr.epoch].status_changes
+    assert hdr.delta_root == ledger.deltas[hdr.epoch].root()
 
 
 def test_unknown_record_and_package(ledger):
