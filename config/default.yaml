@@ -1,0 +1,35 @@
+# Crawl scope: the registered domain and every subdomain of it.
+domain: gatech.edu
+seeds:
+  - https://www.gatech.edu/
+  - https://www.cc.gatech.edu/
+  - https://www.cc.gatech.edu/people/faculty
+  - https://catalog.gatech.edu/coursesaz/
+  - https://research.gatech.edu/
+
+crawl:
+  max_pages: 500
+  max_depth: 6
+  per_host_max: 200
+  delay_seconds: 1.0
+  timeout_seconds: 15.0
+  max_retries: 2
+  user_agent: "focused-crawler-course-project/0.1 (CS 6675 research prototype)"
+
+storage:
+  db_path: data/crawl.db
+
+# Optional CSS selectors per page label; each field becomes a structured value.
+selectors:
+  COURSE:
+    title: "h1"
+  FACULTY:
+    name: "h1"
+    email: "a[href^='mailto:']"
+  LAB:
+    name: "h1"
+
+ranking:
+  w_tf: 1.0
+  w_field: 3.0
+  w_recency: 0.5
