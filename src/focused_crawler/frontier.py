@@ -35,6 +35,14 @@ class Frontier:
     def seen(self, url: str) -> bool:
         return url_hash(url) in self._seen
 
+    def mark_seen(self, url: str) -> bool:
+        """Record a URL reached another way (e.g. a redirect). False if it was already seen."""
+        key = url_hash(url)
+        if key in self._seen:
+            return False
+        self._seen.add(key)
+        return True
+
     def push(self, url: str, priority: float, depth: int, parent: str | None = None) -> bool:
         if depth > self.max_depth:
             return False
