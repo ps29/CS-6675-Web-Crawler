@@ -19,11 +19,16 @@ class FrontierItem:
 
 
 class Frontier:
-    """Highest priority pops first; equal priorities pop in FIFO (breadth-first) order."""
+    """Highest priority pops first; equal priorities pop in FIFO (breadth-first) order.
 
-    def __init__(self, max_depth: int, per_host_max: int):
+    With host_penalty > 0 the effective priority is priority - host_penalty * (pages already
+    popped from the URL's host), so a multi-site crawl spreads over hosts. Stored keys are
+    upper bounds on effective priorities, so stale entries are re-keyed lazily on pop."""
+
+    def __init__(self, max_depth: int, per_host_max: int, host_penalty: float = 0.0):
         self.max_depth = max_depth
         self.per_host_max = per_host_max
+        self.host_penalty = host_penalty
         self._heap: list[tuple[float, int, FrontierItem]] = []
         self._seq = itertools.count()
         self._seen: set[str] = set()
@@ -57,9 +62,13 @@ class Frontier:
 
     def pop(self) -> FrontierItem | None:
         while self._heap:
-            _, _, item = heapq.heappop(self._heap)
+            neg_key, seq, item = heapq.heappop(self._heap)
             host = host_of(item.url)
             if self._host_popped[host] >= self.per_host_max:
+                continue
+            effective = item.priority - self.host_penalty * self._host_popped[host]
+            if effective < -neg_key and self._heap and (-effective, seq) > self._heap[0][:2]:
+                heapq.heappush(self._heap, (-effective, seq, item))  # stale key: re-rank
                 continue
             self._host_popped[host] += 1
             return item

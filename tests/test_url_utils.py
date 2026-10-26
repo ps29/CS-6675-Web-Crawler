@@ -1,6 +1,11 @@
 import pytest
 
-from focused_crawler.url_utils import in_scope, is_crawlable_resource, normalize_url
+from focused_crawler.url_utils import (
+    in_any_scope,
+    in_scope,
+    is_crawlable_resource,
+    normalize_url,
+)
 
 
 @pytest.mark.parametrize(
@@ -35,6 +40,14 @@ def test_in_scope():
     assert in_scope("https://www.cc.gatech.edu/x", "gatech.edu")
     assert not in_scope("https://notgatech.edu/", "gatech.edu")
     assert not in_scope("https://gatech.edu.evil.com/", "gatech.edu")
+
+
+def test_in_scope_with_path_prefix():
+    assert in_scope("https://numpy.org/doc/stable/reference/", "numpy.org/doc/stable/")
+    assert not in_scope("https://numpy.org/doc/1.26/reference/", "numpy.org/doc/stable/")
+    assert not in_scope("https://numpy.org/news/", "numpy.org/doc/stable/")
+    assert in_any_scope("https://b.io/x", ["a.org/doc/", "b.io"])
+    assert not in_any_scope("https://c.io/", ["a.org/doc/", "b.io"])
 
 
 def test_crawlable_resource():

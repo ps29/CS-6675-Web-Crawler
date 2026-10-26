@@ -12,6 +12,7 @@ from .classifier import COURSE_CODE
 from .parser import ParsedPage
 
 TOKEN = re.compile(r"[a-z0-9]+")
+DOTTED = re.compile(r"\b[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)+\b")
 STOPWORDS = frozenset(
     """a about above after again all also am an and any are as at be because been before being
     below between both but by can could did do does doing down during each few for from further
@@ -31,8 +32,10 @@ def stem(token: str) -> str:
 
 
 def tokenize(text: str) -> list[str]:
-    """Lowercased, stop-word-free, stemmed tokens. "CS 6675" also yields the token "cs6675"."""
+    """Lowercased, stop-word-free, stemmed tokens. "CS 6675" also yields the token "cs6675",
+    and a dotted name such as "json.dumps" also yields "jsondumps"."""
     text = COURSE_CODE.sub(lambda m: f"{m.group(1)}{m.group(2)} {m.group(1)} {m.group(2)}", text)
+    text = DOTTED.sub(lambda m: f"{m.group(0)} {re.sub(r'[._]', '', m.group(0))}", text)
     return [stem(t) for t in TOKEN.findall(text.lower()) if t not in STOPWORDS and len(t) > 1]
 
 

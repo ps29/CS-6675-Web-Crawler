@@ -9,6 +9,7 @@ from collections.abc import Iterable, Iterator
 from pathlib import Path
 
 from .classifier import COURSE, FACULTY, LAB
+from .python_docs import STRUCTURED_TABLES as DOC_TABLES
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS pages (
@@ -65,6 +66,20 @@ CREATE TABLE IF NOT EXISTS labs (
     department TEXT
 );
 
+CREATE TABLE IF NOT EXISTS doc_pages (
+    page_id       INTEGER PRIMARY KEY REFERENCES pages(id) ON DELETE CASCADE,
+    package       TEXT,
+    kind          TEXT,
+    title         TEXT,
+    version       TEXT,
+    module        TEXT,
+    n_symbols     INTEGER,
+    n_code_blocks INTEGER,
+    symbols       TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_doc_pages_package ON doc_pages(package);
+CREATE INDEX IF NOT EXISTS idx_doc_pages_module ON doc_pages(module);
+
 CREATE TABLE IF NOT EXISTS postings (
     term      TEXT NOT NULL,
     page_id   INTEGER NOT NULL REFERENCES pages(id) ON DELETE CASCADE,
@@ -78,7 +93,9 @@ STRUCTURED_TABLES = {
     COURSE: ("courses", ("course_code", "title", "instructor", "credit_hours")),
     FACULTY: ("faculty", ("name", "position", "department", "email", "research_keywords")),
     LAB: ("labs", ("name", "pi", "department")),
+    **DOC_TABLES,
 }
+TABLES = tuple(dict.fromkeys(table for table, _ in STRUCTURED_TABLES.values()))
 
 
 class Storage:
@@ -168,7 +185,7 @@ class Storage:
         )
 
     def replace_structured(self, page_id: int, label: str, fields: dict) -> None:
-        for table, _ in STRUCTURED_TABLES.values():
+        for table in TABLES:
             self.conn.execute(f"DELETE FROM {table} WHERE page_id = ?", (page_id,))
         if label not in STRUCTURED_TABLES:
             return
