@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -20,6 +21,7 @@ class CrawlSettings:
     max_pages: int = 500
     max_depth: int = 6
     per_host_max: int = 200
+    host_penalty: float = 0.0  # priority lost per page already crawled on a host
     delay_seconds: float = 1.0
     timeout_seconds: float = 15.0
     max_retries: int = 2
@@ -35,12 +37,18 @@ class RankingWeights:
 
 @dataclass(frozen=True)
 class Config:
-    domain: str
+    domains: tuple[str, ...]
     seeds: list[str]
+    profile: str = "academic"
+    exclude: tuple[str, ...] = ()
     crawl: CrawlSettings = field(default_factory=CrawlSettings)
     db_path: Path = Path("data/crawl.db")
     selectors: dict[str, dict[str, str]] = field(default_factory=dict)
     ranking: RankingWeights = field(default_factory=RankingWeights)
+
+    @property
+    def domain(self) -> str:
+        return self.domains[0]
 
 
 def _build(cls, raw: dict[str, Any] | None, section: str):
@@ -52,13 +60,38 @@ def _build(cls, raw: dict[str, Any] | None, section: str):
     return cls(**raw)
 
 
+def _domains(raw: dict[str, Any]) -> tuple[str, ...]:
+    """'domain' (one scope) or 'domains' (a list). A scope is a host, optionally with a path."""
+    listed = raw.get("domains") or []
+    if isinstance(listed, str):
+        listed = [listed]
+    if raw.get("domain"):
+        listed = [raw["domain"], *listed]
+    domains = tuple(
+        d.strip().lower().removeprefix("https://").removeprefix("http://") for d in listed
+    )
+    domains = tuple(d for d in domains if d)
+    if not domains:
+        raise ConfigError("'domain' or 'domains' is required")
+    return domains
+
+
 def parse_config(raw: dict[str, Any]) -> Config:
-    domain = (raw.get("domain") or "").strip().lower()
-    if not domain:
-        raise ConfigError("'domain' is required")
+    from .profiles import PROFILES
+
+    domains = _domains(raw)
     seeds = raw.get("seeds") or []
     if not seeds:
         raise ConfigError("at least one seed URL is required")
+    profile = raw.get("profile", "academic")
+    if profile not in PROFILES:
+        raise ConfigError(f"unknown profile {profile!r}; choose from {sorted(PROFILES)}")
+    exclude = tuple(raw.get("exclude") or ())
+    for pattern in exclude:
+        try:
+            re.compile(pattern)
+        except re.error as e:
+            raise ConfigError(f"bad exclude pattern {pattern!r}: {e}") from e
 
     crawl = _build(CrawlSettings, raw.get("crawl"), "crawl")
     if crawl.delay_seconds < 1.0:
@@ -69,8 +102,10 @@ def parse_config(raw: dict[str, Any]) -> Config:
     selectors = {k.upper(): dict(v) for k, v in (raw.get("selectors") or {}).items()}
     db_path = Path((raw.get("storage") or {}).get("db_path", "data/crawl.db"))
     return Config(
-        domain=domain,
+        domains=domains,
         seeds=list(seeds),
+        profile=profile,
+        exclude=exclude,
         crawl=crawl,
         db_path=db_path,
         selectors=selectors,
