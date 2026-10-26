@@ -1,31 +1,76 @@
-# Crawl scope: the registered domain and every subdomain of it.
-domain: gatech.edu
+# Python-documentation focused crawl: docs.python.org plus the documentation sites of the
+# packages in config/ledger_seeds.txt. For the M1 academic crawl use config/academic.yaml.
+profile: python_docs
+
+# Crawl scopes: a host (and its subdomains), optionally with a path prefix. The prefixes pin
+# one docs version per site, so version switchers do not multiply the crawl.
+domains:
+  - docs.python.org/3/
+  - requests.readthedocs.io/en/latest/
+  - numpy.org/doc/stable/
+  - pandas.pydata.org/docs/
+  - flask.palletsprojects.com/en/stable/
+  - docs.djangoproject.com/en/6.1/
+  - fastapi.tiangolo.com/
+  - pydantic.dev/docs/validation/latest/
+  - docs.sqlalchemy.org/en/21/
+  - docs.scipy.org/doc/scipy/
+  - matplotlib.org/stable/
+  - docs.pytest.org/en/stable/
+  - click.palletsprojects.com/en/stable/
+  - jinja.palletsprojects.com/en/stable/
+  - www.python-httpx.org/
+  - www.attrs.org/en/stable/
+  - rich.readthedocs.io/en/latest/
+  - typer.tiangolo.com/
+  - docs.scrapy.org/en/latest/
+  - docs.celeryq.dev/en/stable/
+
 seeds:
-  - https://www.gatech.edu/
-  - https://www.cc.gatech.edu/
-  - https://www.cc.gatech.edu/people/faculty
-  - https://catalog.gatech.edu/coursesaz/
-  - https://research.gatech.edu/
+  - https://docs.python.org/3/
+  - https://docs.python.org/3/library/index.html
+  - https://requests.readthedocs.io/en/latest/
+  - https://numpy.org/doc/stable/
+  - https://pandas.pydata.org/docs/
+  - https://flask.palletsprojects.com/en/stable/
+  - https://docs.djangoproject.com/en/6.1/
+  - https://fastapi.tiangolo.com/
+  - https://pydantic.dev/docs/validation/latest/get-started/
+  - https://docs.sqlalchemy.org/en/21/
+  - https://docs.scipy.org/doc/scipy/
+  - https://matplotlib.org/stable/
+  - https://docs.pytest.org/en/stable/
+  - https://click.palletsprojects.com/en/stable/
+  - https://jinja.palletsprojects.com/en/stable/
+  - https://www.python-httpx.org/
+  - https://www.attrs.org/en/stable/
+  - https://rich.readthedocs.io/en/latest/
+  - https://typer.tiangolo.com/
+  - https://docs.scrapy.org/en/latest/
+  - https://docs.celeryq.dev/en/stable/
+
+# Regexes (searched in the full URL) that are never crawled.
+exclude:
+  - "/_(?:sources|static|images|downloads|modules)/"
+  - "/(?:genindex|search)(?:\\.html)?$"
+  - "^https://(?:fastapi|typer)\\.tiangolo\\.com/[a-z]{2}(?:-[a-z]+)?/"  # translations
 
 crawl:
   max_pages: 500
-  max_depth: 6
-  per_host_max: 200
+  max_depth: 5
+  per_host_max: 40
+  host_penalty: 0.02  # spread the budget over the docs sites
   delay_seconds: 1.0
   timeout_seconds: 15.0
   max_retries: 2
   user_agent: "focused-crawler-course-project/0.1 (CS 6675 research prototype)"
 
 storage:
-  db_path: data/crawl.db
+  db_path: data/pydocs.db
 
-# Optional CSS selectors per page label ("*" applies to every label). A value is
-# "css" for element text or "css@attr" for an attribute. Matches override built-in fields.
 selectors:
   "*":
     canonical: "link[rel=canonical]@href"
-  FACULTY:
-    photo: "img.profile-photo@src"
 
 ranking:
   w_tf: 1.0

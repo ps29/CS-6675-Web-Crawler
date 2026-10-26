@@ -3,18 +3,20 @@
 from __future__ import annotations
 
 import logging
+import re
 from collections import Counter
 from dataclasses import dataclass, field
 
-from .classifier import OTHER, RuleClassifier, score_link
+from .classifier import OTHER
 from .config import Config
 from .extractor import extract_fields
 from .fetcher import Fetcher
 from .frontier import Frontier, FrontierItem
 from .indexer import content_hash, term_positions
 from .parser import parse_html
+from .profiles import get_profile
 from .storage import Storage
-from .url_utils import host_of, in_scope, is_crawlable_resource, normalize_url
+from .url_utils import host_of, in_any_scope, is_crawlable_resource, normalize_url
 
 log = logging.getLogger(__name__)
 COMMIT_EVERY = 20
@@ -33,7 +35,7 @@ class CrawlStats:
 
     @property
     def useful_yield(self) -> float:
-        """Share of HTML pages labeled COURSE/FACULTY/LAB (M1 Section 5.1)."""
+        """Share of HTML pages with a target label, i.e. not OTHER (M1 Section 5.1)."""
         if not self.html_pages:
             return 0.0
         return 1.0 - self.labels[OTHER] / self.html_pages
@@ -45,10 +47,12 @@ class Crawler:
         config: Config,
         storage: Storage,
         fetcher: Fetcher | None = None,
-        classifier: RuleClassifier | None = None,
+        classifier=None,
     ):
         self.config = config
         self.storage = storage
+        self.profile = get_profile(config.profile)
+        self.exclude = [re.compile(p) for p in config.exclude]
         settings = config.crawl
         self.fetcher = fetcher or Fetcher(
             user_agent=settings.user_agent,
@@ -56,12 +60,17 @@ class Crawler:
             timeout=settings.timeout_seconds,
             max_retries=settings.max_retries,
         )
-        self.classifier = classifier or RuleClassifier()
-        self.frontier = Frontier(settings.max_depth, settings.per_host_max)
+        self.classifier = classifier or self.profile.make_classifier()
+        self.frontier = Frontier(settings.max_depth, settings.per_host_max, settings.host_penalty)
         self.stats = CrawlStats()
 
+    def _in_scope(self, url: str) -> bool:
+        return in_any_scope(url, self.config.domains) and not any(
+            p.search(url) for p in self.exclude
+        )
+
     def _enqueue(self, url: str, priority: float, depth: int, parent: str | None = None) -> None:
-        if in_scope(url, self.config.domain) and is_crawlable_resource(url):
+        if self._in_scope(url) and is_crawlable_resource(url):
             self.frontier.push(url, priority, depth, parent)
 
     def run(self, max_pages: int | None = None) -> CrawlStats:
@@ -99,7 +108,7 @@ class Crawler:
 
         url = normalize_url(result.final_url) or item.url
         if url != item.url:
-            if not in_scope(url, self.config.domain):
+            if not self._in_scope(url):
                 self.stats.redirected_away += 1
                 return
             if not self.frontier.mark_seen(url):
@@ -114,7 +123,7 @@ class Crawler:
 
         page = parse_html(result.text, url)
         verdict = self.classifier.classify(page)
-        fields = extract_fields(page, verdict.label, self.config.selectors)
+        fields = extract_fields(page, verdict.label, self.config.selectors, self.profile.extractors)
         self.stats.html_pages += 1
         self.stats.labels[verdict.label] += 1
 
@@ -137,6 +146,6 @@ class Crawler:
         self.storage.replace_links(page_id, ((link.url, link.anchor) for link in page.links))
 
         for link in page.links:
-            priority = score_link(link.url, link.anchor, link.context, verdict.label)
+            priority = self.profile.score_link(link.url, link.anchor, link.context, verdict.label)
             self._enqueue(link.url, priority, item.depth + 1, parent=url)
         log.debug("%s %.2f %s", verdict.label, verdict.score, url)

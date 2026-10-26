@@ -6,6 +6,17 @@ All notable changes to this project are documented here. Format follows
 ## [Unreleased]
 
 ### Added
+- `focused_crawler` profiles. The new default `python_docs` profile crawls docs.python.org and
+  19 package docs sites, labels pages REFERENCE / TUTORIAL / HOWTO / CHANGELOG, and stores package,
+  version, module and API symbols in a `doc_pages` table. The M1 academic crawl moved to
+  `config/academic.yaml` (`profile: academic`).
+- Config: `domains` (several scopes, each optionally with a path prefix), `exclude` regexes,
+  `crawl.host_penalty` (spreads a multi-site budget over hosts).
+- Indexer: dotted names (`json.dumps`) are also indexed as one joined token.
+
+### Fixed
+- Fetcher decodes pages as UTF-8 when the server declares no charset (titles were mojibake,
+  e.g. `sys â System-specific...`).
 - `crawl_ledger` package (M2/M3) imported from `../crawl-ledger`, with its 21 tests, seeds and
   results; lint fixes only, plus the seeds path now pointing at `config/ledger_seeds.txt`.
 - `edge_serving` package (M4): served objects with Cache-Control rules, stateless verification

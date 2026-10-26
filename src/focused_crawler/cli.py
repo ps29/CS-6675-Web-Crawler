@@ -10,14 +10,15 @@ import logging
 import sys
 from pathlib import Path
 
-from .classifier import LABELS
 from .config import ConfigError, load_config
 from .crawler import Crawler
+from .profiles import ALL_LABELS
 from .ranker import TFRanker
 from .storage import Storage
 
 DEFAULT_CONFIG = Path("config/default.yaml")
 EXPORT_COLUMNS = ("id", "url", "label", "label_score", "title", "depth", "status", "fields")
+HIDDEN_FIELDS = {"course_codes", "symbols", "sections", "versions"}  # long lists
 
 
 def _db_path(args) -> Path:
@@ -53,9 +54,9 @@ def cmd_search(args) -> int:
     if not results:
         print("no results")
     for rank, r in enumerate(results, 1):
-        print(f"{rank:2}. [{r.label:<7}] {r.score:6.3f}  {r.title[:70]}")
+        print(f"{rank:2}. [{r.label:<9}] {r.score:6.3f}  {r.title[:70]}")
         print(f"    {r.url}")
-        shown = {k: v for k, v in r.fields.items() if v and k != "course_codes"}
+        shown = {k: v for k, v in r.fields.items() if v and k not in HIDDEN_FIELDS}
         if shown:
             print(f"    {json.dumps(shown)[:160]}")
     return 0
@@ -99,7 +100,7 @@ def build_parser() -> argparse.ArgumentParser:
     search = sub.add_parser("search", help="query the index")
     search.add_argument("query")
     search.add_argument("-k", type=int, default=10)
-    search.add_argument("--label", choices=LABELS)
+    search.add_argument("--label", choices=ALL_LABELS)
     search.add_argument("--json", action="store_true")
     search.set_defaults(func=cmd_search)
 

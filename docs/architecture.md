@@ -5,16 +5,33 @@ The project has three Python packages under `src/`. They share tooling but not c
 
 | Package | Milestone | Role |
 |---|---|---|
-| `focused_crawler` | M1 | Focused crawler and search engine for one university domain |
+| `focused_crawler` | M1 | Profile-driven focused crawler and search engine: Python documentation sites (default) or one university domain |
 | `crawl_ledger` | M2/M3 | Decentralized Python-docs crawler whose records are signed, chained and audited |
 | `edge_serving` | M4 | Edge caching and revocation for verified crawl records |
 
 ---
 
-## 1. `focused_crawler` (M1): academic-domain focused crawler
+## 1. `focused_crawler` (M1): focused crawler with profiles
 
-Crawls a single registered domain (default `gatech.edu` and all its subdomains), labels each page
-`COURSE`, `FACULTY`, `LAB` or `OTHER`, extracts structured fields and serves ranked search.
+Crawls a configured set of scopes, labels each page, extracts structured fields and serves
+ranked search. A **profile** (`profiles.py`) supplies the classifier, the link scorer and the
+per-label extractors; the fetcher, frontier, parser, storage, indexer and ranker are shared.
+
+| Profile | Scopes | Labels | Module |
+|---|---|---|---|
+| `python_docs` (default) | docs.python.org/3/ and 19 package docs sites, each pinned to one version by a path prefix | `REFERENCE`, `TUTORIAL`, `HOWTO`, `CHANGELOG`, `OTHER` | `python_docs.py` |
+| `academic` | `gatech.edu` and its subdomains | `COURSE`, `FACULTY`, `LAB`, `OTHER` | `classifier.py`, `extractor.py` |
+
+Labels are unique across profiles, so one SQLite schema holds both kinds of crawl.
+
+**Python-docs rules.** URL paths (`/library/`, `/api/`, `/tutorial/`, `/howto/`, `/whatsnew/`,
+`/changes/`...), content cues ("parameters", "let's", "this guide", "release notes"...), the h1
+title, Sphinx and mkdocstrings API blocks (`dl.py`, `.doc-heading`), and three or more version
+headings for changelogs. Extracted fields: package (from the host), kind, title, docs version
+(from the title or URL path), module (Sphinx `module-*` anchor or `name — summary` h1), API
+symbol IDs (`json.dumps`, `fastapi.FastAPI`), section headings, code-block count, and the version
+list on changelog pages. Link scoring sends API, tutorial and guide links first, and symbol-like
+anchors (`os.path`) up. Index, search, `_sources` and license pages go to the back.
 
 ```mermaid
 flowchart LR
@@ -31,15 +48,17 @@ flowchart LR
 
 | Module | Responsibility |
 |---|---|
-| `config.py` | Loads `config/default.yaml` into dataclasses and validates it |
-| `url_utils.py` | URL normalization (drops fragments, tracking and session params), scope check |
-| `fetcher.py` | Polite HTTP: robots.txt cache, per-host delay, identifying User-Agent, retries on 429/5xx, HTML only |
-| `frontier.py` | `heapq` priority queue with FIFO tie-break, seen set, depth limit, per-host cap |
+| `config.py` | Loads a YAML config (profile, scopes, excludes, budgets) into dataclasses and validates it |
+| `profiles.py` | Registry of profiles: labels, classifier, link scorer, extractors |
+| `python_docs.py` | Python-docs classifier, link scorer and `doc_pages` extractor |
+| `url_utils.py` | URL normalization (drops fragments, tracking and session params), scope check with optional path prefix |
+| `fetcher.py` | Polite HTTP: robots.txt cache, per-host delay, identifying User-Agent, retries on 429/5xx, HTML only, UTF-8 when no charset is declared |
+| `frontier.py` | `heapq` priority queue with FIFO tie-break, seen set, depth limit, per-host cap, optional per-host priority penalty (lazy re-keying) |
 | `parser.py` | BeautifulSoup + lxml: title, headings, block-level `lines`, links with anchor text and context, `noindex`/`nofollow` |
 | `classifier.py` | URL-path and on-page cue rules, course-code regex (`CS 6675`), link scoring for the frontier |
 | `extractor.py` | Fields per label (course: code, title, instructor, credit hours; faculty: name, position, department, email, research keywords; lab: name, PI, department) plus config selectors (`css` or `css@attr`) |
-| `storage.py` | Tables `pages`, `links`, `courses`, `faculty`, `labs`, `postings`; exact duplicates via `content_hash` |
-| `indexer.py` | Tokenizer with Porter stemming; also emits joined course codes (`cs6675`) |
+| `storage.py` | Tables `pages`, `links`, `postings`, `doc_pages`, `courses`, `faculty`, `labs`; exact duplicates via `content_hash` |
+| `indexer.py` | Tokenizer with Porter stemming; also emits joined course codes (`cs6675`) and joined dotted names (`jsondumps`) |
 | `ranker.py` | Baseline TF-IDF: `sum((1 + log tf) * log(1 + N/df)) / sqrt(doc_length)` |
 | `crawler.py` | Main loop: budgets, per-page error isolation, commits every 20 pages, `CrawlStats` |
 | `cli.py` | `fcrawl crawl / search / stats / export` |
