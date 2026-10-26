@@ -1,0 +1,105 @@
+Crawling 25 packages with 20 peers (4 dishonest)...
+  requests/pypi by 10.0.0.16:7000
+  requests/rtd by 10.0.0.16:7000
+  numpy/pypi by 10.0.0.13:7000
+  pandas/pypi by 10.0.0.7:7000
+  flask/pypi by 10.0.0.14:7000
+  django/pypi by 10.0.0.2:7000
+  fastapi/pypi by 10.0.0.13:7000
+  pydantic/pypi by 10.0.0.4:7000
+  sqlalchemy/pypi by 10.0.0.18:7000
+  scipy/pypi by 10.0.0.8:7000
+  matplotlib/pypi by 10.0.0.5:7000
+  pytest/pypi by 10.0.0.5:7000
+  click/pypi by 10.0.0.16:7000
+  jinja2/pypi by 10.0.0.8:7000
+  httpx/pypi by 10.0.0.18:7000
+  attrs/pypi by 10.0.0.0:7000
+  rich/pypi by 10.0.0.2:7000
+  rich/rtd by 10.0.0.2:7000
+  typer/pypi by 10.0.0.11:7000
+  beautifulsoup4/pypi by 10.0.0.17:7000
+  scrapy/pypi by 10.0.0.13:7000
+  celery/pypi by 10.0.0.9:7000
+  json/pydocs by 10.0.0.1:7000
+  asyncio/pydocs by 10.0.0.15:7000
+  pathlib/pydocs by 10.0.0.18:7000
+  re/pydocs by 10.0.0.18:7000
+  logging/pydocs by 10.0.0.1:7000  [forged]
+Auditing...
+  audit requests/pypi: PASS
+  audit requests/rtd: PASS
+  audit numpy/pypi: PASS
+  audit pandas/pypi: PASS
+  audit flask/pypi: PASS
+  audit django/pypi: PASS
+  audit fastapi/pypi: PASS
+  audit pydantic/pypi: PASS
+  audit sqlalchemy/pypi: PASS
+  audit scipy/pypi: PASS
+  audit matplotlib/pypi: PASS
+  audit pytest/pypi: PASS
+  audit click/pypi: PASS
+  audit jinja2/pypi: PASS
+  audit httpx/pypi: PASS
+  audit attrs/pypi: PASS
+  audit rich/pypi: PASS
+  audit rich/rtd: PASS
+  audit typer/pypi: PASS
+  audit beautifulsoup4/pypi: PASS
+  audit scrapy/pypi: PASS
+  audit celery/pypi: PASS
+  audit json/pydocs: PASS
+  audit asyncio/pydocs: PASS
+  audit pathlib/pydocs: PASS
+  audit re/pydocs: PASS
+  audit logging/pydocs: FAIL  (forged)
+{
+  "records": 27,
+  "forged_records": 1,
+  "audited": 27,
+  "detection_rate": 1.0,
+  "false_rejection_rate": 0.0,
+  "honest_inconclusive_rate": 0.0,
+  "honest_by_source": {
+    "pypi": {
+      "n": 20,
+      "PASS": 20,
+      "FAIL": 0,
+      "INCONCLUSIVE": 0
+    },
+    "rtd": {
+      "n": 2,
+      "PASS": 2,
+      "FAIL": 0,
+      "INCONCLUSIVE": 0
+    },
+    "pydocs": {
+      "n": 4,
+      "PASS": 4,
+      "FAIL": 0,
+      "INCONCLUSIVE": 0
+    }
+  },
+  "mean_record_bytes": 537.5,
+  "mean_record_build_ms": 0.723,
+  "mean_verify_ms": 0.098,
+  "fetch_failures": 0,
+  "crawl_seconds": 24.2,
+  "requests": 54,
+  "config": {
+    "peers": 20,
+    "dishonest": 0.2,
+    "forge_rate": 0.2,
+    "audit_rate": 1.0,
+    "packages": "C:\\Users\\pssh\\Advance Internet Computing system\\Project\\config\\ledger_seeds.txt",
+    "limit": 25,
+    "delay": 1.0,
+    "wait": 0.0,
+    "seed": 1,
+    "offline": false,
+    "out": "results/m3/live_run3.json",
+    "quiet": false
+  }
+}
+Saved results/m3/live_run3.json
