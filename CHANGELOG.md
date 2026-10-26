@@ -8,6 +8,10 @@ All notable changes to this project are documented here. Format follows
 ### Added
 - `crawl_ledger` package (M2/M3) imported from `../crawl-ledger`, with its 21 tests, seeds and
   results; lint fixes only, plus the seeds path now pointing at `config/ledger_seeds.txt`.
+- `edge_serving` package (M4): served objects with Cache-Control rules, stateless verification
+  gateway, edge proxy, client verifier, R1 revocation deltas on header gossip (optional
+  `delta_root` in M3 headers), R2 Bloom-filter proof sharing, aiohttp servers with miss
+  coalescing, and a trace-driven evaluation (`docs/m4-results.md`).
 
 ## [0.1.0] - 2026-10-26
 

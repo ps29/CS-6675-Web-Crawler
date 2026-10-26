@@ -43,6 +43,13 @@ src/edge_serving/      M4
    window, stale responses, gateway req/s, hit/byte-hit ratio, gossip bytes/epoch,
    inter-edge bytes and Bloom FP rate. Results go to `results/` and `docs/`.
 
+## Status (2026-10-26)
+Milestones 1-7 are done. Evaluation ran before HTTP because it produces the M4 comparison.
+Deviation: the crawl-ledger import landed as one commit (verbatim code + lint fixes), since a
+verbatim-only commit would fail the ruff hook. Open follow-ups: an evaluation under cache pressure
+for R2 (`--packages 2000 --proof-capacity 500`), and dishonest-edge (misreported synced_epoch)
+experiments.
+
 ## Testing
 Offline pytest for every component. Security tests cover a tampered proof, a tampered status
 entry, a dropped delta entry (delta_root mismatch), a replayed old status (max_lag), and a
