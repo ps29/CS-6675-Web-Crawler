@@ -6,7 +6,17 @@ CS 6675 course project. Three packages under `src/`:
 |---|---|---|
 | `focused_crawler` | M1: academic-domain focused crawler and ranking | baseline done (`v0.1.0`) |
 | `crawl_ledger` | M2/M3: decentralized Python-docs crawler with signed records, Merkle blocks, audits | imported from `../crawl-ledger` |
-| `edge_serving` | M4: edge caching and revocation for verified crawl records | in progress (`docs/plans/01-m4-serving-layer.md`) |
+| `edge_serving` | M4: edge caching and revocation for verified crawl records | baseline, R1, R2, HTTP and evaluation done |
+
+## edge_serving (M4)
+
+```
+python -m edge_serving.sim --compare --out results/m4/compare.json   # baseline vs R1/R2/both
+python -m edge_serving.http_app demo                                  # gateway + 3 edges on :8080-8083
+```
+
+Design: `M4-Pravesh-Shrestha.docx`; plan: `docs/plans/01-m4-serving-layer.md`; results:
+`docs/m4-results.md`.
 
 ## crawl_ledger (M2/M3)
 
