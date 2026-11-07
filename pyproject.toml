@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "focused-crawler"
-version = "0.1.0"
+version = "0.2.0"
 description = "CS 6675 course project: focused crawler (M1), verifiable crawl ledger (M2/M3), edge serving (M4)"
 readme = "README.md"
 requires-python = ">=3.11"
