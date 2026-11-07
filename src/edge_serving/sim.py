@@ -1,4 +1,8 @@
-"""Trace-driven evaluation of the M4 serving layer: baseline, +R1, +R2 and both.
+"""Trace-driven evaluation of the M4 serving layer: baseline, +R1, +R2, both, and R1-S.
+
+R1-S (`r1s`) is R1 with proofs of non-revocation (state_proofs.py). --spot-check P makes the
+client verify an accepted status against the gateway with probability P and stop using an edge
+after --spot-strikes mismatches.
 
 A simulated clock drives Zipf-skewed reads through regional edges while the ledger seals an
 epoch every --epoch-seconds, crawls new releases and settles audits (some revoking records).
@@ -24,21 +28,28 @@ from crawl_ledger.verify import verify_record_r1
 from .client import ACCEPT, IDE_POLICY, Client
 from .dishonest import (
     ATTACKS,
+    REPLAY,
     WITHHOLD,
     LyingR1,
     LyingR1Edge,
     LyingR1R2Edge,
+    LyingStateProofEdge,
     ReplayEdge,
+    ReplayR1Edge,
+    ReplayR1R2Edge,
     ReplayR2Edge,
+    ReplayStateProofEdge,
 )
 from .edge import Edge
 from .gateway import Gateway
 from .ledger_view import AUDIT_FAIL, AUDIT_PASS, Ledger, build_demo_ledger
-from .objects import REVOKED, Proof
+from .objects import NO_STORE, REVOKED, Proof, Response
 from .revocation import R1Client, R1Edge
+from .state_proofs import StateProofClient, StateProofEdge
 from .summary import R1R2Edge, R2Edge, SummarySharing
 
-VARIANTS = ("baseline", "r1", "r2", "both")
+VARIANTS = ("baseline", "r1", "r2", "both", "r1s")
+R1_FAMILY = ("r1", "both", "r1s")  # variants whose edges follow the header gossip
 SEEDS = Path(__file__).resolve().parents[2] / "config" / "ledger_seeds.txt"
 SOURCES = ("pypi", "rtd", "pydocs")
 REQUEST, EPOCH, GOSSIP, SUMMARY = 0, 1, 2, 3  # event kinds; ties resolve in this order
@@ -59,6 +70,10 @@ class Metrics:
     stale_accepts: int = 0
     stale_window: float = 0.0
     revoked_reads: int = 0
+    spot_checks: int = 0
+    spot_mismatches: int = 0
+    direct_reads: int = 0
+    first_block_s: float | None = None
     latencies_ms: list[float] = field(default_factory=list)
 
 
@@ -90,17 +105,21 @@ def make_edges(variant: str, a, ledger: Ledger, gateway: Gateway, clock: SimCloc
         name, common = f"edge{i}", {"proof_capacity": a.proof_capacity}
         r2 = {"verify_proof": verify, "summary_capacity": a.proof_capacity, "fp_rate": a.fp_rate}
         bad = i < a.dishonest_edges
-        lie = {"attack": a.attack} if bad else {}
+        replay = bad and a.attack == REPLAY
+        lie = {"attack": a.attack} if bad and not replay else {}
         if variant == "baseline":
             edges.append((ReplayEdge if bad else Edge)(name, gateway.get, clock, **common))
         elif variant == "r1":
-            cls = LyingR1Edge if bad else R1Edge
+            cls = ReplayR1Edge if replay else LyingR1Edge if bad else R1Edge
+            edges.append(cls(name, gateway.get, clock, chain(), **common, **lie))
+        elif variant == "r1s":
+            cls = ReplayStateProofEdge if replay else LyingStateProofEdge if bad else StateProofEdge
             edges.append(cls(name, gateway.get, clock, chain(), **common, **lie))
         elif variant == "r2":
             cls = ReplayR2Edge if bad else R2Edge
             edges.append(cls(name, gateway.get, clock, **common, **r2))
         else:
-            cls = LyingR1R2Edge if bad else R1R2Edge
+            cls = ReplayR1R2Edge if replay else LyingR1R2Edge if bad else R1R2Edge
             edges.append(cls(name, gateway.get, clock, chain(), **common, **r2, **lie))
     if variant in ("r2", "both"):
         for e in edges:
@@ -113,14 +132,36 @@ def make_edges(variant: str, a, ledger: Ledger, gateway: Gateway, clock: SimCloc
 def run_variant(variant: str, a, t_status: float) -> dict:
     rng = random.Random(a.seed)
     packages = load_packages(a.packages)
-    ledger = build_demo_ledger(packages, SOURCES, n_peers=a.peers, epochs=1, seed=a.seed)
+    ledger = build_demo_ledger(
+        packages,
+        SOURCES,
+        n_peers=a.peers,
+        epochs=1,
+        seed=a.seed,
+        state_proofs=variant == "r1s",
+    )
     gateway = Gateway(ledger, t_ptr=a.t_ptr, t_status=t_status)
     clock = SimClock()
     edges = make_edges(variant, a, ledger, gateway, clock)
-    r1 = variant in ("r1", "both")
-    consumer = (R1Client if r1 else Client)(
-        ledger.chain, ledger.directory, gateway.public_key, IDE_POLICY
-    )
+    r1 = variant in R1_FAMILY
+    client_cls = StateProofClient if variant == "r1s" else R1Client if r1 else Client
+    consumer = client_cls(ledger.chain, ledger.directory, gateway.public_key, IDE_POLICY)
+    direct = Client(ledger.chain, ledger.directory, gateway.public_key, IDE_POLICY)
+    spot_rng = random.Random(a.seed + 1)  # separate stream: spot checks must not shift the trace
+    strikes: dict[str, int] = {e.name: 0 for e in edges}
+    blocked: set[str] = set()
+
+    def direct_read(pkg: str, src: str) -> Response:
+        """Every edge is blocked: assemble the response from the gateway itself."""
+        ptr = gateway.get(f"/latest/{pkg}/{src}")
+        if ptr.status != 200:
+            return ptr
+        rid = ptr.body["rid"]
+        proof = gateway.get(f"/proof/{rid}")
+        if proof.status != 200:
+            return Response(proof.status, {"rid": rid, **proof.body}, NO_STORE)
+        status = gateway.get(f"/status/{rid}")
+        return Response(200, {"rid": rid, "proof": proof.body, "status": status.body}, NO_STORE)
 
     def gossip_now(edge) -> None:
         hdr = ledger.headers[-1]
@@ -197,21 +238,43 @@ def run_variant(variant: str, a, t_status: float) -> dict:
             pkg = rng.choices(packages, weights)[0]
             src = rng.choice(SOURCES)
             edge = rng.choice(edges)
-            up0 = edge.stats.upstream_requests
-            sib0 = getattr(edge, "sibling_hits", 0)
-            resp = edge.get_latest(pkg, src)
-            ups = edge.stats.upstream_requests - up0
-            sibs = getattr(edge, "sibling_hits", 0) - sib0
-            m.latencies_ms.append(a.edge_ms + ups * a.gateway_ms + sibs * a.sibling_ms)
             m.requests += 1
+            if len(blocked) == len(edges):
+                m.direct_reads += 1
+                resp = direct_read(pkg, src)
+                m.latencies_ms.append(3 * a.gateway_ms)
+                checker = direct
+            else:
+                while edge.name in blocked:  # redraw; uses the spot-check stream, not the trace
+                    edge = spot_rng.choice(edges)
+                up0 = edge.stats.upstream_requests
+                sib0 = getattr(edge, "sibling_hits", 0)
+                resp = edge.get_latest(pkg, src)
+                ups = edge.stats.upstream_requests - up0
+                sibs = getattr(edge, "sibling_hits", 0) - sib0
+                m.latencies_ms.append(a.edge_ms + ups * a.gateway_ms + sibs * a.sibling_ms)
+                checker = consumer
             if resp.status != 200:
                 continue
             rid = resp.body["rid"]
             revoked = ledger.state.get(rid) == REVOKED and rid in revoked_at
             m.revoked_reads += revoked
-            verdict = consumer.check_latest(resp.body)
+            verdict = checker.check_latest(resp.body)
             if verdict != ACCEPT:
                 continue
+            if checker is consumer and a.spot_check and spot_rng.random() < a.spot_check:
+                m.spot_checks += 1
+                m.latencies_ms[-1] += a.gateway_ms
+                truth = gateway.get(f"/status/{rid}").body["state"]
+                if truth != resp.body["status"].get("state"):
+                    m.spot_mismatches += 1
+                    strikes[edge.name] += 1
+                    if strikes[edge.name] >= a.spot_strikes and edge.name not in blocked:
+                        blocked.add(edge.name)
+                        if m.first_block_s is None:
+                            m.first_block_s = round(t, 1)
+                    if truth not in IDE_POLICY.accept:
+                        continue  # the gateway's answer wins: do not accept this read
             m.accepted += 1
             if revoked:
                 m.stale_accepts += 1
@@ -236,6 +299,15 @@ def run_variant(variant: str, a, t_status: float) -> dict:
         "revoked_reads": m.revoked_reads,
         "dishonest_edges": a.dishonest_edges,
         "attack": a.attack if r1 and a.dishonest_edges else None,
+        "spot_check": a.spot_check,
+        "spot_checks": m.spot_checks,
+        "spot_mismatches": m.spot_mismatches,
+        "blocked_edges": sorted(blocked),
+        "honest_edges_blocked": sum(
+            1 for i, e in enumerate(edges) if e.name in blocked and i >= a.dishonest_edges
+        ),
+        "first_block_s": m.first_block_s,
+        "direct_reads": m.direct_reads,
         "hit_ratio": round(hits / (hits + misses), 4) if hits + misses else 0.0,
         "gateway_requests": gateway.requests - gateway_requests_before,
         "gateway_rps": round((gateway.requests - gateway_requests_before) / duration, 4),
@@ -285,6 +357,12 @@ def build_parser() -> argparse.ArgumentParser:
     ap.add_argument("--gateway-ms", type=float, default=150.0)
     ap.add_argument("--dishonest-edges", type=int, default=0, help="edges that hide revocations")
     ap.add_argument("--attack", choices=ATTACKS, default=WITHHOLD, help="R1 attack; see dishonest")
+    ap.add_argument(
+        "--spot-check", type=float, default=0.0, help="probability of checking a status upstream"
+    )
+    ap.add_argument(
+        "--spot-strikes", type=int, default=2, help="mismatches before an edge is avoided"
+    )
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", help="write results JSON here")
     return ap
@@ -296,7 +374,7 @@ def main(argv: list[str] | None = None) -> int:
     results = []
     started = time.time()
     for variant in variants:
-        ttls = a.t_status if variant in ("baseline", "r2") else [a.t_status[0]]
+        ttls = a.t_status if variant not in R1_FAMILY else [a.t_status[0]]
         for ttl in ttls:
             results.append(run_variant(variant, a, ttl))
     cols = (

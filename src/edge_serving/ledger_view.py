@@ -12,7 +12,7 @@ from crawl_ledger.r2 import Reputation
 from crawl_ledger.record import Record
 from crawl_ledger.ring import Ring
 
-from .delta import Delta
+from .delta import Delta, StateTree
 from .objects import INCLUDED, PASS, PENDING, REVOKED, Proof
 
 AUDIT_FAIL, AUDIT_PASS = "FAIL", "PASS"
@@ -30,8 +30,10 @@ class EpochChanges:
 
 
 class Ledger:
-    def __init__(self, peers: list[Peer], final_depth: int = 2):
+    def __init__(self, peers: list[Peer], final_depth: int = 2, state_proofs: bool = False):
+        """state_proofs: commit every final record's state in each header (R1-S)."""
         self.peers = peers
+        self.state_proofs = state_proofs
         self.directory = Directory(peers)
         self.ring = Ring(peers)
         self.chain = HeaderChain(self.directory, final_depth)
@@ -46,6 +48,7 @@ class Ledger:
         self._final: set[str] = set()
         self._changes = EpochChanges()
         self.deltas: dict[int, Delta] = {}
+        self.state_roots: dict[int, str] = {}
         self.epoch = 0
 
     # --- writes (crawl peers, block proposers, auditors) ------------------------
@@ -63,13 +66,24 @@ class Ledger:
             self.epoch,
             tuple((rid, s) for rid, s in changes.status_changes if s != INCLUDED),
             tuple(changes.new_latest),
+            tuple(rid for rid, s in changes.status_changes if s == INCLUDED)
+            if self.state_proofs
+            else (),
         )
+        state_root = self.state_tree().root() if self.state_proofs else ""
         hdr, ids = build_header(
-            self.epoch, self._queued, proposer, self.chain.head, delta_root=delta.root()
+            self.epoch,
+            self._queued,
+            proposer,
+            self.chain.head,
+            delta_root=delta.root(),
+            state_root=state_root,
         )
         if not self.chain.add(hdr):
             raise RuntimeError("proposed header rejected by the chain")
         self.deltas[hdr.epoch] = delta
+        if state_root:
+            self.state_roots[hdr.epoch] = state_root
         self.headers.append(hdr)
         self.block_ids[hdr.id] = ids
         for rid in ids:
@@ -78,6 +92,12 @@ class Ledger:
         self.epoch += 1
         self._apply_finality()
         return hdr
+
+    def state_tree(self) -> StateTree:
+        """Current state of every final record: what the next header's state_root commits to.
+        Equal to applying every delta so far, because finality and audit changes are listed
+        in the delta of the header sealed right after them."""
+        return StateTree({rid: s for rid, s in self.state.items() if s != PENDING})
 
     def pending_changes(self) -> EpochChanges:
         return self._changes
@@ -142,12 +162,13 @@ def build_demo_ledger(
     epochs: int = 3,
     seed: int = 0,
     final_depth: int = 2,
+    state_proofs: bool = False,
 ) -> Ledger:
     """A ledger with one record per (package, source) per epoch, then enough empty blocks
     for every record block to become final."""
     rng = random.Random(seed)
     peers = [Peer(f"10.0.0.{i}", rng=rng) for i in range(n_peers)]
-    ledger = Ledger(peers, final_depth)
+    ledger = Ledger(peers, final_depth, state_proofs)
     t = 1000.0
     for epoch in range(epochs):
         for pkg in packages:
