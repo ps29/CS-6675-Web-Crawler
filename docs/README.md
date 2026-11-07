@@ -7,6 +7,7 @@
 | [development.md](development.md) | Setup, tests, linting, repository layout and the git workflow |
 | [FINDINGS.md](FINDINGS.md) | What the live crawls and simulations showed, and the open items |
 | [m4-results.md](m4-results.md) | Full M4 serving-layer evaluation table and its setup |
+| [audit-results.md](audit-results.md) | Canonical block-level audits vs. raw hashing and SimHash on re-fetched pages |
 | [plans/](plans/) | Implementation plans per milestone (`00-overview.md`, `01-m4-serving-layer.md`) |
 | [design/crawl-ledger-README.md](design/crawl-ledger-README.md) | Original README of the imported M2/M3 prototype (historical) |
 

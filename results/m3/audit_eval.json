@@ -1,0 +1,466 @@
+{
+  "pages": 104,
+  "by_source": {
+    "pypi": 18,
+    "rtd": 8,
+    "docs": 61,
+    "pydocs": 17
+  },
+  "changed_signal": 0,
+  "median_gap_s": 413.5223762989044,
+  "simhash_bits": 3,
+  "results": {
+    "real": {
+      "honest": {
+        "raw": {
+          "PASS": 104
+        },
+        "canon": {
+          "PASS": 104
+        },
+        "blocks": {
+          "PASS": 104
+        },
+        "simhash": {
+          "PASS": 104
+        }
+      },
+      "version": {
+        "raw": {
+          "FAIL": 90
+        },
+        "canon": {
+          "FAIL": 22,
+          "PASS": 68
+        },
+        "blocks": {
+          "FAIL": 22,
+          "PASS": 68
+        },
+        "simhash": {
+          "PASS": 90
+        }
+      },
+      "json_url": {
+        "raw": {
+          "FAIL": 18
+        },
+        "canon": {
+          "FAIL": 18
+        },
+        "blocks": {
+          "FAIL": 18
+        },
+        "simhash": {
+          "PASS": 18
+        }
+      },
+      "json_requires": {
+        "raw": {
+          "FAIL": 18
+        },
+        "canon": {
+          "FAIL": 18
+        },
+        "blocks": {
+          "FAIL": 18
+        },
+        "simhash": {
+          "PASS": 18
+        }
+      },
+      "install": {
+        "raw": {
+          "FAIL": 6
+        },
+        "canon": {
+          "FAIL": 6
+        },
+        "blocks": {
+          "FAIL": 6
+        },
+        "simhash": {
+          "PASS": 6
+        }
+      },
+      "href": {
+        "raw": {
+          "FAIL": 85
+        },
+        "canon": {
+          "FAIL": 7,
+          "PASS": 78
+        },
+        "blocks": {
+          "FAIL": 7,
+          "PASS": 78
+        },
+        "simhash": {
+          "PASS": 85
+        }
+      },
+      "code": {
+        "raw": {
+          "FAIL": 49
+        },
+        "canon": {
+          "FAIL": 47,
+          "PASS": 2
+        },
+        "blocks": {
+          "FAIL": 47,
+          "PASS": 2
+        },
+        "simhash": {
+          "PASS": 45,
+          "FAIL": 4
+        }
+      },
+      "script": {
+        "raw": {
+          "FAIL": 86
+        },
+        "canon": {
+          "FAIL": 85,
+          "PASS": 1
+        },
+        "blocks": {
+          "FAIL": 85,
+          "PASS": 1
+        },
+        "simhash": {
+          "PASS": 83,
+          "FAIL": 3
+        }
+      },
+      "prose": {
+        "raw": {
+          "FAIL": 65
+        },
+        "canon": {
+          "FAIL": 65
+        },
+        "blocks": {
+          "INCONCLUSIVE": 62,
+          "FAIL": 3
+        },
+        "simhash": {
+          "PASS": 64,
+          "FAIL": 1
+        }
+      },
+      "comment": {
+        "raw": {
+          "FAIL": 86
+        },
+        "canon": {
+          "PASS": 86
+        },
+        "blocks": {
+          "PASS": 86
+        },
+        "simhash": {
+          "PASS": 86
+        }
+      },
+      "install@content": {
+        "raw": {
+          "FAIL": 6
+        },
+        "canon": {
+          "FAIL": 6
+        },
+        "blocks": {
+          "FAIL": 6
+        },
+        "simhash": {
+          "PASS": 6
+        }
+      },
+      "href@content": {
+        "raw": {
+          "FAIL": 66
+        },
+        "canon": {
+          "FAIL": 66
+        },
+        "blocks": {
+          "FAIL": 66
+        },
+        "simhash": {
+          "PASS": 66
+        }
+      },
+      "code@content": {
+        "raw": {
+          "FAIL": 48
+        },
+        "canon": {
+          "FAIL": 48
+        },
+        "blocks": {
+          "FAIL": 48
+        },
+        "simhash": {
+          "PASS": 44,
+          "FAIL": 4
+        }
+      },
+      "prose@content": {
+        "raw": {
+          "FAIL": 70
+        },
+        "canon": {
+          "FAIL": 70
+        },
+        "blocks": {
+          "INCONCLUSIVE": 66,
+          "FAIL": 4
+        },
+        "simhash": {
+          "PASS": 69,
+          "FAIL": 1
+        }
+      },
+      "version@content": {
+        "raw": {
+          "FAIL": 21
+        },
+        "canon": {
+          "FAIL": 21
+        },
+        "blocks": {
+          "FAIL": 21
+        },
+        "simhash": {
+          "PASS": 21
+        }
+      }
+    },
+    "real+rebuild": {
+      "honest": {
+        "raw": {
+          "FAIL": 104
+        },
+        "canon": {
+          "PASS": 104
+        },
+        "blocks": {
+          "PASS": 104
+        },
+        "simhash": {
+          "PASS": 104
+        }
+      },
+      "version": {
+        "raw": {
+          "FAIL": 90
+        },
+        "canon": {
+          "FAIL": 22,
+          "PASS": 68
+        },
+        "blocks": {
+          "FAIL": 22,
+          "PASS": 68
+        },
+        "simhash": {
+          "PASS": 90
+        }
+      },
+      "json_url": {
+        "raw": {
+          "FAIL": 18
+        },
+        "canon": {
+          "FAIL": 18
+        },
+        "blocks": {
+          "FAIL": 18
+        },
+        "simhash": {
+          "PASS": 18
+        }
+      },
+      "json_requires": {
+        "raw": {
+          "FAIL": 18
+        },
+        "canon": {
+          "FAIL": 18
+        },
+        "blocks": {
+          "FAIL": 18
+        },
+        "simhash": {
+          "PASS": 18
+        }
+      },
+      "install": {
+        "raw": {
+          "FAIL": 6
+        },
+        "canon": {
+          "FAIL": 6
+        },
+        "blocks": {
+          "FAIL": 6
+        },
+        "simhash": {
+          "PASS": 6
+        }
+      },
+      "href": {
+        "raw": {
+          "FAIL": 85
+        },
+        "canon": {
+          "FAIL": 7,
+          "PASS": 78
+        },
+        "blocks": {
+          "FAIL": 7,
+          "PASS": 78
+        },
+        "simhash": {
+          "PASS": 85
+        }
+      },
+      "code": {
+        "raw": {
+          "FAIL": 49
+        },
+        "canon": {
+          "FAIL": 47,
+          "PASS": 2
+        },
+        "blocks": {
+          "FAIL": 47,
+          "PASS": 2
+        },
+        "simhash": {
+          "PASS": 45,
+          "FAIL": 4
+        }
+      },
+      "script": {
+        "raw": {
+          "FAIL": 86
+        },
+        "canon": {
+          "FAIL": 86
+        },
+        "blocks": {
+          "FAIL": 86
+        },
+        "simhash": {
+          "PASS": 82,
+          "FAIL": 4
+        }
+      },
+      "prose": {
+        "raw": {
+          "FAIL": 65
+        },
+        "canon": {
+          "FAIL": 65
+        },
+        "blocks": {
+          "INCONCLUSIVE": 62,
+          "FAIL": 3
+        },
+        "simhash": {
+          "PASS": 64,
+          "FAIL": 1
+        }
+      },
+      "comment": {
+        "raw": {
+          "FAIL": 86
+        },
+        "canon": {
+          "PASS": 86
+        },
+        "blocks": {
+          "PASS": 86
+        },
+        "simhash": {
+          "PASS": 86
+        }
+      },
+      "install@content": {
+        "raw": {
+          "FAIL": 6
+        },
+        "canon": {
+          "FAIL": 6
+        },
+        "blocks": {
+          "FAIL": 6
+        },
+        "simhash": {
+          "PASS": 6
+        }
+      },
+      "href@content": {
+        "raw": {
+          "FAIL": 66
+        },
+        "canon": {
+          "FAIL": 66
+        },
+        "blocks": {
+          "FAIL": 66
+        },
+        "simhash": {
+          "PASS": 66
+        }
+      },
+      "code@content": {
+        "raw": {
+          "FAIL": 48
+        },
+        "canon": {
+          "FAIL": 48
+        },
+        "blocks": {
+          "FAIL": 48
+        },
+        "simhash": {
+          "PASS": 44,
+          "FAIL": 4
+        }
+      },
+      "prose@content": {
+        "raw": {
+          "FAIL": 70
+        },
+        "canon": {
+          "FAIL": 70
+        },
+        "blocks": {
+          "INCONCLUSIVE": 66,
+          "FAIL": 4
+        },
+        "simhash": {
+          "PASS": 69,
+          "FAIL": 1
+        }
+      },
+      "version@content": {
+        "raw": {
+          "FAIL": 21
+        },
+        "canon": {
+          "FAIL": 21
+        },
+        "blocks": {
+          "FAIL": 21
+        },
+        "simhash": {
+          "PASS": 21
+        }
+      }
+    }
+  }
+}
