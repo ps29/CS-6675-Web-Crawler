@@ -47,6 +47,11 @@ All notable changes to this project are documented here. Format follows
   went from 0.557 (tf) to 0.905; the boosts alone were not significant vs. plain BM25F
   (`docs/ranking-results.md`). The default ranker is still `tf`.
 
+### Changed
+- Docs refreshed for the canonical audits, host coordinators and BM25F ranker: README status,
+  commands and headline results, development test counts (256) and layout, architecture notes on
+  optional record/header fields. A flaky M3 simulation test is recorded in `docs/development.md`.
+
 ### Fixed
 - Fetcher decodes pages as UTF-8 when the server declares no charset (titles were mojibake,
   e.g. `sys â System-specific...`).

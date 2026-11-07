@@ -14,28 +14,35 @@ pre-commit install
 ## Tests and linting
 
 ```
-python -m pytest                  # 196 tests, fully offline
+python -m pytest                  # 256 tests, fully offline
 python -m pytest --cov            # with coverage
 ruff check . && ruff format .
 pre-commit run --all-files
 ```
 
 Tests never touch the network: M1 uses fixture HTML and a fake fetcher, the ledger uses
-`OfflineFetcher`, and M4 uses an injected clock (`tests/edge/helpers.py`).
+`OfflineFetcher`, stub fetchers and mock origins, and M4 uses an injected clock
+(`tests/edge/helpers.py`).
+
+Known flaky test: `tests/ledger/test_m3.py::TestSim::test_all_forgeries_caught_without_collusion_or_drift`
+failed once in 20 full-suite runs (2026-11-08) and never in 529 standalone runs. Peer keys
+come from an unseeded `Ed25519PrivateKey.generate()`, so package ownership and auditor choice change
+every run; the cause of that one failure was not confirmed.
 
 | Directory | Covers |
 |---|---|
-| `tests/` | `focused_crawler` (14 modules, both profiles) |
-| `tests/ledger/` | `crawl_ledger` baseline and M3 refinements |
-| `tests/edge/` | `edge_serving` objects, gateway, edge/client, R1, R2, HTTP, simulation |
+| `tests/` | `focused_crawler` (15 modules, both profiles, BM25F ranker and evaluation metrics) |
+| `tests/ledger/` | `crawl_ledger` baseline, M3 refinements, canonical block audits, host coordinators |
+| `tests/edge/` | `edge_serving` objects, gateway, edge/client, R1, R2, R1-S, dishonest edges, HTTP, simulation |
 
 ## Repository layout
 
 ```
 config/            default.yaml (M1 Python-docs crawl), academic.yaml (M1 gatech.edu crawl),
-                   ledger_seeds.txt (M2/M3 seed packages)
+                   eval_queries.yaml (M1 judged queries, draft), ledger_seeds.txt (M2/M3 seeds)
 docs/              architecture, usage, findings, results, plans/, design/
-results/           raw run outputs: m3/ (live ledger runs), m4/ (serving simulation)
+results/           raw run outputs: m1/ (ranking evaluation), m3/ (live ledger runs, audit and
+                   host-rate experiments), m4/ (serving simulation)
 src/focused_crawler/   M1
 src/crawl_ledger/      M2/M3
 src/edge_serving/      M4
