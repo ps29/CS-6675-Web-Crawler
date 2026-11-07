@@ -27,6 +27,8 @@ class FetchResult:
     status: int
     content: bytes
     changed_at: float | None  # the source's own "last changed" signal, if any
+    etag: str | None = None
+    last_modified: str | None = None
 
 
 def source_urls(pkg: str) -> dict:
@@ -139,12 +141,13 @@ class Fetcher:
                 time.sleep(wait)
         self._last_hit[host] = time.time()
 
-    def fetch(self, url: str) -> FetchResult | None:
+    def fetch(self, url: str, headers: dict | None = None) -> FetchResult | None:
+        """`headers` may carry If-None-Match / If-Modified-Since; a 304 has an empty body."""
         if not self._allowed(url):
             return None
         host = urlparse(url).netloc
         self._polite_wait(host)
-        headers = self._github_headers if host == "api.github.com" else {}
+        headers = {**(self._github_headers if host == "api.github.com" else {}), **(headers or {})}
         try:
             r = self.session.get(url, timeout=self.timeout, headers=headers)
         except requests.RequestException:
@@ -158,7 +161,8 @@ class Fetcher:
                 changed = parsedate_to_datetime(r.headers["Last-Modified"]).timestamp()
             except (TypeError, ValueError):
                 changed = None
-        return FetchResult(r.status_code, r.content, changed)
+        return FetchResult(r.status_code, r.content, changed, r.headers.get("ETag"),
+                           r.headers.get("Last-Modified"))  # fmt: skip
 
 
 class OfflineFetcher:
@@ -168,7 +172,7 @@ class OfflineFetcher:
         self.changed = changed or {}
         self.requests_made = 0
 
-    def fetch(self, url: str) -> FetchResult:
+    def fetch(self, url: str, headers: dict | None = None) -> FetchResult:
         self.requests_made += 1
         bump = self.changed.get(url)
         body = f"content of {url}" + (" v2" if bump else "")
