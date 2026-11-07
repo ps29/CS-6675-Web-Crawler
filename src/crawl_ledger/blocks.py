@@ -18,6 +18,7 @@ class Header:
     sig: str = ""
     id: str = ""
     delta_root: str = ""  # M4 R1: commits to the epoch's revocation delta
+    state_root: str = ""  # M4 R1-S: commits to every final record's current state
 
     def compute_id(self) -> str:
         fields = {
@@ -28,6 +29,8 @@ class Header:
         }
         if self.delta_root:  # absent in M3-only headers, so their IDs are unchanged
             fields["delta_root"] = self.delta_root
+        if self.state_root:  # likewise absent unless the ledger commits record states
+            fields["state_root"] = self.state_root
         blob = json.dumps(fields, sort_keys=True, separators=(",", ":"))
         return sha256_hex(blob.encode())
 
@@ -36,11 +39,23 @@ class Header:
 
 
 def build_header(
-    epoch: int, record_ids: list[str], proposer, prev_hash: str, delta_root: str = ""
+    epoch: int,
+    record_ids: list[str],
+    proposer,
+    prev_hash: str,
+    delta_root: str = "",
+    state_root: str = "",
 ) -> tuple[Header, list[str]]:
     """BUILD_BLOCK(): sorted ids, Merkle root, signed header. Returns (header, sorted ids)."""
     ids = sorted(record_ids)
-    hdr = Header(prev_hash, epoch, merkle_root(ids), proposer.id, delta_root=delta_root)
+    hdr = Header(
+        prev_hash,
+        epoch,
+        merkle_root(ids),
+        proposer.id,
+        delta_root=delta_root,
+        state_root=state_root,
+    )
     hdr.id = hdr.compute_id()
     hdr.sig = proposer.sign(bytes.fromhex(hdr.id)).hex()
     return hdr, ids
