@@ -59,7 +59,8 @@ flowchart LR
 | `extractor.py` | Fields per label (course: code, title, instructor, credit hours; faculty: name, position, department, email, research keywords; lab: name, PI, department) plus config selectors (`css` or `css@attr`) |
 | `storage.py` | Tables `pages`, `links`, `postings`, `doc_pages`, `courses`, `faculty`, `labs`; exact duplicates via `content_hash` |
 | `indexer.py` | Tokenizer with Porter stemming; also emits joined course codes (`cs6675`) and joined dotted names (`jsondumps`) |
-| `ranker.py` | Baseline TF-IDF: `sum((1 + log tf) * log(1 + N/df)) / sqrt(doc_length)` |
+| `ranker.py` | `TFRanker` (baseline TF-IDF: `sum((1 + log tf) * log(1 + N/df)) / sqrt(doc_length)`) and `BM25FRanker` (title / meta / body fields, query-intent and named-package boosts) |
+| `evaluate.py` | Ranking evaluation on judged queries: P@5, MRR, nDCG@10, paired randomization tests |
 | `crawler.py` | Main loop: budgets, per-page error isolation, commits every 20 pages, `CrawlStats` |
 | `cli.py` | `fcrawl crawl / search / stats / export` |
 

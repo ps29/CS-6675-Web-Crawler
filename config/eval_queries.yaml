@@ -1,0 +1,133 @@
+# Judged queries for ranking evaluation (python -m focused_crawler.evaluate) on data/pydocs.db.
+#
+# STATUS: DRAFT. Queries and grades were written by Claude from the page titles and URLs of the
+# 149-page crawl, after the BM25F intent rules were written, and have not been reviewed by a
+# person. Review every grade (and add queries written without looking at the index) before
+# reporting the numbers as results.
+#
+# Grades: 2 = the page answers the query, 1 = partly relevant (a related or index page).
+# Unlisted pages count as 0. URLs must match pages.url exactly.
+status: draft
+queries:
+  # --- API / reference lookups ---
+  - q: numpy add
+    rel: {"https://numpy.org/doc/stable/reference/generated/numpy.add.html": 2,
+          "https://numpy.org/doc/stable/reference/ufuncs.html": 1}
+  - q: resize an ndarray
+    rel: {"https://numpy.org/doc/stable/reference/generated/numpy.ndarray.resize.html": 2}
+  - q: poly1d polynomial class
+    rel: {"https://numpy.org/doc/stable/reference/generated/numpy.poly1d.html": 2}
+  - q: pandas is_bool_dtype
+    rel: {"https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_bool_dtype.html": 2}
+  - q: check if a pandas dtype is datetime
+    rel: {"https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_datetime64_any_dtype.html": 2,
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_datetime64_dtype.html": 2,
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_datetime64_ns_dtype.html": 1,
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_datetime64tz_dtype.html": 1}
+  - q: python math functions
+    rel: {"https://docs.python.org/3/library/math.html": 2,
+          "https://docs.python.org/3/library/math.integer.html": 1,
+          "https://docs.python.org/3/library/cmath.html": 1,
+          "https://docs.python.org/3/library/numeric.html": 1}
+  - q: math for complex numbers
+    rel: {"https://docs.python.org/3/library/cmath.html": 2}
+  - q: statistics mean median
+    rel: {"https://docs.python.org/3/library/statistics.html": 2}
+  - q: calendar module
+    rel: {"https://docs.python.org/3/library/calendar.html": 2}
+  - q: abstract base classes for containers
+    rel: {"https://docs.python.org/3/library/collections.abc.html": 2,
+          "https://docs.python.org/3/library/numbers.html": 1}
+  - q: codec registry
+    rel: {"https://docs.python.org/3/library/codecs.html": 2}
+  - q: readline tab completion
+    rel: {"https://docs.python.org/3/library/rlcompleter.html": 2}
+  - q: fastapi APIRouter
+    rel: {"https://fastapi.tiangolo.com/reference/apirouter/": 2}
+  - q: fastapi UploadFile
+    rel: {"https://fastapi.tiangolo.com/reference/uploadfile/": 2}
+  - q: flask api reference
+    rel: {"https://flask.palletsprojects.com/en/stable/api/": 2}
+  - q: click api
+    rel: {"https://click.palletsprojects.com/en/stable/api/": 2}
+  - q: requests developer interface
+    rel: {"https://requests.readthedocs.io/en/latest/api/": 2}
+  - q: scipy special functions
+    rel: {"https://docs.scipy.org/doc/scipy/reference/special.html": 2,
+          "https://docs.scipy.org/doc/scipy/tutorial/special.html": 1,
+          "https://docs.scipy.org/doc/scipy/reference/special.cython_special.html": 1}
+  - q: celery events state
+    rel: {"https://docs.celeryq.dev/en/stable/reference/celery.events.state.html": 2}
+  - q: attrs api reference
+    rel: {"https://www.attrs.org/en/stable/api.html": 2,
+          "https://www.attrs.org/en/stable/api-attr.html": 1}
+  - q: rich align
+    rel: {"https://rich.readthedocs.io/en/latest/reference/align.html": 2}
+  - q: typer class
+    rel: {"https://typer.tiangolo.com/reference/typer/": 2,
+          "https://typer.tiangolo.com/reference/": 1}
+  # --- tutorials and how-tos ---
+  - q: how to use fixtures in pytest
+    rel: {"https://docs.pytest.org/en/stable/how-to/fixtures.html": 2}
+  - q: pytest parametrize
+    rel: {"https://docs.pytest.org/en/stable/how-to/parametrize.html": 2,
+          "https://docs.pytest.org/en/stable/how-to/fixtures.html": 1}
+  - q: mark test functions
+    rel: {"https://docs.pytest.org/en/stable/how-to/mark.html": 2}
+  - q: install django on windows
+    rel: {"https://docs.djangoproject.com/en/6.1/howto/windows/": 2,
+          "https://docs.djangoproject.com/en/6.1/topics/install/": 1}
+  - q: upgrade django to a newer version
+    rel: {"https://docs.djangoproject.com/en/6.1/howto/upgrade-version/": 2}
+  - q: deploy django with apache
+    rel: {"https://docs.djangoproject.com/en/6.1/howto/deployment/wsgi/modwsgi/": 2}
+  - q: flask tutorial
+    rel: {"https://flask.palletsprojects.com/en/stable/tutorial/": 2,
+          "https://flask.palletsprojects.com/en/stable/quickstart/": 1}
+  - q: requests quickstart
+    rel: {"https://requests.readthedocs.io/en/latest/user/quickstart/": 2}
+  - q: httpx quickstart
+    rel: {"https://www.python-httpx.org/quickstart/": 2}
+  - q: first steps with celery
+    rel: {"https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html": 2,
+          "https://docs.celeryq.dev/en/stable/tutorials/index.html": 1}
+  - q: celery workers
+    rel: {"https://docs.celeryq.dev/en/stable/userguide/workers.html": 2}
+  - q: scrapy tutorial
+    rel: {"https://docs.scrapy.org/en/latest/intro/tutorial.html": 2,
+          "https://docs.scrapy.org/en/latest/intro/install.html": 1}
+  - q: install scrapy
+    rel: {"https://docs.scrapy.org/en/latest/intro/install.html": 2}
+  - q: matplotlib pyplot tutorial
+    rel: {"https://matplotlib.org/stable/tutorials/pyplot.html": 2,
+          "https://matplotlib.org/stable/tutorials/index.html": 1}
+  - q: numpy quickstart
+    rel: {"https://numpy.org/doc/stable/user/quickstart.html": 2}
+  - q: sqlalchemy tutorial
+    rel: {"https://docs.sqlalchemy.org/en/21/tutorial/index.html": 2,
+          "https://docs.sqlalchemy.org/en/21/intro.html": 1}
+  - q: classes as dependencies
+    rel: {"https://fastapi.tiangolo.com/tutorial/dependencies/classes-as-dependencies/": 2}
+  # --- changelogs and release notes ---
+  - q: scipy 1.17.0 release notes
+    rel: {"https://docs.scipy.org/doc/scipy/release/1.17.0-notes.html": 2,
+          "https://docs.scipy.org/doc/scipy/release.html": 1}
+  - q: sqlalchemy 2.0 changelog
+    rel: {"https://docs.sqlalchemy.org/en/21/changelog/changelog_20.html": 2,
+          "https://docs.sqlalchemy.org/en/21/changelog/index.html": 1}
+  - q: what's new in matplotlib 3.11
+    rel: {"https://matplotlib.org/stable/release/prev_whats_new/whats_new_3.11.0.html": 2,
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.11.0.html": 1,
+          "https://matplotlib.org/stable/release/release_notes.html": 1}
+  - q: fastapi release notes
+    rel: {"https://fastapi.tiangolo.com/release-notes/": 2}
+  - q: pydantic changelog
+    rel: {"https://pydantic.dev/docs/validation/latest/get-started/changelog/": 2}
+  - q: attrs changelog
+    rel: {"https://www.attrs.org/en/stable/changelog.html": 2}
+  - q: scrapy release notes
+    rel: {"https://docs.scrapy.org/en/latest/news.html": 2}
+  - q: typer release notes
+    rel: {"https://typer.tiangolo.com/release-notes/": 2}
+  - q: matplotlib api changes 3.10.9
+    rel: {"https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.10.9.html": 2}

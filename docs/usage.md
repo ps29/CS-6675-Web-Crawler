@@ -33,6 +33,8 @@ A config's `profile` picks what the crawl targets:
 fcrawl crawl --max-pages 500
 fcrawl search "json.dumps"
 fcrawl search "dependency injection" --label TUTORIAL -k 5
+fcrawl search "how to use fixtures" --ranker bm25f   # BM25F + intent and package boosts
+python -m focused_crawler.evaluate --out results/m1/ranking_eval.json  # judged queries
 
 # Academic (M1): gatech.edu -> data/crawl.db
 fcrawl --config config/academic.yaml crawl --max-pages 200

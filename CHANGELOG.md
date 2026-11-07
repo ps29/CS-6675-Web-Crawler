@@ -40,6 +40,12 @@ All notable changes to this project are documented here. Format follows
   accepts conditional headers and returns validators. In a virtual-time simulation against mock
   hosts (`python -m crawl_ledger.rate_sim`), the peak load on pypi.org stayed at 1 req/s with
   5-50 peers, vs. 4.7-36 req/s with per-peer delays (`docs/host-rate-results.md`).
+- `focused_crawler` BM25F ranker (`fcrawl search --ranker bm25f`): title, meta (package, module,
+  symbols, description) and body fields, a query-intent label boost and a named-package boost.
+  `python -m focused_crawler.evaluate` reports P@5, MRR and nDCG@10 with paired randomization
+  tests. On 48 *draft* judged queries (`config/eval_queries.yaml`, not yet reviewed), nDCG@10
+  went from 0.557 (tf) to 0.905; the boosts alone were not significant vs. plain BM25F
+  (`docs/ranking-results.md`). The default ranker is still `tf`.
 
 ### Fixed
 - Fetcher decodes pages as UTF-8 when the server declares no charset (titles were mojibake,
