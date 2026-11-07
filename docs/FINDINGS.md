@@ -154,8 +154,8 @@ entirely (`docs/m4-results.md`).
 | Item | Next step |
 |---|---|
 | M1 R1 learned classifier | Label about 200 pages per class from a larger crawl; TF-IDF + logistic regression with a rules fallback |
-| M1 R2 metadata ranking | `w1*TF + w2*field_match + w3*recency`, boost only for field-pattern queries |
-| M1 evaluation | 30-50 judged queries; P@5, MRR, yield, coverage |
+| M1 R2 metadata ranking | BM25F with intent and package boosts built (`docs/ranking-results.md`); recency not used. Fix the REFERENCE intent rule ("function" in how-to queries) and index version numbers |
+| M1 evaluation | Harness and 48 draft judged queries built; review the grades, add queries written blind to the index, then decide the default ranker. Yield and coverage still open |
 | M4 R2 under cache pressure | `python -m edge_serving.sim --compare --packages 2000 --proof-capacity 500` |
 | M4 dishonest edges | Defended (`docs/m4-results.md`): R1-S proofs of non-revocation bound every attack by `max_lag` (about 1800 s, vs. unbounded for R1), and 5% client spot-checks blocked the lying edge in every run. Next: get client headers from several sources, and avoid spot-check false strikes against TTL-cached baseline statuses |
 | Canonical audits (`docs/audit-results.md`) | Rerun `audit_eval collect --interval 86400` over 1-2 weeks (the measured drift window was minutes); add `--audit-mode canonical` to `crawl_ledger.sim` with a content-scope forgery model; flag raw-only mismatches (chrome edits) for review |

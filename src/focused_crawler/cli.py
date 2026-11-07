@@ -13,7 +13,7 @@ from pathlib import Path
 from .config import ConfigError, load_config
 from .crawler import Crawler
 from .profiles import ALL_LABELS
-from .ranker import TFRanker
+from .ranker import RANKERS
 from .storage import Storage
 
 DEFAULT_CONFIG = Path("config/default.yaml")
@@ -47,7 +47,7 @@ def cmd_crawl(args) -> int:
 
 def cmd_search(args) -> int:
     with Storage(_db_path(args)) as storage:
-        results = TFRanker(storage).search(args.query, k=args.k, label=args.label)
+        results = RANKERS[args.ranker](storage).search(args.query, k=args.k, label=args.label)
     if args.json:
         print(json.dumps([r.__dict__ for r in results], indent=2))
         return 0
@@ -102,6 +102,12 @@ def build_parser() -> argparse.ArgumentParser:
     search.add_argument("-k", type=int, default=10)
     search.add_argument("--label", choices=ALL_LABELS)
     search.add_argument("--json", action="store_true")
+    search.add_argument(
+        "--ranker",
+        choices=sorted(RANKERS),
+        default="tf",
+        help="tf (M1 baseline) or bm25f (fields + intent and package boosts)",
+    )
     search.set_defaults(func=cmd_search)
 
     stats = sub.add_parser("stats", help="summarize the crawl database")

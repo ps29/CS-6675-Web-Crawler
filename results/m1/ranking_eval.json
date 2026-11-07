@@ -1,0 +1,3274 @@
+{
+  "queries": 48,
+  "max_p@5": 0.296,
+  "summary": {
+    "tf": {
+      "p@5": 0.183,
+      "rr": 0.565,
+      "ndcg@10": 0.557
+    },
+    "bm25": {
+      "p@5": 0.263,
+      "rr": 0.817,
+      "ndcg@10": 0.819,
+      "p_vs_tf_rr": 0.0001,
+      "p_vs_tf_ndcg@10": 0.0001
+    },
+    "bm25f": {
+      "p@5": 0.271,
+      "rr": 0.872,
+      "ndcg@10": 0.865,
+      "p_vs_tf_rr": 0.0001,
+      "p_vs_tf_ndcg@10": 0.0001
+    },
+    "bm25f+intent": {
+      "p@5": 0.271,
+      "rr": 0.883,
+      "ndcg@10": 0.889,
+      "p_vs_tf_rr": 0.0001,
+      "p_vs_tf_ndcg@10": 0.0001,
+      "p_vs_bm25f_rr": 0.7464,
+      "p_vs_bm25f_ndcg@10": 0.2649
+    },
+    "bm25f+package": {
+      "p@5": 0.275,
+      "rr": 0.892,
+      "ndcg@10": 0.881,
+      "p_vs_tf_rr": 0.0001,
+      "p_vs_tf_ndcg@10": 0.0001,
+      "p_vs_bm25f_rr": 0.5129,
+      "p_vs_bm25f_ndcg@10": 0.2555
+    },
+    "bm25f+intent+package": {
+      "p@5": 0.275,
+      "rr": 0.903,
+      "ndcg@10": 0.905,
+      "p_vs_tf_rr": 0.0001,
+      "p_vs_tf_ndcg@10": 0.0001,
+      "p_vs_bm25f_rr": 0.3167,
+      "p_vs_bm25f_ndcg@10": 0.0913
+    }
+  },
+  "ndcg_by_intent": {
+    "CHANGELOG": {
+      "n": 9,
+      "tf": 0.26,
+      "bm25": 0.679,
+      "bm25f": 0.798,
+      "bm25f+intent": 0.836,
+      "bm25f+package": 0.798,
+      "bm25f+intent+package": 0.836
+    },
+    "HOWTO+TUTORIAL": {
+      "n": 13,
+      "tf": 0.639,
+      "bm25": 0.913,
+      "bm25f": 0.923,
+      "bm25f+intent": 0.931,
+      "bm25f+package": 0.954,
+      "bm25f+intent+package": 0.963
+    },
+    "NONE": {
+      "n": 15,
+      "tf": 0.632,
+      "bm25": 0.806,
+      "bm25f": 0.857,
+      "bm25f+intent": 0.857,
+      "bm25f+package": 0.882,
+      "bm25f+intent+package": 0.882
+    },
+    "REFERENCE": {
+      "n": 11,
+      "tf": 0.603,
+      "bm25": 0.84,
+      "bm25f": 0.86,
+      "bm25f+intent": 0.924,
+      "bm25f+package": 0.86,
+      "bm25f+intent+package": 0.924
+    }
+  },
+  "per_query": [
+    {
+      "q": "numpy add",
+      "intent": [
+        "NONE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.8262346571285599,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.add.html",
+          "https://numpy.org/doc/stable/",
+          "https://numpy.org/doc/stable/reference/module_structure.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.9243382314975351,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.add.html",
+          "https://numpy.org/doc/stable/user/basics.ufuncs.html",
+          "https://numpy.org/doc/stable/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.9327783893101107,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.add.html",
+          "https://numpy.org/doc/stable/user/basics.ufuncs.html",
+          "https://numpy.org/doc/stable/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.9327783893101107,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.add.html",
+          "https://numpy.org/doc/stable/user/basics.ufuncs.html",
+          "https://numpy.org/doc/stable/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.9327783893101107,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.add.html",
+          "https://numpy.org/doc/stable/user/basics.ufuncs.html",
+          "https://numpy.org/doc/stable/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.9327783893101107,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.add.html",
+          "https://numpy.org/doc/stable/user/basics.ufuncs.html",
+          "https://numpy.org/doc/stable/"
+        ]
+      }
+    },
+    {
+      "q": "resize an ndarray",
+      "intent": [
+        "NONE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.ndarray.resize.html",
+          "https://numpy.org/doc/stable/user/c-info.html",
+          "https://numpy.org/doc/stable/reference/generated/numpy.add.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.ndarray.resize.html",
+          "https://numpy.org/doc/stable/user/quickstart.html",
+          "https://matplotlib.org/stable/tutorials/images.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.ndarray.resize.html",
+          "https://numpy.org/doc/stable/user/quickstart.html",
+          "https://matplotlib.org/stable/tutorials/images.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.ndarray.resize.html",
+          "https://numpy.org/doc/stable/user/quickstart.html",
+          "https://matplotlib.org/stable/tutorials/images.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.ndarray.resize.html",
+          "https://numpy.org/doc/stable/user/quickstart.html",
+          "https://matplotlib.org/stable/tutorials/images.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.ndarray.resize.html",
+          "https://numpy.org/doc/stable/user/quickstart.html",
+          "https://matplotlib.org/stable/tutorials/images.html"
+        ]
+      }
+    },
+    {
+      "q": "poly1d polynomial class",
+      "intent": [
+        "REFERENCE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.poly1d.html",
+          "https://docs.scipy.org/doc/scipy/reference/special.html",
+          "https://numpy.org/doc/stable/reference/module_structure.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.poly1d.html",
+          "https://docs.scipy.org/doc/scipy/reference/special.html",
+          "https://numpy.org/doc/stable/reference/module_structure.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.poly1d.html",
+          "https://docs.scipy.org/doc/scipy/reference/special.html",
+          "https://numpy.org/doc/stable/reference/module_structure.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.poly1d.html",
+          "https://docs.scipy.org/doc/scipy/reference/special.html",
+          "https://numpy.org/doc/stable/reference/module_structure.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.poly1d.html",
+          "https://docs.scipy.org/doc/scipy/reference/special.html",
+          "https://numpy.org/doc/stable/reference/module_structure.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/reference/generated/numpy.poly1d.html",
+          "https://docs.scipy.org/doc/scipy/reference/special.html",
+          "https://numpy.org/doc/stable/reference/module_structure.html"
+        ]
+      }
+    },
+    {
+      "q": "pandas is_bool_dtype",
+      "intent": [
+        "REFERENCE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_bool_dtype.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_any_real_numeric_dtype.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.pandas_dtype.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_bool_dtype.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_any_real_numeric_dtype.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.infer_dtype.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_bool_dtype.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_any_real_numeric_dtype.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.infer_dtype.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_bool_dtype.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_any_real_numeric_dtype.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.infer_dtype.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_bool_dtype.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_any_real_numeric_dtype.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.infer_dtype.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_bool_dtype.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_any_real_numeric_dtype.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.infer_dtype.html"
+        ]
+      }
+    },
+    {
+      "q": "check if a pandas dtype is datetime",
+      "intent": [
+        "NONE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 0.2,
+        "ndcg@10": 0.415535296523354,
+        "top": [
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.pandas_dtype.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_string_dtype.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_categorical_dtype.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.4,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.590855684812021,
+        "top": [
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.infer_dtype.html",
+          "https://pandas.pydata.org/docs/user_guide/migration.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_datetime64_any_dtype.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.4,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.590855684812021,
+        "top": [
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.infer_dtype.html",
+          "https://pandas.pydata.org/docs/user_guide/migration.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_datetime64_dtype.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.4,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.590855684812021,
+        "top": [
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.infer_dtype.html",
+          "https://pandas.pydata.org/docs/user_guide/migration.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_datetime64_dtype.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.4,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.590855684812021,
+        "top": [
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.infer_dtype.html",
+          "https://pandas.pydata.org/docs/user_guide/migration.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_datetime64_dtype.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.4,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.590855684812021,
+        "top": [
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.infer_dtype.html",
+          "https://pandas.pydata.org/docs/user_guide/migration.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.is_datetime64_dtype.html"
+        ]
+      }
+    },
+    {
+      "q": "python math functions",
+      "intent": [
+        "REFERENCE"
+      ],
+      "tf": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.6648720737882446,
+        "top": [
+          "https://docs.python.org/3/library/math.integer.html",
+          "https://docs.python.org/3/library/numeric.html",
+          "https://numpy.org/doc/stable/reference/c-api/index.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.8,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/math.html",
+          "https://docs.python.org/3/library/math.integer.html",
+          "https://docs.python.org/3/library/cmath.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.8,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/math.html",
+          "https://docs.python.org/3/library/math.integer.html",
+          "https://docs.python.org/3/library/numeric.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.8,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/math.html",
+          "https://docs.python.org/3/library/math.integer.html",
+          "https://docs.python.org/3/library/numeric.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.8,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/math.html",
+          "https://docs.python.org/3/library/math.integer.html",
+          "https://docs.python.org/3/library/numeric.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.8,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/math.html",
+          "https://docs.python.org/3/library/math.integer.html",
+          "https://docs.python.org/3/library/numeric.html"
+        ]
+      }
+    },
+    {
+      "q": "math for complex numbers",
+      "intent": [
+        "NONE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 0.25,
+        "ndcg@10": 0.4306765580733931,
+        "top": [
+          "https://docs.python.org/3/library/numeric.html",
+          "https://docs.python.org/3/library/numbers.html",
+          "https://docs.python.org/3/library/math.integer.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.python.org/3/library/math.html",
+          "https://docs.python.org/3/library/cmath.html",
+          "https://docs.python.org/3/library/numbers.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.python.org/3/library/math.html",
+          "https://docs.python.org/3/library/cmath.html",
+          "https://docs.python.org/3/library/numbers.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.python.org/3/library/math.html",
+          "https://docs.python.org/3/library/cmath.html",
+          "https://docs.python.org/3/library/numbers.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.python.org/3/library/math.html",
+          "https://docs.python.org/3/library/cmath.html",
+          "https://docs.python.org/3/library/numbers.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.python.org/3/library/math.html",
+          "https://docs.python.org/3/library/cmath.html",
+          "https://docs.python.org/3/library/numbers.html"
+        ]
+      }
+    },
+    {
+      "q": "statistics mean median",
+      "intent": [
+        "NONE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/statistics.html",
+          "https://matplotlib.org/stable/release/release_notes.html",
+          "https://docs.python.org/3/library/numeric.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/statistics.html",
+          "https://docs.scipy.org/doc/scipy/release/1.17.0-notes.html",
+          "https://numpy.org/doc/stable/user/quickstart.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/statistics.html",
+          "https://docs.scipy.org/doc/scipy/release/1.17.0-notes.html",
+          "https://numpy.org/doc/stable/user/quickstart.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/statistics.html",
+          "https://docs.scipy.org/doc/scipy/release/1.17.0-notes.html",
+          "https://numpy.org/doc/stable/user/quickstart.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/statistics.html",
+          "https://docs.scipy.org/doc/scipy/release/1.17.0-notes.html",
+          "https://numpy.org/doc/stable/user/quickstart.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/statistics.html",
+          "https://docs.scipy.org/doc/scipy/release/1.17.0-notes.html",
+          "https://numpy.org/doc/stable/user/quickstart.html"
+        ]
+      }
+    },
+    {
+      "q": "calendar module",
+      "intent": [
+        "REFERENCE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/calendar.html",
+          "https://docs.python.org/3/library/functional.html",
+          "https://docs.python.org/3/library/index.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/calendar.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://www.attrs.org/en/stable/changelog.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/calendar.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://www.attrs.org/en/stable/changelog.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/calendar.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://www.attrs.org/en/stable/changelog.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/calendar.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://www.attrs.org/en/stable/changelog.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/calendar.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://www.attrs.org/en/stable/changelog.html"
+        ]
+      }
+    },
+    {
+      "q": "abstract base classes for containers",
+      "intent": [
+        "NONE"
+      ],
+      "tf": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/collections.abc.html",
+          "https://docs.python.org/3/library/numbers.html",
+          "https://docs.python.org/3/library/numeric.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.9327783893101107,
+        "top": [
+          "https://docs.python.org/3/library/collections.abc.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://docs.python.org/3/library/numeric.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.944847956559586,
+        "top": [
+          "https://docs.python.org/3/library/collections.abc.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://docs.python.org/3/library/numeric.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.944847956559586,
+        "top": [
+          "https://docs.python.org/3/library/collections.abc.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://docs.python.org/3/library/numeric.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.944847956559586,
+        "top": [
+          "https://docs.python.org/3/library/collections.abc.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://docs.python.org/3/library/numeric.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.944847956559586,
+        "top": [
+          "https://docs.python.org/3/library/collections.abc.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://docs.python.org/3/library/numeric.html"
+        ]
+      }
+    },
+    {
+      "q": "codec registry",
+      "intent": [
+        "NONE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/codecs.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://pandas.pydata.org/docs/reference/api/pandas.api.types.pandas_dtype.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/codecs.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_20.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/codecs.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_20.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/codecs.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_20.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/codecs.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_20.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/codecs.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_20.html"
+        ]
+      }
+    },
+    {
+      "q": "readline tab completion",
+      "intent": [
+        "NONE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/rlcompleter.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://numpy.org/doc/stable/reference/generated/numpy.add.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/rlcompleter.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://docs.python.org/3/library/codecs.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/rlcompleter.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://docs.python.org/3/library/codecs.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/rlcompleter.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://docs.python.org/3/library/codecs.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/rlcompleter.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://docs.python.org/3/library/codecs.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.python.org/3/library/rlcompleter.html",
+          "https://docs.python.org/3/library/index.html",
+          "https://docs.python.org/3/library/codecs.html"
+        ]
+      }
+    },
+    {
+      "q": "fastapi APIRouter",
+      "intent": [
+        "NONE"
+      ],
+      "tf": {
+        "p@5": 0.0,
+        "rr": 0.0,
+        "ndcg@10": 0.0,
+        "top": [
+          "https://fastapi.tiangolo.com/reference/",
+          "https://fastapi.tiangolo.com/how-to/",
+          "https://fastapi.tiangolo.com/advanced/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://fastapi.tiangolo.com/how-to/custom-request-and-route/",
+          "https://fastapi.tiangolo.com/reference/apirouter/",
+          "https://fastapi.tiangolo.com/reference/fastapi/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/reference/apirouter/",
+          "https://fastapi.tiangolo.com/how-to/custom-request-and-route/",
+          "https://fastapi.tiangolo.com/reference/fastapi/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/reference/apirouter/",
+          "https://fastapi.tiangolo.com/how-to/custom-request-and-route/",
+          "https://fastapi.tiangolo.com/reference/fastapi/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/reference/apirouter/",
+          "https://fastapi.tiangolo.com/how-to/custom-request-and-route/",
+          "https://fastapi.tiangolo.com/reference/fastapi/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/reference/apirouter/",
+          "https://fastapi.tiangolo.com/how-to/custom-request-and-route/",
+          "https://fastapi.tiangolo.com/reference/fastapi/"
+        ]
+      }
+    },
+    {
+      "q": "fastapi UploadFile",
+      "intent": [
+        "REFERENCE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/reference/uploadfile/",
+          "https://fastapi.tiangolo.com/reference/",
+          "https://fastapi.tiangolo.com/how-to/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/reference/uploadfile/",
+          "https://fastapi.tiangolo.com/reference/",
+          "https://fastapi.tiangolo.com/how-to/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/reference/uploadfile/",
+          "https://fastapi.tiangolo.com/reference/",
+          "https://fastapi.tiangolo.com/how-to/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/reference/uploadfile/",
+          "https://fastapi.tiangolo.com/reference/",
+          "https://fastapi.tiangolo.com/reference/request/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/reference/uploadfile/",
+          "https://fastapi.tiangolo.com/reference/",
+          "https://fastapi.tiangolo.com/how-to/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/reference/uploadfile/",
+          "https://fastapi.tiangolo.com/reference/",
+          "https://fastapi.tiangolo.com/reference/request/"
+        ]
+      }
+    },
+    {
+      "q": "flask api reference",
+      "intent": [
+        "REFERENCE"
+      ],
+      "tf": {
+        "p@5": 0.0,
+        "rr": 0.0,
+        "ndcg@10": 0.0,
+        "top": [
+          "https://flask.palletsprojects.com/en/stable/tutorial/",
+          "https://flask.palletsprojects.com/en/stable/",
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.10.7.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.5,
+        "top": [
+          "https://flask.palletsprojects.com/en/stable/",
+          "https://flask.palletsprojects.com/en/stable/quickstart/",
+          "https://flask.palletsprojects.com/en/stable/api/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.5,
+        "top": [
+          "https://flask.palletsprojects.com/en/stable/",
+          "https://flask.palletsprojects.com/en/stable/quickstart/",
+          "https://flask.palletsprojects.com/en/stable/api/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://flask.palletsprojects.com/en/stable/api/",
+          "https://flask.palletsprojects.com/en/stable/",
+          "https://fastapi.tiangolo.com/reference/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.5,
+        "top": [
+          "https://flask.palletsprojects.com/en/stable/",
+          "https://flask.palletsprojects.com/en/stable/quickstart/",
+          "https://flask.palletsprojects.com/en/stable/api/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://flask.palletsprojects.com/en/stable/api/",
+          "https://flask.palletsprojects.com/en/stable/",
+          "https://flask.palletsprojects.com/en/stable/quickstart/"
+        ]
+      }
+    },
+    {
+      "q": "click api",
+      "intent": [
+        "REFERENCE"
+      ],
+      "tf": {
+        "p@5": 0.0,
+        "rr": 0.0,
+        "ndcg@10": 0.0,
+        "top": [
+          "https://click.palletsprojects.com/en/stable/",
+          "https://click.palletsprojects.com/en/stable/quickstart/",
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.10.7.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.5,
+        "top": [
+          "https://click.palletsprojects.com/en/stable/",
+          "https://typer.tiangolo.com/reference/typer/",
+          "https://click.palletsprojects.com/en/stable/api/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://click.palletsprojects.com/en/stable/",
+          "https://click.palletsprojects.com/en/stable/api/",
+          "https://typer.tiangolo.com/reference/typer/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://click.palletsprojects.com/en/stable/api/",
+          "https://typer.tiangolo.com/reference/typer/",
+          "https://typer.tiangolo.com/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://click.palletsprojects.com/en/stable/",
+          "https://click.palletsprojects.com/en/stable/api/",
+          "https://click.palletsprojects.com/en/stable/quickstart/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://click.palletsprojects.com/en/stable/api/",
+          "https://click.palletsprojects.com/en/stable/",
+          "https://typer.tiangolo.com/reference/typer/"
+        ]
+      }
+    },
+    {
+      "q": "requests developer interface",
+      "intent": [
+        "NONE"
+      ],
+      "tf": {
+        "p@5": 0.0,
+        "rr": 0.0,
+        "ndcg@10": 0.0,
+        "top": [
+          "https://www.python-httpx.org/",
+          "https://requests.readthedocs.io/en/latest/",
+          "https://flask.palletsprojects.com/en/stable/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 0.2,
+        "ndcg@10": 0.38685280723454163,
+        "top": [
+          "https://flask.palletsprojects.com/en/stable/",
+          "https://www.python-httpx.org/",
+          "https://fastapi.tiangolo.com/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://flask.palletsprojects.com/en/stable/",
+          "https://requests.readthedocs.io/en/latest/api/",
+          "https://www.python-httpx.org/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://flask.palletsprojects.com/en/stable/",
+          "https://requests.readthedocs.io/en/latest/api/",
+          "https://www.python-httpx.org/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://requests.readthedocs.io/en/latest/api/",
+          "https://requests.readthedocs.io/en/latest/",
+          "https://flask.palletsprojects.com/en/stable/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://requests.readthedocs.io/en/latest/api/",
+          "https://requests.readthedocs.io/en/latest/",
+          "https://flask.palletsprojects.com/en/stable/"
+        ]
+      }
+    },
+    {
+      "q": "scipy special functions",
+      "intent": [
+        "REFERENCE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 0.25,
+        "ndcg@10": 0.10425656783464912,
+        "top": [
+          "https://docs.scipy.org/doc/scipy/tutorial/index.html",
+          "https://docs.scipy.org/doc/scipy/",
+          "https://docs.scipy.org/doc/scipy/release.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.6092491906055143,
+        "top": [
+          "https://docs.scipy.org/doc/scipy/tutorial/special.html",
+          "https://docs.scipy.org/doc/scipy/release/1.18.0-notes.html",
+          "https://docs.scipy.org/doc/scipy/release/1.17.0-notes.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.6410752589144437,
+        "top": [
+          "https://docs.scipy.org/doc/scipy/tutorial/special.html",
+          "https://docs.scipy.org/doc/scipy/release/1.18.0-notes.html",
+          "https://docs.scipy.org/doc/scipy/release/1.17.0-notes.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.6,
+        "rr": 1.0,
+        "ndcg@10": 0.9832184408687481,
+        "top": [
+          "https://docs.scipy.org/doc/scipy/reference/special.html",
+          "https://docs.scipy.org/doc/scipy/reference/special.cython_special.html",
+          "https://docs.scipy.org/doc/scipy/reference/index.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.6410752589144437,
+        "top": [
+          "https://docs.scipy.org/doc/scipy/tutorial/special.html",
+          "https://docs.scipy.org/doc/scipy/release/1.18.0-notes.html",
+          "https://docs.scipy.org/doc/scipy/release/1.17.0-notes.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.6,
+        "rr": 1.0,
+        "ndcg@10": 0.9832184408687481,
+        "top": [
+          "https://docs.scipy.org/doc/scipy/reference/special.html",
+          "https://docs.scipy.org/doc/scipy/reference/special.cython_special.html",
+          "https://docs.scipy.org/doc/scipy/reference/index.html"
+        ]
+      }
+    },
+    {
+      "q": "celery events state",
+      "intent": [
+        "NONE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/reference/index.html",
+          "https://docs.celeryq.dev/en/stable/reference/celery.events.state.html",
+          "https://docs.celeryq.dev/en/stable/tutorials/index.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.5,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/userguide/monitoring.html",
+          "https://docs.celeryq.dev/en/stable/reference/index.html",
+          "https://docs.celeryq.dev/en/stable/reference/celery.events.state.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/userguide/monitoring.html",
+          "https://docs.celeryq.dev/en/stable/reference/celery.events.state.html",
+          "https://docs.celeryq.dev/en/stable/reference/index.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/userguide/monitoring.html",
+          "https://docs.celeryq.dev/en/stable/reference/celery.events.state.html",
+          "https://docs.celeryq.dev/en/stable/reference/index.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/userguide/monitoring.html",
+          "https://docs.celeryq.dev/en/stable/reference/celery.events.state.html",
+          "https://docs.celeryq.dev/en/stable/reference/index.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/userguide/monitoring.html",
+          "https://docs.celeryq.dev/en/stable/reference/celery.events.state.html",
+          "https://docs.celeryq.dev/en/stable/reference/index.html"
+        ]
+      }
+    },
+    {
+      "q": "attrs api reference",
+      "intent": [
+        "REFERENCE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.17376534287144002,
+        "top": [
+          "https://www.attrs.org/en/stable/",
+          "https://www.attrs.org/en/stable/api-attr.html",
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.10.7.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.631251450669265,
+        "top": [
+          "https://www.attrs.org/en/stable/api-attr.html",
+          "https://www.attrs.org/en/stable/",
+          "https://www.attrs.org/en/stable/changelog.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.6885288809404666,
+        "top": [
+          "https://www.attrs.org/en/stable/api-attr.html",
+          "https://www.attrs.org/en/stable/",
+          "https://www.attrs.org/en/stable/api.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.7967075809905066,
+        "top": [
+          "https://www.attrs.org/en/stable/api-attr.html",
+          "https://www.attrs.org/en/stable/api.html",
+          "https://click.palletsprojects.com/en/stable/api/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.6885288809404666,
+        "top": [
+          "https://www.attrs.org/en/stable/api-attr.html",
+          "https://www.attrs.org/en/stable/",
+          "https://www.attrs.org/en/stable/api.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.7967075809905066,
+        "top": [
+          "https://www.attrs.org/en/stable/api-attr.html",
+          "https://www.attrs.org/en/stable/api.html",
+          "https://www.attrs.org/en/stable/"
+        ]
+      }
+    },
+    {
+      "q": "rich align",
+      "intent": [
+        "NONE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://rich.readthedocs.io/en/latest/reference/align.html",
+          "https://rich.readthedocs.io/en/latest/",
+          "https://rich.readthedocs.io/en/latest/reference.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://rich.readthedocs.io/en/latest/reference/align.html",
+          "https://rich.readthedocs.io/en/latest/reference.html",
+          "https://rich.readthedocs.io/en/latest/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://rich.readthedocs.io/en/latest/reference/align.html",
+          "https://rich.readthedocs.io/en/latest/reference.html",
+          "https://rich.readthedocs.io/en/latest/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://rich.readthedocs.io/en/latest/reference/align.html",
+          "https://rich.readthedocs.io/en/latest/reference.html",
+          "https://rich.readthedocs.io/en/latest/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://rich.readthedocs.io/en/latest/reference/align.html",
+          "https://rich.readthedocs.io/en/latest/reference.html",
+          "https://rich.readthedocs.io/en/latest/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://rich.readthedocs.io/en/latest/reference/align.html",
+          "https://rich.readthedocs.io/en/latest/reference.html",
+          "https://rich.readthedocs.io/en/latest/"
+        ]
+      }
+    },
+    {
+      "q": "typer class",
+      "intent": [
+        "REFERENCE"
+      ],
+      "tf": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.6885288809404666,
+        "top": [
+          "https://typer.tiangolo.com/reference/",
+          "https://typer.tiangolo.com/",
+          "https://typer.tiangolo.com/reference/typer/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://typer.tiangolo.com/reference/typer/",
+          "https://typer.tiangolo.com/reference/",
+          "https://typer.tiangolo.com/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://typer.tiangolo.com/reference/typer/",
+          "https://typer.tiangolo.com/reference/",
+          "https://typer.tiangolo.com/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://typer.tiangolo.com/reference/typer/",
+          "https://typer.tiangolo.com/reference/",
+          "https://typer.tiangolo.com/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://typer.tiangolo.com/reference/typer/",
+          "https://typer.tiangolo.com/reference/",
+          "https://typer.tiangolo.com/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://typer.tiangolo.com/reference/typer/",
+          "https://typer.tiangolo.com/reference/",
+          "https://typer.tiangolo.com/"
+        ]
+      }
+    },
+    {
+      "q": "how to use fixtures in pytest",
+      "intent": [
+        "HOWTO",
+        "TUTORIAL"
+      ],
+      "tf": {
+        "p@5": 0.0,
+        "rr": 0.14285714285714285,
+        "ndcg@10": 0.3333333333333333,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/index.html",
+          "https://docs.pytest.org/en/stable/how-to/mark.html",
+          "https://docs.pytest.org/en/stable/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/fixtures.html",
+          "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+          "https://docs.pytest.org/en/stable/how-to/index.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/fixtures.html",
+          "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+          "https://docs.pytest.org/en/stable/how-to/index.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/fixtures.html",
+          "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+          "https://docs.pytest.org/en/stable/how-to/index.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/fixtures.html",
+          "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+          "https://docs.pytest.org/en/stable/how-to/index.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/fixtures.html",
+          "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+          "https://docs.pytest.org/en/stable/how-to/index.html"
+        ]
+      }
+    },
+    {
+      "q": "pytest parametrize",
+      "intent": [
+        "NONE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.5,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/index.html",
+          "https://docs.pytest.org/en/stable/how-to/subtests.html",
+          "https://docs.pytest.org/en/stable/how-to/parametrize.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+          "https://docs.pytest.org/en/stable/how-to/fixtures.html",
+          "https://docs.pytest.org/en/stable/how-to/subtests.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+          "https://docs.pytest.org/en/stable/how-to/fixtures.html",
+          "https://docs.pytest.org/en/stable/how-to/subtests.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+          "https://docs.pytest.org/en/stable/how-to/fixtures.html",
+          "https://docs.pytest.org/en/stable/how-to/subtests.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+          "https://docs.pytest.org/en/stable/how-to/fixtures.html",
+          "https://docs.pytest.org/en/stable/how-to/subtests.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+          "https://docs.pytest.org/en/stable/how-to/fixtures.html",
+          "https://docs.pytest.org/en/stable/how-to/subtests.html"
+        ]
+      }
+    },
+    {
+      "q": "mark test functions",
+      "intent": [
+        "REFERENCE"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/mark.html",
+          "https://docs.pytest.org/en/stable/how-to/index.html",
+          "https://docs.pytest.org/en/stable/how-to/parametrize.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/mark.html",
+          "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+          "https://docs.pytest.org/en/stable/how-to/fixtures.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/mark.html",
+          "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+          "https://docs.pytest.org/en/stable/how-to/fixtures.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 0.2,
+        "ndcg@10": 0.38685280723454163,
+        "top": [
+          "https://jinja.palletsprojects.com/en/stable/api/",
+          "https://docs.scipy.org/doc/scipy/reference/index.html",
+          "https://fastapi.tiangolo.com/reference/fastapi/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.pytest.org/en/stable/how-to/mark.html",
+          "https://docs.pytest.org/en/stable/how-to/parametrize.html",
+          "https://docs.pytest.org/en/stable/how-to/fixtures.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 0.2,
+        "ndcg@10": 0.38685280723454163,
+        "top": [
+          "https://jinja.palletsprojects.com/en/stable/api/",
+          "https://docs.scipy.org/doc/scipy/reference/index.html",
+          "https://fastapi.tiangolo.com/reference/fastapi/"
+        ]
+      }
+    },
+    {
+      "q": "install django on windows",
+      "intent": [
+        "HOWTO",
+        "TUTORIAL"
+      ],
+      "tf": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.9639404333166532,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/howto/windows/",
+          "https://docs.djangoproject.com/en/6.1/intro/",
+          "https://docs.djangoproject.com/en/6.1/topics/install/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/howto/windows/",
+          "https://docs.djangoproject.com/en/6.1/topics/install/",
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/howto/windows/",
+          "https://docs.djangoproject.com/en/6.1/topics/install/",
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/howto/windows/",
+          "https://docs.djangoproject.com/en/6.1/topics/install/",
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/howto/windows/",
+          "https://docs.djangoproject.com/en/6.1/topics/install/",
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/howto/windows/",
+          "https://docs.djangoproject.com/en/6.1/topics/install/",
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/"
+        ]
+      }
+    },
+    {
+      "q": "upgrade django to a newer version",
+      "intent": [
+        "HOWTO",
+        "TUTORIAL"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/",
+          "https://docs.djangoproject.com/en/6.1/howto/delete-app/",
+          "https://docs.djangoproject.com/en/6.1/howto/windows/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/",
+          "https://docs.djangoproject.com/en/6.1/howto/delete-app/",
+          "https://docs.djangoproject.com/en/6.1/howto/windows/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/",
+          "https://docs.djangoproject.com/en/6.1/howto/delete-app/",
+          "https://docs.djangoproject.com/en/6.1/howto/windows/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/",
+          "https://docs.djangoproject.com/en/6.1/howto/delete-app/",
+          "https://docs.djangoproject.com/en/6.1/howto/windows/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/",
+          "https://docs.djangoproject.com/en/6.1/howto/delete-app/",
+          "https://docs.djangoproject.com/en/6.1/howto/windows/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/",
+          "https://docs.djangoproject.com/en/6.1/howto/delete-app/",
+          "https://docs.djangoproject.com/en/6.1/howto/windows/"
+        ]
+      }
+    },
+    {
+      "q": "deploy django with apache",
+      "intent": [
+        "HOWTO",
+        "TUTORIAL"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/howto/deployment/wsgi/modwsgi/",
+          "https://docs.djangoproject.com/en/6.1/topics/install/",
+          "https://docs.djangoproject.com/en/6.1/howto/delete-app/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/topics/install/",
+          "https://docs.djangoproject.com/en/6.1/howto/deployment/wsgi/modwsgi/",
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/topics/install/",
+          "https://docs.djangoproject.com/en/6.1/howto/deployment/wsgi/modwsgi/",
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/topics/install/",
+          "https://docs.djangoproject.com/en/6.1/howto/deployment/wsgi/modwsgi/",
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/topics/install/",
+          "https://docs.djangoproject.com/en/6.1/howto/deployment/wsgi/modwsgi/",
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.djangoproject.com/en/6.1/topics/install/",
+          "https://docs.djangoproject.com/en/6.1/howto/deployment/wsgi/modwsgi/",
+          "https://docs.djangoproject.com/en/6.1/howto/upgrade-version/"
+        ]
+      }
+    },
+    {
+      "q": "flask tutorial",
+      "intent": [
+        "HOWTO",
+        "TUTORIAL"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.9180385079206221,
+        "top": [
+          "https://flask.palletsprojects.com/en/stable/tutorial/",
+          "https://docs.celeryq.dev/en/stable/tutorials/index.html",
+          "https://flask.palletsprojects.com/en/stable/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.91311732856428,
+        "top": [
+          "https://flask.palletsprojects.com/en/stable/tutorial/",
+          "https://flask.palletsprojects.com/en/stable/",
+          "https://fastapi.tiangolo.com/advanced/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.9091417955461737,
+        "top": [
+          "https://flask.palletsprojects.com/en/stable/tutorial/",
+          "https://flask.palletsprojects.com/en/stable/",
+          "https://fastapi.tiangolo.com/advanced/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.9180385079206221,
+        "top": [
+          "https://flask.palletsprojects.com/en/stable/tutorial/",
+          "https://fastapi.tiangolo.com/advanced/",
+          "https://fastapi.tiangolo.com/how-to/general/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.944847956559586,
+        "top": [
+          "https://flask.palletsprojects.com/en/stable/tutorial/",
+          "https://flask.palletsprojects.com/en/stable/",
+          "https://flask.palletsprojects.com/en/stable/api/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.9639404333166532,
+        "top": [
+          "https://flask.palletsprojects.com/en/stable/tutorial/",
+          "https://flask.palletsprojects.com/en/stable/",
+          "https://flask.palletsprojects.com/en/stable/quickstart/"
+        ]
+      }
+    },
+    {
+      "q": "requests quickstart",
+      "intent": [
+        "HOWTO",
+        "TUTORIAL"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 0.2,
+        "ndcg@10": 0.38685280723454163,
+        "top": [
+          "https://www.python-httpx.org/",
+          "https://requests.readthedocs.io/en/latest/",
+          "https://flask.palletsprojects.com/en/stable/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.5,
+        "top": [
+          "https://www.python-httpx.org/quickstart/",
+          "https://www.python-httpx.org/",
+          "https://requests.readthedocs.io/en/latest/user/quickstart/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://www.python-httpx.org/quickstart/",
+          "https://requests.readthedocs.io/en/latest/user/quickstart/",
+          "https://flask.palletsprojects.com/en/stable/quickstart/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://www.python-httpx.org/quickstart/",
+          "https://requests.readthedocs.io/en/latest/user/quickstart/",
+          "https://flask.palletsprojects.com/en/stable/quickstart/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://requests.readthedocs.io/en/latest/user/quickstart/",
+          "https://requests.readthedocs.io/en/latest/",
+          "https://www.python-httpx.org/quickstart/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://requests.readthedocs.io/en/latest/user/quickstart/",
+          "https://www.python-httpx.org/quickstart/",
+          "https://flask.palletsprojects.com/en/stable/quickstart/"
+        ]
+      }
+    },
+    {
+      "q": "httpx quickstart",
+      "intent": [
+        "HOWTO",
+        "TUTORIAL"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://www.python-httpx.org/",
+          "https://www.python-httpx.org/quickstart/",
+          "https://click.palletsprojects.com/en/stable/quickstart/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://www.python-httpx.org/quickstart/",
+          "https://www.python-httpx.org/",
+          "https://click.palletsprojects.com/en/stable/quickstart/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://www.python-httpx.org/quickstart/",
+          "https://www.python-httpx.org/",
+          "https://click.palletsprojects.com/en/stable/quickstart/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://www.python-httpx.org/quickstart/",
+          "https://www.python-httpx.org/",
+          "https://click.palletsprojects.com/en/stable/quickstart/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://www.python-httpx.org/quickstart/",
+          "https://www.python-httpx.org/",
+          "https://click.palletsprojects.com/en/stable/quickstart/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://www.python-httpx.org/quickstart/",
+          "https://www.python-httpx.org/",
+          "https://click.palletsprojects.com/en/stable/quickstart/"
+        ]
+      }
+    },
+    {
+      "q": "first steps with celery",
+      "intent": [
+        "HOWTO",
+        "TUTORIAL"
+      ],
+      "tf": {
+        "p@5": 0.4,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.4573369727327457,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/",
+          "https://docs.celeryq.dev/en/stable/reference/index.html",
+          "https://docs.celeryq.dev/en/stable/tutorials/index.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.91311732856428,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html",
+          "https://docs.celeryq.dev/en/stable/",
+          "https://docs.celeryq.dev/en/stable/userguide/workers.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.91311732856428,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html",
+          "https://docs.celeryq.dev/en/stable/",
+          "https://docs.celeryq.dev/en/stable/userguide/workers.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.9243382314975351,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html",
+          "https://docs.celeryq.dev/en/stable/",
+          "https://docs.celeryq.dev/en/stable/userguide/workers.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.91311732856428,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html",
+          "https://docs.celeryq.dev/en/stable/",
+          "https://docs.celeryq.dev/en/stable/userguide/workers.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.9243382314975351,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/getting-started/first-steps-with-celery.html",
+          "https://docs.celeryq.dev/en/stable/",
+          "https://docs.celeryq.dev/en/stable/userguide/workers.html"
+        ]
+      }
+    },
+    {
+      "q": "celery workers",
+      "intent": [
+        "NONE"
+      ],
+      "tf": {
+        "p@5": 0.0,
+        "rr": 0.125,
+        "ndcg@10": 0.3154648767857287,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/reference/index.html",
+          "https://docs.celeryq.dev/en/stable/userguide/index.html",
+          "https://docs.celeryq.dev/en/stable/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.5,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/reference/index.html",
+          "https://docs.celeryq.dev/en/stable/userguide/monitoring.html",
+          "https://docs.celeryq.dev/en/stable/userguide/workers.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.5,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/userguide/monitoring.html",
+          "https://docs.celeryq.dev/en/stable/reference/index.html",
+          "https://docs.celeryq.dev/en/stable/userguide/workers.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.5,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/userguide/monitoring.html",
+          "https://docs.celeryq.dev/en/stable/reference/index.html",
+          "https://docs.celeryq.dev/en/stable/userguide/workers.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.5,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/userguide/monitoring.html",
+          "https://docs.celeryq.dev/en/stable/reference/index.html",
+          "https://docs.celeryq.dev/en/stable/userguide/workers.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.5,
+        "top": [
+          "https://docs.celeryq.dev/en/stable/userguide/monitoring.html",
+          "https://docs.celeryq.dev/en/stable/reference/index.html",
+          "https://docs.celeryq.dev/en/stable/userguide/workers.html"
+        ]
+      }
+    },
+    {
+      "q": "scrapy tutorial",
+      "intent": [
+        "HOWTO",
+        "TUTORIAL"
+      ],
+      "tf": {
+        "p@5": 0.4,
+        "rr": 0.5,
+        "ndcg@10": 0.5296052411645183,
+        "top": [
+          "https://docs.scrapy.org/en/latest/",
+          "https://docs.scrapy.org/en/latest/intro/install.html",
+          "https://docs.celeryq.dev/en/stable/tutorials/index.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.944847956559586,
+        "top": [
+          "https://docs.scrapy.org/en/latest/intro/tutorial.html",
+          "https://docs.scrapy.org/en/latest/",
+          "https://docs.scrapy.org/en/latest/news.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.944847956559586,
+        "top": [
+          "https://docs.scrapy.org/en/latest/intro/tutorial.html",
+          "https://docs.scrapy.org/en/latest/",
+          "https://docs.scrapy.org/en/latest/news.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.scrapy.org/en/latest/intro/tutorial.html",
+          "https://docs.scrapy.org/en/latest/intro/install.html",
+          "https://docs.scrapy.org/en/latest/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.944847956559586,
+        "top": [
+          "https://docs.scrapy.org/en/latest/intro/tutorial.html",
+          "https://docs.scrapy.org/en/latest/",
+          "https://docs.scrapy.org/en/latest/news.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.scrapy.org/en/latest/intro/tutorial.html",
+          "https://docs.scrapy.org/en/latest/intro/install.html",
+          "https://docs.scrapy.org/en/latest/"
+        ]
+      }
+    },
+    {
+      "q": "install scrapy",
+      "intent": [
+        "HOWTO",
+        "TUTORIAL"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://docs.scrapy.org/en/latest/",
+          "https://docs.scrapy.org/en/latest/intro/install.html",
+          "https://docs.scrapy.org/en/latest/intro/tutorial.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.scrapy.org/en/latest/intro/install.html",
+          "https://docs.scrapy.org/en/latest/topics/api.html",
+          "https://docs.scrapy.org/en/latest/news.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.scrapy.org/en/latest/intro/install.html",
+          "https://docs.scrapy.org/en/latest/topics/api.html",
+          "https://docs.scrapy.org/en/latest/news.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.scrapy.org/en/latest/intro/install.html",
+          "https://docs.scrapy.org/en/latest/intro/tutorial.html",
+          "https://docs.scrapy.org/en/latest/topics/api.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.scrapy.org/en/latest/intro/install.html",
+          "https://docs.scrapy.org/en/latest/topics/api.html",
+          "https://docs.scrapy.org/en/latest/news.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.scrapy.org/en/latest/intro/install.html",
+          "https://docs.scrapy.org/en/latest/intro/tutorial.html",
+          "https://docs.scrapy.org/en/latest/topics/api.html"
+        ]
+      }
+    },
+    {
+      "q": "matplotlib pyplot tutorial",
+      "intent": [
+        "HOWTO",
+        "TUTORIAL"
+      ],
+      "tf": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.631251450669265,
+        "top": [
+          "https://matplotlib.org/stable/tutorials/index.html",
+          "https://matplotlib.org/stable/",
+          "https://matplotlib.org/stable/api/index.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.9639404333166532,
+        "top": [
+          "https://matplotlib.org/stable/tutorials/pyplot.html",
+          "https://matplotlib.org/stable/",
+          "https://matplotlib.org/stable/tutorials/index.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.9639404333166532,
+        "top": [
+          "https://matplotlib.org/stable/tutorials/pyplot.html",
+          "https://matplotlib.org/stable/",
+          "https://matplotlib.org/stable/tutorials/index.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://matplotlib.org/stable/tutorials/pyplot.html",
+          "https://matplotlib.org/stable/tutorials/index.html",
+          "https://matplotlib.org/stable/tutorials/artists.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.9639404333166532,
+        "top": [
+          "https://matplotlib.org/stable/tutorials/pyplot.html",
+          "https://matplotlib.org/stable/",
+          "https://matplotlib.org/stable/tutorials/index.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://matplotlib.org/stable/tutorials/pyplot.html",
+          "https://matplotlib.org/stable/tutorials/index.html",
+          "https://matplotlib.org/stable/tutorials/artists.html"
+        ]
+      }
+    },
+    {
+      "q": "numpy quickstart",
+      "intent": [
+        "HOWTO",
+        "TUTORIAL"
+      ],
+      "tf": {
+        "p@5": 0.0,
+        "rr": 0.1,
+        "ndcg@10": 0.2890648263178878,
+        "top": [
+          "https://numpy.org/doc/stable/reference/module_structure.html",
+          "https://numpy.org/doc/stable/",
+          "https://numpy.org/doc/stable/reference/array_api.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/user/quickstart.html",
+          "https://www.python-httpx.org/quickstart/",
+          "https://click.palletsprojects.com/en/stable/quickstart/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/user/quickstart.html",
+          "https://www.python-httpx.org/quickstart/",
+          "https://click.palletsprojects.com/en/stable/quickstart/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/user/quickstart.html",
+          "https://www.python-httpx.org/quickstart/",
+          "https://click.palletsprojects.com/en/stable/quickstart/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/user/quickstart.html",
+          "https://www.python-httpx.org/quickstart/",
+          "https://click.palletsprojects.com/en/stable/quickstart/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://numpy.org/doc/stable/user/quickstart.html",
+          "https://www.python-httpx.org/quickstart/",
+          "https://click.palletsprojects.com/en/stable/quickstart/"
+        ]
+      }
+    },
+    {
+      "q": "sqlalchemy tutorial",
+      "intent": [
+        "HOWTO",
+        "TUTORIAL"
+      ],
+      "tf": {
+        "p@5": 0.4,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.531730627995306,
+        "top": [
+          "https://docs.sqlalchemy.org/en/21/changelog/index.html",
+          "https://docs.sqlalchemy.org/en/21/",
+          "https://docs.sqlalchemy.org/en/21/tutorial/index.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.sqlalchemy.org/en/21/tutorial/index.html",
+          "https://docs.sqlalchemy.org/en/21/intro.html",
+          "https://docs.sqlalchemy.org/en/21/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.sqlalchemy.org/en/21/tutorial/index.html",
+          "https://docs.sqlalchemy.org/en/21/intro.html",
+          "https://docs.sqlalchemy.org/en/21/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.sqlalchemy.org/en/21/tutorial/index.html",
+          "https://docs.sqlalchemy.org/en/21/intro.html",
+          "https://docs.sqlalchemy.org/en/21/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.sqlalchemy.org/en/21/tutorial/index.html",
+          "https://docs.sqlalchemy.org/en/21/intro.html",
+          "https://docs.sqlalchemy.org/en/21/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.sqlalchemy.org/en/21/tutorial/index.html",
+          "https://docs.sqlalchemy.org/en/21/intro.html",
+          "https://docs.sqlalchemy.org/en/21/"
+        ]
+      }
+    },
+    {
+      "q": "classes as dependencies",
+      "intent": [
+        "NONE"
+      ],
+      "tf": {
+        "p@5": 0.0,
+        "rr": 0.16666666666666666,
+        "ndcg@10": 0.3562071871080222,
+        "top": [
+          "https://fastapi.tiangolo.com/reference/",
+          "https://fastapi.tiangolo.com/how-to/",
+          "https://fastapi.tiangolo.com/advanced/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/tutorial/dependencies/classes-as-dependencies/",
+          "https://fastapi.tiangolo.com/reference/apirouter/",
+          "https://fastapi.tiangolo.com/reference/fastapi/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/tutorial/dependencies/classes-as-dependencies/",
+          "https://fastapi.tiangolo.com/reference/apirouter/",
+          "https://fastapi.tiangolo.com/reference/fastapi/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/tutorial/dependencies/classes-as-dependencies/",
+          "https://fastapi.tiangolo.com/reference/apirouter/",
+          "https://fastapi.tiangolo.com/reference/fastapi/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/tutorial/dependencies/classes-as-dependencies/",
+          "https://fastapi.tiangolo.com/reference/apirouter/",
+          "https://fastapi.tiangolo.com/reference/fastapi/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/tutorial/dependencies/classes-as-dependencies/",
+          "https://fastapi.tiangolo.com/reference/apirouter/",
+          "https://fastapi.tiangolo.com/reference/fastapi/"
+        ]
+      }
+    },
+    {
+      "q": "scipy 1.17.0 release notes",
+      "intent": [
+        "CHANGELOG"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.5142469300368734,
+        "top": [
+          "https://docs.scipy.org/doc/scipy/release.html",
+          "https://docs.scipy.org/doc/scipy/release/1.16.3-notes.html",
+          "https://docs.scipy.org/doc/scipy/release/1.17.1-notes.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.4,
+        "rr": 0.5,
+        "ndcg@10": 0.58688267143572,
+        "top": [
+          "https://docs.scipy.org/doc/scipy/release/1.17.1-notes.html",
+          "https://docs.scipy.org/doc/scipy/release.html",
+          "https://docs.scipy.org/doc/scipy/release/1.17.0-notes.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.4,
+        "rr": 0.5,
+        "ndcg@10": 0.58688267143572,
+        "top": [
+          "https://docs.scipy.org/doc/scipy/release/1.17.1-notes.html",
+          "https://docs.scipy.org/doc/scipy/release.html",
+          "https://docs.scipy.org/doc/scipy/release/1.17.0-notes.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.4,
+        "rr": 0.5,
+        "ndcg@10": 0.58688267143572,
+        "top": [
+          "https://docs.scipy.org/doc/scipy/release/1.17.1-notes.html",
+          "https://docs.scipy.org/doc/scipy/release.html",
+          "https://docs.scipy.org/doc/scipy/release/1.17.0-notes.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.4,
+        "rr": 0.5,
+        "ndcg@10": 0.58688267143572,
+        "top": [
+          "https://docs.scipy.org/doc/scipy/release/1.17.1-notes.html",
+          "https://docs.scipy.org/doc/scipy/release.html",
+          "https://docs.scipy.org/doc/scipy/release/1.17.0-notes.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.4,
+        "rr": 0.5,
+        "ndcg@10": 0.58688267143572,
+        "top": [
+          "https://docs.scipy.org/doc/scipy/release/1.17.1-notes.html",
+          "https://docs.scipy.org/doc/scipy/release.html",
+          "https://docs.scipy.org/doc/scipy/release/1.17.0-notes.html"
+        ]
+      }
+    },
+    {
+      "q": "sqlalchemy 2.0 changelog",
+      "intent": [
+        "CHANGELOG"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.27541155237618664,
+        "top": [
+          "https://docs.sqlalchemy.org/en/21/changelog/index.html",
+          "https://docs.sqlalchemy.org/en/21/",
+          "https://docs.sqlalchemy.org/en/21/intro.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.27541155237618664,
+        "top": [
+          "https://docs.sqlalchemy.org/en/21/changelog/index.html",
+          "https://docs.sqlalchemy.org/en/21/",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_11.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.27541155237618664,
+        "top": [
+          "https://docs.sqlalchemy.org/en/21/changelog/index.html",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_11.html",
+          "https://docs.sqlalchemy.org/en/21/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.5241329676290281,
+        "top": [
+          "https://docs.sqlalchemy.org/en/21/changelog/index.html",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_11.html",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_12.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.27541155237618664,
+        "top": [
+          "https://docs.sqlalchemy.org/en/21/changelog/index.html",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_11.html",
+          "https://docs.sqlalchemy.org/en/21/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 0.5241329676290281,
+        "top": [
+          "https://docs.sqlalchemy.org/en/21/changelog/index.html",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_11.html",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_12.html"
+        ]
+      }
+    },
+    {
+      "q": "what's new in matplotlib 3.11",
+      "intent": [
+        "CHANGELOG"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.19740468258524763,
+        "top": [
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.10.7.html",
+          "https://matplotlib.org/stable/",
+          "https://matplotlib.org/stable/release/release_notes.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.6,
+        "rr": 1.0,
+        "ndcg@10": 0.7579237460681981,
+        "top": [
+          "https://matplotlib.org/stable/release/release_notes.html",
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.11.0.html",
+          "https://matplotlib.org/stable/release/prev_whats_new/whats_new_3.11.0.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.6,
+        "rr": 1.0,
+        "ndcg@10": 0.8213137146137828,
+        "top": [
+          "https://matplotlib.org/stable/release/release_notes.html",
+          "https://matplotlib.org/stable/release/prev_whats_new/whats_new_3.11.0.html",
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.11.0.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.7809676722918159,
+        "top": [
+          "https://matplotlib.org/stable/release/release_notes.html",
+          "https://matplotlib.org/stable/release/prev_whats_new/whats_new_3.11.0.html",
+          "https://matplotlib.org/stable/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.6,
+        "rr": 1.0,
+        "ndcg@10": 0.8213137146137828,
+        "top": [
+          "https://matplotlib.org/stable/release/release_notes.html",
+          "https://matplotlib.org/stable/release/prev_whats_new/whats_new_3.11.0.html",
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.11.0.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.4,
+        "rr": 1.0,
+        "ndcg@10": 0.7809676722918159,
+        "top": [
+          "https://matplotlib.org/stable/release/release_notes.html",
+          "https://matplotlib.org/stable/release/prev_whats_new/whats_new_3.11.0.html",
+          "https://matplotlib.org/stable/"
+        ]
+      }
+    },
+    {
+      "q": "fastapi release notes",
+      "intent": [
+        "CHANGELOG"
+      ],
+      "tf": {
+        "p@5": 0.0,
+        "rr": 0.0,
+        "ndcg@10": 0.0,
+        "top": [
+          "https://docs.scipy.org/doc/scipy/release.html",
+          "https://fastapi.tiangolo.com/reference/",
+          "https://fastapi.tiangolo.com/how-to/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://fastapi.tiangolo.com/",
+          "https://fastapi.tiangolo.com/release-notes/",
+          "https://fastapi.tiangolo.com/reference/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/release-notes/",
+          "https://fastapi.tiangolo.com/",
+          "https://fastapi.tiangolo.com/reference/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/release-notes/",
+          "https://fastapi.tiangolo.com/",
+          "https://typer.tiangolo.com/release-notes/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/release-notes/",
+          "https://fastapi.tiangolo.com/",
+          "https://fastapi.tiangolo.com/reference/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://fastapi.tiangolo.com/release-notes/",
+          "https://fastapi.tiangolo.com/",
+          "https://fastapi.tiangolo.com/reference/"
+        ]
+      }
+    },
+    {
+      "q": "pydantic changelog",
+      "intent": [
+        "CHANGELOG"
+      ],
+      "tf": {
+        "p@5": 0.0,
+        "rr": 0.0,
+        "ndcg@10": 0.0,
+        "top": [
+          "https://docs.sqlalchemy.org/en/21/changelog/index.html",
+          "https://pydantic.dev/docs/validation/latest/get-started/",
+          "https://docs.sqlalchemy.org/en/21/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://pydantic.dev/docs/validation/latest/get-started/changelog/",
+          "https://www.attrs.org/en/stable/",
+          "https://fastapi.tiangolo.com/release-notes/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://pydantic.dev/docs/validation/latest/get-started/changelog/",
+          "https://www.attrs.org/en/stable/",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_20.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://pydantic.dev/docs/validation/latest/get-started/changelog/",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_20.html",
+          "https://www.attrs.org/en/stable/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://pydantic.dev/docs/validation/latest/get-started/changelog/",
+          "https://www.attrs.org/en/stable/",
+          "https://pydantic.dev/docs/validation/latest/get-started/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://pydantic.dev/docs/validation/latest/get-started/changelog/",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_20.html",
+          "https://www.attrs.org/en/stable/"
+        ]
+      }
+    },
+    {
+      "q": "attrs changelog",
+      "intent": [
+        "CHANGELOG"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 0.25,
+        "ndcg@10": 0.4306765580733931,
+        "top": [
+          "https://docs.sqlalchemy.org/en/21/changelog/index.html",
+          "https://www.attrs.org/en/stable/",
+          "https://www.attrs.org/en/stable/api-attr.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.5,
+        "top": [
+          "https://click.palletsprojects.com/en/stable/api/",
+          "https://www.attrs.org/en/stable/",
+          "https://www.attrs.org/en/stable/changelog.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://www.attrs.org/en/stable/changelog.html",
+          "https://click.palletsprojects.com/en/stable/api/",
+          "https://www.attrs.org/en/stable/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://www.attrs.org/en/stable/changelog.html",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_12.html",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_10.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://www.attrs.org/en/stable/changelog.html",
+          "https://www.attrs.org/en/stable/",
+          "https://click.palletsprojects.com/en/stable/api/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://www.attrs.org/en/stable/changelog.html",
+          "https://www.attrs.org/en/stable/",
+          "https://docs.sqlalchemy.org/en/21/changelog/changelog_12.html"
+        ]
+      }
+    },
+    {
+      "q": "scrapy release notes",
+      "intent": [
+        "CHANGELOG"
+      ],
+      "tf": {
+        "p@5": 0.0,
+        "rr": 0.0,
+        "ndcg@10": 0.0,
+        "top": [
+          "https://docs.scrapy.org/en/latest/",
+          "https://docs.scrapy.org/en/latest/intro/install.html",
+          "https://docs.scipy.org/doc/scipy/release.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.scrapy.org/en/latest/news.html",
+          "https://docs.scrapy.org/en/latest/intro/install.html",
+          "https://docs.scrapy.org/en/latest/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.scrapy.org/en/latest/news.html",
+          "https://docs.scrapy.org/en/latest/intro/install.html",
+          "https://docs.scrapy.org/en/latest/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.scrapy.org/en/latest/news.html",
+          "https://docs.scrapy.org/en/latest/intro/install.html",
+          "https://docs.scrapy.org/en/latest/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.scrapy.org/en/latest/news.html",
+          "https://docs.scrapy.org/en/latest/intro/install.html",
+          "https://docs.scrapy.org/en/latest/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://docs.scrapy.org/en/latest/news.html",
+          "https://docs.scrapy.org/en/latest/intro/install.html",
+          "https://docs.scrapy.org/en/latest/"
+        ]
+      }
+    },
+    {
+      "q": "typer release notes",
+      "intent": [
+        "CHANGELOG"
+      ],
+      "tf": {
+        "p@5": 0.0,
+        "rr": 0.1,
+        "ndcg@10": 0.2890648263178878,
+        "top": [
+          "https://typer.tiangolo.com/reference/",
+          "https://docs.scipy.org/doc/scipy/release.html",
+          "https://typer.tiangolo.com/"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://typer.tiangolo.com/release-notes/",
+          "https://typer.tiangolo.com/",
+          "https://typer.tiangolo.com/reference/"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://typer.tiangolo.com/release-notes/",
+          "https://typer.tiangolo.com/",
+          "https://typer.tiangolo.com/reference/"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://typer.tiangolo.com/release-notes/",
+          "https://typer.tiangolo.com/",
+          "https://typer.tiangolo.com/reference/"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://typer.tiangolo.com/release-notes/",
+          "https://typer.tiangolo.com/",
+          "https://typer.tiangolo.com/reference/"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 1.0,
+        "ndcg@10": 1.0,
+        "top": [
+          "https://typer.tiangolo.com/release-notes/",
+          "https://typer.tiangolo.com/",
+          "https://typer.tiangolo.com/reference/"
+        ]
+      }
+    },
+    {
+      "q": "matplotlib api changes 3.10.9",
+      "intent": [
+        "CHANGELOG"
+      ],
+      "tf": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.10.7.html",
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.10.9.html",
+          "https://matplotlib.org/stable/release/release_notes.html"
+        ]
+      },
+      "bm25": {
+        "p@5": 0.0,
+        "rr": 0.16666666666666666,
+        "ndcg@10": 0.3562071871080222,
+        "top": [
+          "https://matplotlib.org/stable/release/release_notes.html",
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.11.0.html",
+          "https://matplotlib.org/stable/release/prev_whats_new/whats_new_3.10.0.html"
+        ]
+      },
+      "bm25f": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.5,
+        "top": [
+          "https://matplotlib.org/stable/release/release_notes.html",
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.11.0.html",
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.10.9.html"
+        ]
+      },
+      "bm25f+intent": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://matplotlib.org/stable/release/release_notes.html",
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.10.9.html",
+          "https://matplotlib.org/stable/release/prev_whats_new/whats_new_3.10.0.html"
+        ]
+      },
+      "bm25f+package": {
+        "p@5": 0.2,
+        "rr": 0.3333333333333333,
+        "ndcg@10": 0.5,
+        "top": [
+          "https://matplotlib.org/stable/release/release_notes.html",
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.11.0.html",
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.10.9.html"
+        ]
+      },
+      "bm25f+intent+package": {
+        "p@5": 0.2,
+        "rr": 0.5,
+        "ndcg@10": 0.6309297535714574,
+        "top": [
+          "https://matplotlib.org/stable/release/release_notes.html",
+          "https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.10.9.html",
+          "https://matplotlib.org/stable/release/prev_whats_new/whats_new_3.10.0.html"
+        ]
+      }
+    }
+  ],
+  "judgments": "draft"
+}
