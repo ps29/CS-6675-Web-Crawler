@@ -20,6 +20,12 @@ All notable changes to this project are documented here. Format follows
 - `edge_serving` dishonest edges (`--dishonest-edges`, `--attack`): baseline status replay and R1
   `freeze` / `withhold`. Under attack R1's stale window has no bound, while the baseline's stops
   near 1800 s (`docs/m4-results.md`, `results/m4/dishonest_edges.json`).
+- `edge_serving` R1-S (`--variant r1s`, `state_proofs.py`): proofs of non-revocation. Headers can
+  carry an optional `state_root` over every final record's state, which enters the header ID only
+  when set. A lying edge's stale window is now bounded by `max_lag` (about 1800 s) instead of
+  unbounded, and withholding fails safe (`results/m4/state_proofs.json`).
+- `edge_serving` client spot-checks (`--spot-check`, `--spot-strikes`) and a `replay` attack for
+  R1-family edges. At 5% the lying edge was blocked in every run.
 
 ### Fixed
 - Fetcher decodes pages as UTF-8 when the server declares no charset (titles were mojibake,
