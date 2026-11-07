@@ -128,7 +128,7 @@ python -m edge_serving.sim --variant r1 --packages 2000 --proof-capacity 500
 
 | Option | Default | Meaning |
 |---|---|---|
-| `--variant` | `baseline` | `baseline`, `r1`, `r2` or `both` |
+| `--variant` | `baseline` | `baseline`, `r1`, `r2`, `both` or `r1s` (R1 with proofs of non-revocation) |
 | `--compare` | off | Run every variant, and the baseline at each `--t-status` |
 | `--packages`, `--peers`, `--edges` | 25, 16, 3 | Scale |
 | `--requests`, `--zipf` | 20000, 1.0 | Read trace size and skew |
@@ -139,11 +139,13 @@ python -m edge_serving.sim --variant r1 --packages 2000 --proof-capacity 500
 | `--proof-capacity` | 10000 | Edge proof-cache size |
 | `--summary-interval`, `--fp-rate` | 300, 0.01 | R2 Bloom summaries |
 | `--edge-ms`, `--sibling-ms`, `--gateway-ms` | 5, 40, 150 | Modeled latency |
-| `--dishonest-edges`, `--attack` | 0, `withhold` | Edges that hide revocations; R1 attack (`withhold` or `freeze`). The baseline and R2 always use status replay |
+| `--dishonest-edges`, `--attack` | 0, `withhold` | Edges that hide revocations; attack for R1-family edges (`withhold`, `freeze` or `replay`). The baseline and R2 always use status replay |
+| `--spot-check`, `--spot-strikes` | 0, 2 | Probability that the client re-checks an accepted status with the gateway, and mismatches before it stops using that edge |
 | `--seed`, `--out` | 0, none | RNG seed, JSON output path |
 
 Metrics: stale accepts, stale window, hit ratio, gateway requests per second, p95 latency, gossip
-bytes per edge per epoch, sibling hits.
+bytes per edge per epoch, sibling hits, and with spot-checks the blocked edges and when the first
+one was blocked.
 
 ### HTTP demo: `python -m edge_serving.http_app demo`
 

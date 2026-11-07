@@ -144,8 +144,9 @@ flowchart LR
 | `delta.py`, `revocation.py` | **R1**: per-epoch status deltas committed by `delta_root`. Edges apply gossiped headers, fetch gaps and fall back to TTLs. Statuses are checked by Merkle branch; `INCLUDED` is implied once the proof's block is final |
 | `summary.py` | **R2**: Kirsch–Mitzenmacher Bloom-filter summaries of cached proofs; fetch from a sibling, verify, else fall back to the gateway |
 | `http_app.py` | aiohttp gateway and edge servers; concurrent misses for one path share a single upstream fetch |
-| `dishonest.py` | Attacker edges for the evaluation: baseline status replay, R1 `freeze` and `withhold` |
-| `sim.py` | Trace-driven simulation: Zipf reads, epochs, releases, revocations, gossip delay, modeled latency, optional dishonest edges |
+| `state_proofs.py` | **R1-S**: R1 plus proofs of non-revocation. Each header commits a `state_root` over every final record's current state; edges rebuild the state from deltas (which then also list newly final records) and serve a status as a branch to that root; the client checks the branch and the *proven* epoch against `max_lag` |
+| `dishonest.py` | Attacker edges for the evaluation: status `replay` (any variant), R1 / R1-S `freeze` and `withhold` |
+| `sim.py` | Trace-driven simulation: Zipf reads, epochs, releases, revocations, gossip delay, modeled latency, optional dishonest edges and client spot-checks against the gateway |
 
 ### Security checks (all covered by tests)
 
@@ -155,9 +156,15 @@ Each of these is rejected, refetched or sent back to the gateway:
 - a forged or dropped delta entry (`delta_root` mismatch)
 - a forged sibling copy
 - an implied-`INCLUDED` claim on a non-final block
-- a gateway-signed status older than `max_lag` (baseline only; see the known limit below for R1)
+- a gateway-signed status older than `max_lag` (baseline), or an R1-S state branch whose proven
+  epoch is older than `max_lag`
+- an R1-S state branch that does not hash to the header's `state_root` (tampered state, or an edge
+  that left a revocation out of its state)
 
-**Known limit:** R1 statuses have no signed freshness. A dishonest edge can overstate its
-`synced_epoch` or simply leave revocations out, and the client cannot detect either, so a revoked
-record stays accepted for as long as the edge lies (M4 Section 3.1). Baseline statuses are capped
-by `max_lag` instead. Measured in `docs/m4-results.md`; no defense is implemented yet.
+**Known limit of plain R1:** R1 statuses have no signed freshness. A dishonest edge can overstate
+its `synced_epoch` or simply leave revocations out, and the client cannot detect either, so a
+revoked record stays accepted for as long as the edge lies (M4 Section 3.1). R1-S
+(`state_proofs.py`) closes this: a lying edge can only replay a state that was true at most
+`max_lag` epochs ago, the same bound as the baseline, without trusting the gateway's key. Client
+spot-checks against the gateway (`--spot-check`) additionally let a client stop using a lying
+edge. Both are measured in `docs/m4-results.md`.

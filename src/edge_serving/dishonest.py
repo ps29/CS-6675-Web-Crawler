@@ -3,7 +3,12 @@
 An edge cannot forge proofs, signed statuses or delta entries, so these attackers only hide
 revocations. The baseline attacker replays an older signed status, which max_lag bounds. The R1
 attackers serve a status with no signed freshness: `freeze` stops applying deltas and overstates
-synced_epoch, and `withhold` stays synced, reports it truthfully and drops revocation entries."""
+synced_epoch, and `withhold` stays synced, reports it truthfully and drops revocation entries.
+`replay` keeps serving the last status it held before a revocation.
+
+Against R1-S edges (state_proofs.py) the same attacks apply: `withhold` now yields a state branch
+that no longer matches any header, `freeze` and `replay` yield a valid branch for an old epoch,
+which the client refetches once it is more than max_lag epochs old."""
 
 from __future__ import annotations
 
@@ -13,14 +18,15 @@ from .delta import Delta
 from .edge import Edge
 from .objects import REVOKED, Response
 from .revocation import DeltaSource, R1Edge
+from .state_proofs import StateProofEdge
 from .summary import R1R2Edge, R2Edge
 
-WITHHOLD, FREEZE = "withhold", "freeze"
-ATTACKS = (WITHHOLD, FREEZE)
+WITHHOLD, FREEZE, REPLAY = "withhold", "freeze", "replay"
+ATTACKS = (WITHHOLD, FREEZE, REPLAY)
 
 
 class StatusReplay:
-    """Mixin for Edge / R2Edge: replay the last signed status from before a revocation."""
+    """Mixin for any edge: replay the last status it served from before a revocation."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -67,6 +73,23 @@ class LyingR1:
         return {**body, "synced_epoch": self.claimed_epoch}
 
 
+class LyingStateProof(LyingR1):
+    """LyingR1 for R1-S edges: `withhold` also keeps revoked records out of the state map."""
+
+    def _apply(self, hdr: Header, delta: Delta) -> bool:
+        revoked = [rid for rid, state in delta.status_changes if state == REVOKED]
+        prior = {rid: self.state.get(rid) for rid in revoked}
+        applied = super()._apply(hdr, delta)
+        if self.active and self.attack == WITHHOLD:
+            for rid, state in prior.items():
+                if state is None:
+                    self.state.pop(rid, None)
+                else:
+                    self.state[rid] = state
+            self._tree = None
+        return applied
+
+
 class ReplayEdge(StatusReplay, Edge):
     pass
 
@@ -80,4 +103,20 @@ class LyingR1Edge(LyingR1, R1Edge):
 
 
 class LyingR1R2Edge(LyingR1, R1R2Edge):
+    pass
+
+
+class ReplayR1Edge(StatusReplay, R1Edge):
+    pass
+
+
+class ReplayR1R2Edge(StatusReplay, R1R2Edge):
+    pass
+
+
+class LyingStateProofEdge(LyingStateProof, StateProofEdge):
+    pass
+
+
+class ReplayStateProofEdge(StatusReplay, StateProofEdge):
     pass
