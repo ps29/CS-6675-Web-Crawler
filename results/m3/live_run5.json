@@ -1,0 +1,468 @@
+{
+  "summary": {
+    "records": 41,
+    "forged_records": 2,
+    "audited": 41,
+    "detection_rate": 1.0,
+    "false_rejection_rate": 0.0,
+    "honest_inconclusive_rate": 0.026,
+    "honest_by_source": {
+      "pypi": {
+        "n": 18,
+        "PASS": 18,
+        "FAIL": 0,
+        "INCONCLUSIVE": 0
+      },
+      "docs": {
+        "n": 15,
+        "PASS": 15,
+        "FAIL": 0,
+        "INCONCLUSIVE": 0
+      },
+      "rtd": {
+        "n": 1,
+        "PASS": 1,
+        "FAIL": 0,
+        "INCONCLUSIVE": 0
+      },
+      "pydocs": {
+        "n": 5,
+        "PASS": 4,
+        "FAIL": 0,
+        "INCONCLUSIVE": 1
+      }
+    },
+    "mean_record_bytes": 535.4,
+    "mean_record_build_ms": 1.853,
+    "mean_verify_ms": 0.126,
+    "fetch_failures": 2,
+    "crawl_seconds": 485.6,
+    "requests": 81,
+    "config": {
+      "peers": 20,
+      "dishonest": 0.2,
+      "forge_rate": 0.2,
+      "audit_rate": 1.0,
+      "packages": "C:\\Users\\pssh\\Advance Internet Computing system\\Project\\config\\ledger_seeds.txt",
+      "limit": 25,
+      "delay": 1.0,
+      "wait": 0.0,
+      "seed": 1,
+      "offline": false,
+      "out": "results/m3/live_run5.json",
+      "quiet": false
+    }
+  },
+  "audits": [
+    {
+      "pkg": "numpy",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.10:7000",
+      "result": "PASS",
+      "age_s": 454.6,
+      "audit_s": 21.723
+    },
+    {
+      "pkg": "numpy",
+      "source": "docs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.3:7000",
+      "result": "PASS",
+      "age_s": 454.1,
+      "audit_s": 0.568
+    },
+    {
+      "pkg": "pandas",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.11:7000",
+      "result": "PASS",
+      "age_s": 458.6,
+      "audit_s": 16.62
+    },
+    {
+      "pkg": "pandas",
+      "source": "docs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.17:7000",
+      "result": "PASS",
+      "age_s": 458.4,
+      "audit_s": 0.75
+    },
+    {
+      "pkg": "flask",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": false,
+      "auditor": "10.0.0.14:7000",
+      "result": "PASS",
+      "age_s": 459.3,
+      "audit_s": 1.32
+    },
+    {
+      "pkg": "flask",
+      "source": "docs",
+      "forged": false,
+      "owner_honest": false,
+      "auditor": "10.0.0.17:7000",
+      "result": "PASS",
+      "age_s": 438.7,
+      "audit_s": 15.996
+    },
+    {
+      "pkg": "django",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.6:7000",
+      "result": "PASS",
+      "age_s": 439.8,
+      "audit_s": 4.617
+    },
+    {
+      "pkg": "fastapi",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.10:7000",
+      "result": "PASS",
+      "age_s": 399.6,
+      "audit_s": 3.77
+    },
+    {
+      "pkg": "fastapi",
+      "source": "docs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.10:7000",
+      "result": "PASS",
+      "age_s": 379.6,
+      "audit_s": 7.562
+    },
+    {
+      "pkg": "pydantic",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.18:7000",
+      "result": "PASS",
+      "age_s": 377.4,
+      "audit_s": 8.76
+    },
+    {
+      "pkg": "pydantic",
+      "source": "docs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.15:7000",
+      "result": "PASS",
+      "age_s": 369.6,
+      "audit_s": 0.617
+    },
+    {
+      "pkg": "sqlalchemy",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.17:7000",
+      "result": "PASS",
+      "age_s": 371.1,
+      "audit_s": 29.032
+    },
+    {
+      "pkg": "sqlalchemy",
+      "source": "docs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.12:7000",
+      "result": "PASS",
+      "age_s": 377.2,
+      "audit_s": 17.754
+    },
+    {
+      "pkg": "scipy",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": false,
+      "auditor": "10.0.0.19:7000",
+      "result": "PASS",
+      "age_s": 376.9,
+      "audit_s": 13.108
+    },
+    {
+      "pkg": "scipy",
+      "source": "docs",
+      "forged": true,
+      "owner_honest": false,
+      "auditor": "10.0.0.1:7000",
+      "result": "FAIL",
+      "age_s": 383.5,
+      "audit_s": 8.365
+    },
+    {
+      "pkg": "matplotlib",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.15:7000",
+      "result": "PASS",
+      "age_s": 382.2,
+      "audit_s": 11.932
+    },
+    {
+      "pkg": "matplotlib",
+      "source": "docs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.7:7000",
+      "result": "PASS",
+      "age_s": 382.1,
+      "audit_s": 7.775
+    },
+    {
+      "pkg": "pytest",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.12:7000",
+      "result": "PASS",
+      "age_s": 382.1,
+      "audit_s": 1.83
+    },
+    {
+      "pkg": "pytest",
+      "source": "docs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.13:7000",
+      "result": "PASS",
+      "age_s": 361.1,
+      "audit_s": 7.397
+    },
+    {
+      "pkg": "click",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.5:7000",
+      "result": "PASS",
+      "age_s": 361.7,
+      "audit_s": 1.306
+    },
+    {
+      "pkg": "click",
+      "source": "docs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.11:7000",
+      "result": "PASS",
+      "age_s": 325.7,
+      "audit_s": 0.792
+    },
+    {
+      "pkg": "jinja2",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.18:7000",
+      "result": "PASS",
+      "age_s": 325.4,
+      "audit_s": 0.98
+    },
+    {
+      "pkg": "jinja2",
+      "source": "docs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.12:7000",
+      "result": "PASS",
+      "age_s": 332.1,
+      "audit_s": 8.202
+    },
+    {
+      "pkg": "httpx",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.2:7000",
+      "result": "PASS",
+      "age_s": 332.0,
+      "audit_s": 0.945
+    },
+    {
+      "pkg": "httpx",
+      "source": "docs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.14:7000",
+      "result": "PASS",
+      "age_s": 335.2,
+      "audit_s": 4.436
+    },
+    {
+      "pkg": "attrs",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": false,
+      "auditor": "10.0.0.17:7000",
+      "result": "PASS",
+      "age_s": 335.2,
+      "audit_s": 0.841
+    },
+    {
+      "pkg": "attrs",
+      "source": "docs",
+      "forged": false,
+      "owner_honest": false,
+      "auditor": "10.0.0.4:7000",
+      "result": "PASS",
+      "age_s": 348.2,
+      "audit_s": 15.714
+    },
+    {
+      "pkg": "rich",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.5:7000",
+      "result": "PASS",
+      "age_s": 348.0,
+      "audit_s": 2.54
+    },
+    {
+      "pkg": "rich",
+      "source": "rtd",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.17:7000",
+      "result": "PASS",
+      "age_s": 347.4,
+      "audit_s": 0.606
+    },
+    {
+      "pkg": "typer",
+      "source": "pypi",
+      "forged": true,
+      "owner_honest": false,
+      "auditor": "10.0.0.13:7000",
+      "result": "FAIL",
+      "age_s": 347.4,
+      "audit_s": 0.726
+    },
+    {
+      "pkg": "typer",
+      "source": "docs",
+      "forged": false,
+      "owner_honest": false,
+      "auditor": "10.0.0.12:7000",
+      "result": "PASS",
+      "age_s": 346.8,
+      "audit_s": 0.519
+    },
+    {
+      "pkg": "beautifulsoup4",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.16:7000",
+      "result": "PASS",
+      "age_s": 347.9,
+      "audit_s": 1.324
+    },
+    {
+      "pkg": "scrapy",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.0:7000",
+      "result": "PASS",
+      "age_s": 347.8,
+      "audit_s": 1.661
+    },
+    {
+      "pkg": "scrapy",
+      "source": "docs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.16:7000",
+      "result": "PASS",
+      "age_s": 347.1,
+      "audit_s": 0.714
+    },
+    {
+      "pkg": "celery",
+      "source": "pypi",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.1:7000",
+      "result": "PASS",
+      "age_s": 346.8,
+      "audit_s": 1.745
+    },
+    {
+      "pkg": "celery",
+      "source": "docs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.9:7000",
+      "result": "PASS",
+      "age_s": 366.0,
+      "audit_s": 20.448
+    },
+    {
+      "pkg": "json",
+      "source": "pydocs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.19:7000",
+      "result": "INCONCLUSIVE",
+      "age_s": 268.4,
+      "audit_s": 20.678
+    },
+    {
+      "pkg": "asyncio",
+      "source": "pydocs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.19:7000",
+      "result": "PASS",
+      "age_s": 282.7,
+      "audit_s": 15.502
+    },
+    {
+      "pkg": "pathlib",
+      "source": "pydocs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.12:7000",
+      "result": "PASS",
+      "age_s": 281.9,
+      "audit_s": 0.19
+    },
+    {
+      "pkg": "re",
+      "source": "pydocs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.5:7000",
+      "result": "PASS",
+      "age_s": 281.8,
+      "audit_s": 1.012
+    },
+    {
+      "pkg": "logging",
+      "source": "pydocs",
+      "forged": false,
+      "owner_honest": true,
+      "auditor": "10.0.0.6:7000",
+      "result": "PASS",
+      "age_s": 281.4,
+      "audit_s": 1.008
+    }
+  ]
+}

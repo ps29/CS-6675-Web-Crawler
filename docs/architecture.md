@@ -92,7 +92,7 @@ flowchart LR
 | Module | M3 component |
 |---|---|
 | `fetcher.py` | Source router, polite downloader, link extractor (RTD, self-hosted docs, GitHub) |
-| `record.py`, `peer.py` | Record builder and Ed25519 signer, hash-chained log; node ID = hash(public key + address) |
+| `record.py`, `peer.py` | Record builder and Ed25519 signer, hash-chained log; node ID = hash(public key + address); content hash ignores Cloudflare per-response nonces |
 | `ring.py` | Package ownership = successor of hash(name); successor lists for auditors |
 | `verify.py` | Record ID, signature and chain checks; R1 Merkle-branch verification |
 | `merkle.py`, `blocks.py` | Merkle roots and branches, block headers, `HeaderChain` with finality |
