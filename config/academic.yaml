@@ -1,0 +1,40 @@
+# M1 academic focused crawl:  fcrawl --config config/academic.yaml crawl
+profile: academic
+
+# Crawl scope: the registered domain and every subdomain of it.
+domain: gatech.edu
+
+# Regexes (searched in the full URL) that are never crawled.
+exclude:
+  - "\\.bib$"
+seeds:
+  - https://www.gatech.edu/
+  - https://www.cc.gatech.edu/
+  - https://www.cc.gatech.edu/people/faculty
+  - https://catalog.gatech.edu/coursesaz/
+  - https://research.gatech.edu/
+
+crawl:
+  max_pages: 500
+  max_depth: 6
+  per_host_max: 200
+  delay_seconds: 1.0
+  timeout_seconds: 15.0
+  max_retries: 2
+  user_agent: "focused-crawler-course-project/0.1 (CS 6675 research prototype)"
+
+storage:
+  db_path: data/crawl.db
+
+# Optional CSS selectors per page label ("*" applies to every label). A value is
+# "css" for element text or "css@attr" for an attribute. Matches override built-in fields.
+selectors:
+  "*":
+    canonical: "link[rel=canonical]@href"
+  FACULTY:
+    photo: "img.profile-photo@src"
+
+ranking:
+  w_tf: 1.0
+  w_field: 3.0
+  w_recency: 0.5

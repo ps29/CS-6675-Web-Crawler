@@ -34,3 +34,21 @@ def test_per_host_cap():
     while (item := f.pop()) is not None:
         popped.append(item.url)
     assert popped == ["https://a.edu/0", "https://a.edu/1", "https://b.edu/"]
+
+
+def test_host_penalty_spreads_pops_over_hosts():
+    f = Frontier(max_depth=5, per_host_max=100, host_penalty=0.1)
+    for i in range(3):
+        f.push(f"https://a.org/{i}", 0.9, 1)
+    f.push("https://b.org/0", 0.75, 1)
+    order = [f.pop().url for _ in range(4)]
+    # a/0 (0.9), a/1 (0.8), then b/0 (0.75) beats a/2 (0.9 - 0.2 = 0.7)
+    assert order == ["https://a.org/0", "https://a.org/1", "https://b.org/0", "https://a.org/2"]
+
+
+def test_no_host_penalty_keeps_plain_priority_order():
+    f = Frontier(max_depth=5, per_host_max=100)
+    for i in range(3):
+        f.push(f"https://a.org/{i}", 0.9, 1)
+    f.push("https://b.org/0", 0.75, 1)
+    assert [f.pop().url for _ in range(4)][-1] == "https://b.org/0"

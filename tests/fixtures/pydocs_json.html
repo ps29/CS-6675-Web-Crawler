@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>json — JSON encoder and decoder — Python 3.14.0 documentation</title>
+<meta name="description" content="Source code: Lib/json/__init__.py">
+<script src="_static/documentation_options.js"></script>
+</head>
+<body>
+<div class="related" role="navigation"><a href="../genindex.html">index</a>
+<a href="../py-modindex.html">modules</a> <a href="index.html">The Python Standard Library</a></div>
+<div class="body" role="main">
+<section id="module-json">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">json</span></code> — JSON encoder and decoder<a class="headerlink" href="#module-json">¶</a></h1>
+<p><strong>Source code:</strong> <a href="https://github.com/python/cpython/tree/3.14/Lib/json/__init__.py">Lib/json/__init__.py</a></p>
+<p>JSON (JavaScript Object Notation) is a lightweight data interchange format. See also
+<a href="pickle.html">pickle — Python object serialization</a> and <a href="marshal.html">marshal</a>.</p>
+<div class="highlight-python3"><div class="highlight"><pre>&gt;&gt;&gt; import json
+&gt;&gt;&gt; json.dumps(['foo', {'bar': ('baz', None, 1.0, 2)}])</pre></div></div>
+<section id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="json.dump"><span class="sig-name descname">json.dump</span>(obj, fp)</dt>
+<dd><p>Serialize obj as a JSON formatted stream to fp. Parameters: obj, fp. Raises TypeError.</p></dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="json.dumps"><span class="sig-name descname">json.dumps</span>(obj)</dt>
+<dd><p>Serialize obj to a JSON formatted str. Returns a str.</p></dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="json.loads"><span class="sig-name descname">json.loads</span>(s)</dt>
+<dd><p>Deserialize s to a Python object.</p></dd>
+</dl>
+</section>
+<section id="encoders-and-decoders">
+<h2>Encoders and Decoders<a class="headerlink" href="#encoders-and-decoders">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="json.JSONDecoder"><span class="sig-name descname">class json.JSONDecoder</span></dt>
+<dd><p>Simple JSON decoder. Methods: decode.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="json.JSONDecoder.decode">decode(s)</dt>
+<dd><p>Return the Python representation of s.</p></dd>
+</dl></dd>
+</dl>
+</section>
+</section>
+</div>
+<div class="footer"><a href="../copyright.html">Copyright</a> <a href="../_sources/library/json.rst.txt">Show source</a></div>
+</body>
+</html>

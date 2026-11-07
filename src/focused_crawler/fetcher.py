@@ -99,10 +99,25 @@ class Fetcher:
             self.requests_made += 1
             if r.status_code in RETRY_STATUSES and attempt < self.max_retries:
                 continue
-            ctype = r.headers.get("Content-Type", "").split(";")[0].strip().lower()
-            text = r.text if ctype in HTML_TYPES else ""
+            header = r.headers.get("Content-Type", "")
+            ctype = header.split(";")[0].strip().lower()
+            text = _decode(r, header) if ctype in HTML_TYPES else ""
             return FetchResult(url, r.url, r.status_code, ctype, text, _last_modified(r.headers))
         return None
+
+
+def _decode(r, content_type: str) -> str:
+    """Without a charset in Content-Type, requests assumes ISO-8859-1 for text/*; most pages
+    are UTF-8, so try that first and fall back to detection."""
+    if "charset=" in content_type.lower():
+        return r.text
+    content = getattr(r, "content", None)
+    if content is None:  # test doubles that only carry text
+        return r.text
+    try:
+        return content.decode("utf-8")
+    except UnicodeDecodeError:
+        return content.decode(r.apparent_encoding or "utf-8", errors="replace")
 
 
 def _last_modified(headers) -> float | None:

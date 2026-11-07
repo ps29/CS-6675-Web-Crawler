@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+from collections.abc import Iterable
 from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
 
 TRACKING_PARAMS = {
@@ -65,10 +66,20 @@ def host_of(url: str) -> str:
 
 
 def in_scope(url: str, domain: str) -> bool:
-    """True if the URL's host is the domain itself or one of its subdomains."""
-    host = (urlsplit(url).hostname or "").lower()
-    domain = domain.lower()
-    return host == domain or host.endswith("." + domain)
+    """True if the URL's host is the domain itself or one of its subdomains.
+
+    A scope may carry a path prefix ("numpy.org/doc/stable/"); the URL path must then
+    start with it."""
+    domain, slash, prefix = domain.lower().partition("/")
+    parts = urlsplit(url)
+    host = (parts.hostname or "").lower()
+    if not (host == domain or host.endswith("." + domain)):
+        return False
+    return not slash or (parts.path or "/").startswith("/" + prefix)
+
+
+def in_any_scope(url: str, scopes: Iterable[str]) -> bool:
+    return any(in_scope(url, s) for s in scopes)
 
 
 def is_crawlable_resource(url: str) -> bool:

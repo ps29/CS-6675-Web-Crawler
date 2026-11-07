@@ -73,3 +73,19 @@ def test_parses_last_modified():
         }
     )
     assert fetcher.fetch("https://a.edu/p").last_modified == 1445412480.0
+
+
+def test_decodes_utf8_when_charset_missing():
+    page = "<title>json — JSON encoder</title>"
+    resp = FakeResponse(text=page.encode("utf-8").decode("latin-1"))  # what requests guesses
+    resp.headers = {"Content-Type": "text/html"}
+    resp.content = page.encode("utf-8")
+    fetcher, _, _ = make_fetcher({"https://a.edu/p": resp})
+    assert fetcher.fetch("https://a.edu/p").text == page
+
+
+def test_declared_charset_is_trusted():
+    resp = FakeResponse(text="café", headers={"Content-Type": "text/html; charset=latin-1"})
+    resp.content = "café".encode("latin-1")
+    fetcher, _, _ = make_fetcher({"https://a.edu/p": resp})
+    assert fetcher.fetch("https://a.edu/p").text == "café"

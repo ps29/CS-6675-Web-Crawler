@@ -5,7 +5,7 @@ crawling and serving systems:
 
 | Package | Milestone | What it does | Status |
 |---|---|---|---|
-| [`focused_crawler`](src/focused_crawler) | M1 | Focused crawler and search engine for one university domain (`gatech.edu`): labels pages COURSE / FACULTY / LAB / OTHER, extracts structured fields, ranks results | Baseline done (`v0.1.0`) |
+| [`focused_crawler`](src/focused_crawler) | M1 | Focused crawler and search engine with profiles. Default: Python documentation (docs.python.org + 19 package docs sites), labeled REFERENCE / TUTORIAL / HOWTO / CHANGELOG, with module, API symbols and version per page. Also: the academic `gatech.edu` profile (COURSE / FACULTY / LAB) | Baseline + Python-docs profile |
 | [`crawl_ledger`](src/crawl_ledger) | M2/M3 | Decentralized Python-docs crawler: peers on a Chord ring publish Ed25519-signed, hash-chained records, which are committed in Merkle blocks and audited by re-fetching | Baseline, R1, R2 |
 | [`edge_serving`](src/edge_serving) | M4 | Edge caching for verified crawl records: immutable proofs, signed statuses, R1 revocation deltas, R2 Bloom-filter proof sharing | Baseline, R1, R2, HTTP, evaluation (`v0.2.0`) |
 
@@ -15,14 +15,17 @@ crawling and serving systems:
 python -m venv .venv
 .venv\Scripts\activate              # Windows; `source .venv/bin/activate` elsewhere
 pip install -e ".[dev]"
-python -m pytest                    # 138 offline tests
+python -m pytest                    # 172 offline tests
 ```
 
 ```
-# M1: crawl Georgia Tech academic pages and search them
-fcrawl crawl --max-pages 200
+# M1: crawl Python documentation and search it (data/pydocs.db)
+fcrawl crawl --max-pages 500
 fcrawl stats
-fcrawl search "CS 6675"
+fcrawl search "json.dumps"
+# ...or the academic profile (data/crawl.db)
+fcrawl --config config/academic.yaml crawl --max-pages 200
+fcrawl --config config/academic.yaml search "CS 6675"
 
 # M2/M3: live crawl of PyPI + docs sites, with forging peers and audits
 python -m crawl_ledger.sim --peers 20 --dishonest 0.2 --forge-rate 0.2
@@ -36,7 +39,8 @@ python -m edge_serving.http_app demo
 
 | System | Result |
 |---|---|
-| M1 focused crawl (500 pages) | 98.1% of HTML pages were academic (FACULTY 331, COURSE 87, LAB 41, OTHER 9) |
+| M1 Python-docs crawl (150 pages) | 20 docs sites, 89.2% docs pages (REFERENCE 59, TUTORIAL 29, CHANGELOG 26, HOWTO 18, OTHER 16), 0 errors |
+| M1 academic crawl (500 pages) | 98.1% of HTML pages were academic (FACULTY 331, COURSE 87, LAB 41, OTHER 9) |
 | M2/M3 live ledger crawl (25 packages) | 44 records, 4/4 forged records caught; 2 honest false FAILs caused by CDN per-response nonces |
 | M4 serving simulation | R1 cuts the revoked-record window from up to 1791 s (TTL baseline) to 3 s, with about 75x less gateway load |
 

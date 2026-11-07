@@ -121,10 +121,10 @@ def test_processing_error_does_not_stop_crawl(monkeypatch):
 
     real = crawler_mod.extract_fields
 
-    def flaky(page, label, selectors=None):
+    def flaky(page, label, *args):
         if label == LAB:
             raise RuntimeError("boom")
-        return real(page, label, selectors)
+        return real(page, label, *args)
 
     monkeypatch.setattr(crawler_mod, "extract_fields", flaky)
     stats, storage, _ = run_crawl()
