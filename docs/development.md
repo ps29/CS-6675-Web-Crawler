@@ -14,7 +14,7 @@ pre-commit install
 ## Tests and linting
 
 ```
-python -m pytest                  # 172 tests, fully offline
+python -m pytest                  # 182 tests, fully offline
 python -m pytest --cov            # with coverage
 ruff check . && ruff format .
 pre-commit run --all-files

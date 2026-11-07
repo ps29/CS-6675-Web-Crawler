@@ -15,7 +15,7 @@ crawling and serving systems:
 python -m venv .venv
 .venv\Scripts\activate              # Windows; `source .venv/bin/activate` elsewhere
 pip install -e ".[dev]"
-python -m pytest                    # 172 offline tests
+python -m pytest                    # 182 offline tests
 ```
 
 ```
@@ -41,7 +41,7 @@ python -m edge_serving.http_app demo
 |---|---|
 | M1 Python-docs crawl (150 pages) | 20 docs sites, 89.2% docs pages (REFERENCE 59, TUTORIAL 29, CHANGELOG 26, HOWTO 18, OTHER 16), 0 errors |
 | M1 academic crawl (500 pages) | 98.1% of HTML pages were academic (FACULTY 331, COURSE 87, LAB 41, OTHER 9) |
-| M2/M3 live ledger crawl (25 packages) | 44 records, 4/4 forged records caught; 2 honest false FAILs caused by CDN per-response nonces |
+| M2/M3 live ledger crawl (25 packages) | 41 records, 2/2 forged records caught, 0/39 honest false FAILs after canonical hashing (previous run: 4/4 caught, 2/40 false FAILs from CDN per-response nonces) |
 | M4 serving simulation | R1 cuts the revoked-record window from up to 1791 s (TTL baseline) to 3 s, with about 75x less gateway load |
 
 Details and caveats: [docs/FINDINGS.md](docs/FINDINGS.md).

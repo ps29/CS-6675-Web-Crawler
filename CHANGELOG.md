@@ -21,6 +21,9 @@ All notable changes to this project are documented here. Format follows
 ### Fixed
 - Fetcher decodes pages as UTF-8 when the server declares no charset (titles were mojibake,
   e.g. `sys â System-specific...`).
+- `crawl_ledger` hashes pages with Cloudflare per-response nonces removed, on both the crawl and
+  audit side. Honest false FAILs went from 2/40 to 0/39 in the live run
+  (`results/m3/live_run5.json`).
 
 ## [0.2.0] - 2026-10-26
 
