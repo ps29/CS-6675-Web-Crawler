@@ -22,6 +22,15 @@ from crawl_ledger.blocks import HeaderChain
 from crawl_ledger.verify import verify_record_r1
 
 from .client import ACCEPT, IDE_POLICY, Client
+from .dishonest import (
+    ATTACKS,
+    WITHHOLD,
+    LyingR1,
+    LyingR1Edge,
+    LyingR1R2Edge,
+    ReplayEdge,
+    ReplayR2Edge,
+)
 from .edge import Edge
 from .gateway import Gateway
 from .ledger_view import AUDIT_FAIL, AUDIT_PASS, Ledger, build_demo_ledger
@@ -49,6 +58,7 @@ class Metrics:
     accepted: int = 0
     stale_accepts: int = 0
     stale_window: float = 0.0
+    revoked_reads: int = 0
     latencies_ms: list[float] = field(default_factory=list)
 
 
@@ -79,14 +89,19 @@ def make_edges(variant: str, a, ledger: Ledger, gateway: Gateway, clock: SimCloc
     for i in range(a.edges):
         name, common = f"edge{i}", {"proof_capacity": a.proof_capacity}
         r2 = {"verify_proof": verify, "summary_capacity": a.proof_capacity, "fp_rate": a.fp_rate}
+        bad = i < a.dishonest_edges
+        lie = {"attack": a.attack} if bad else {}
         if variant == "baseline":
-            edges.append(Edge(name, gateway.get, clock, **common))
+            edges.append((ReplayEdge if bad else Edge)(name, gateway.get, clock, **common))
         elif variant == "r1":
-            edges.append(R1Edge(name, gateway.get, clock, chain(), **common))
+            cls = LyingR1Edge if bad else R1Edge
+            edges.append(cls(name, gateway.get, clock, chain(), **common, **lie))
         elif variant == "r2":
-            edges.append(R2Edge(name, gateway.get, clock, **common, **r2))
+            cls = ReplayR2Edge if bad else R2Edge
+            edges.append(cls(name, gateway.get, clock, **common, **r2))
         else:
-            edges.append(R1R2Edge(name, gateway.get, clock, chain(), **common, **r2))
+            cls = LyingR1R2Edge if bad else R1R2Edge
+            edges.append(cls(name, gateway.get, clock, chain(), **common, **r2, **lie))
     if variant in ("r2", "both"):
         for e in edges:
             for other in edges:
@@ -115,6 +130,8 @@ def run_variant(variant: str, a, t_status: float) -> dict:
         ledger.seal_epoch()  # commit pointers that became final while building the ledger
         for e in edges:
             gossip_now(e)
+            if isinstance(e, LyingR1):
+                e.active = True
 
     duration = a.epochs * a.epoch_seconds
     events: list[tuple[float, int, int, object]] = []
@@ -189,12 +206,14 @@ def run_variant(variant: str, a, t_status: float) -> dict:
             m.requests += 1
             if resp.status != 200:
                 continue
+            rid = resp.body["rid"]
+            revoked = ledger.state.get(rid) == REVOKED and rid in revoked_at
+            m.revoked_reads += revoked
             verdict = consumer.check_latest(resp.body)
             if verdict != ACCEPT:
                 continue
             m.accepted += 1
-            rid = resp.body["rid"]
-            if ledger.state.get(rid) == REVOKED and rid in revoked_at:
+            if revoked:
                 m.stale_accepts += 1
                 m.stale_window = max(m.stale_window, t - revoked_at[rid])
 
@@ -214,6 +233,9 @@ def run_variant(variant: str, a, t_status: float) -> dict:
         "stale_accepts": m.stale_accepts,
         "stale_window_s": round(m.stale_window, 1),
         "revoked_records": len(revoked_at),
+        "revoked_reads": m.revoked_reads,
+        "dishonest_edges": a.dishonest_edges,
+        "attack": a.attack if r1 and a.dishonest_edges else None,
         "hit_ratio": round(hits / (hits + misses), 4) if hits + misses else 0.0,
         "gateway_requests": gateway.requests - gateway_requests_before,
         "gateway_rps": round((gateway.requests - gateway_requests_before) / duration, 4),
@@ -261,6 +283,8 @@ def build_parser() -> argparse.ArgumentParser:
     ap.add_argument("--edge-ms", type=float, default=5.0)
     ap.add_argument("--sibling-ms", type=float, default=40.0)
     ap.add_argument("--gateway-ms", type=float, default=150.0)
+    ap.add_argument("--dishonest-edges", type=int, default=0, help="edges that hide revocations")
+    ap.add_argument("--attack", choices=ATTACKS, default=WITHHOLD, help="R1 attack; see dishonest")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out", help="write results JSON here")
     return ap
