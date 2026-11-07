@@ -68,3 +68,29 @@ class Directory:
     def log(self, peer_id):
         p = self.by_id.get(peer_id)
         return p.log if p else []
+
+
+def make_canonical_record(
+    peer: Peer,
+    pkg: str,
+    source: str,
+    url: str,
+    content: bytes,
+    now: float | None = None,
+    forged_content: bytes | None = None,
+):
+    """RECORD() with a canonical digest: the record signs the raw hash and the canonical root.
+    Returns (record, claimed block hashes, canonicalizer version). `forged_content`, if given,
+    is what a dishonest peer claims instead of what it fetched."""
+    from .canonical import digest  # local import: canonical.py needs BeautifulSoup
+
+    body = content if forged_content is None else forged_content
+    d = digest(body)
+    rec = Record(
+        peer.id, pkg, source, url, content_hash(body),
+        time.time() if now is None else now, peer.head_hash, canon=d.root,
+    )  # fmt: skip
+    rec.id = rec.compute_id()
+    rec.sig = peer.sign(bytes.fromhex(rec.id)).hex()
+    peer.log.append(rec)
+    return rec, d.hashes, d.version
