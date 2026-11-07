@@ -128,6 +128,15 @@ python -m crawl_ledger.audit_eval collect --passes 3 --interval 86400
 python -m crawl_ledger.audit_eval evaluate --out results/m3/audit_eval.json
 ```
 
+### Politeness at ring scale: `python -m crawl_ledger.rate_sim`
+
+Virtual time and mock hosts only. Compares per-peer delays with host coordinators
+(`docs/host-rate-results.md`); `--kill-at T` removes pypi.org's coordinator at time T.
+
+```
+python -m crawl_ledger.rate_sim --peers 5 20 50 --seeds 3 --out results/m3/host_rate.json
+```
+
 ## 3. Edge serving (M4)
 
 ### Simulation: `python -m edge_serving.sim`
