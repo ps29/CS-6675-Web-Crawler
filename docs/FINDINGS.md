@@ -70,7 +70,7 @@ For M4 R1, `Header` gained an optional `delta_root`. It enters the header ID onl
 M3 header IDs and tests are unchanged.
 
 **Live PyPI crawl, before and after docs discovery** (`python -m crawl_ledger.sim --peers 20
---dishonest 0.2 --forge-rate 0.2`, 25 seeds, audits run straight after the crawl):
+--dishonest 0.2 --forge-rate 0.2`, 25 seeds, audits run after the crawl):
 
 | Run | Records | Docs records (rtd + docs) | Forged caught | Honest false FAIL | Requests | Crawl |
 |---|---|---|---|---|---|---|
@@ -146,8 +146,8 @@ delay up to 5 s, modeled latency (5 / 40 / 150 ms).
 
 **Caveats:** everything is simulated in one process with synthetic content, modeled latency
 and an assumed Zipf skew. R1's hit ratio counts statuses and pointers served from applied
-deltas as hits. All edges are honest, but a dishonest edge could misreport `synced_epoch`
-(acknowledged in M4 3.1).
+deltas as hits. All edges in this table are honest. With dishonest edges R1 loses its bound
+entirely (`docs/m4-results.md`).
 
 ## 4. Open items
 
@@ -157,16 +157,17 @@ deltas as hits. All edges are honest, but a dishonest edge could misreport `sync
 | M1 R2 metadata ranking | `w1*TF + w2*field_match + w3*recency`, boost only for field-pattern queries |
 | M1 evaluation | 30-50 judged queries; P@5, MRR, yield, coverage |
 | M4 R2 under cache pressure | `python -m edge_serving.sim --compare --packages 2000 --proof-capacity 500` |
-| M4 dishonest edges | Simulate a misreported `synced_epoch` and replayed statuses; measure stale accepts |
+| M4 dishonest edges | Simulated (`docs/m4-results.md`): under attack R1's stale window has no bound, while the baseline's stops near 1800 s. Next: design a defense, such as a proof of non-revocation or client spot-checks against the gateway |
 | M4 real deployment | Run the aiohttp edges on separate hosts to measure, not model, latency |
 
 ## 5. Engineering notes
 
 - Repo history: one feature branch per milestone, merged with `--no-ff`, Conventional Commits,
-  tags `v0.1.0` and `v0.2.0`. No remote yet.
+  tags `v0.1.0` and `v0.2.0`. Hosted at github.com/ps29/CS-6675-Web-Crawler.
 - Pre-commit runs ruff and the full test suite, but it leaves untracked files in place. Partial
   commits therefore need `git stash push --keep-index --include-untracked` first, or the hook
   tests the wrong tree.
 - The crawl-ledger import landed as one commit (code + lint fixes), because a verbatim-only
   commit would fail the lint hook.
-- Test suite: 134 offline tests in 21 modules (12 for M1, 2 for M2/M3 with 21 tests, 7 for M4).
+- Test suite: 196 offline tests in 25 modules (14 modules with 99 tests for M1, 3 with 35 for M2/M3,
+  8 with 62 for M4).
