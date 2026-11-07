@@ -110,10 +110,16 @@ def apply_selectors(page: ParsedPage, selectors: dict[str, str]) -> dict:
 
 
 def extract_fields(
-    page: ParsedPage, label: str, selectors: dict[str, dict[str, str]] | None = None
+    page: ParsedPage,
+    label: str,
+    selectors: dict[str, dict[str, str]] | None = None,
+    extractors: dict | None = None,
 ) -> dict:
-    """Built-in fields for the label, overridden by any matching configured selectors."""
-    fields = EXTRACTORS[label](page) if label in EXTRACTORS else {}
+    """Built-in fields for the label, overridden by any matching configured selectors.
+
+    `extractors` maps label -> extractor (default: the academic ones)."""
+    extractors = EXTRACTORS if extractors is None else extractors
+    fields = extractors[label](page) if label in extractors else {}
     selectors = selectors or {}
     for key in ("*", label):
         if key in selectors:

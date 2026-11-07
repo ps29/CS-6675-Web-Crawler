@@ -12,42 +12,69 @@ fcrawl [--config PATH] [--db PATH] [-v] <command> ...
 | Command | Options | What it does |
 |---|---|---|
 | `crawl` | `--max-pages N` | Runs a focused crawl from the configured seeds |
-| `search QUERY` | `-k 10`, `--label COURSE\|FACULTY\|LAB\|OTHER`, `--json` | Ranked, type-labeled results |
+| `search QUERY` | `-k 10`, `--label LABEL`, `--json` | Ranked, type-labeled results |
 | `stats` | | JSON summary: pages, indexed, duplicates, hosts, links, distinct terms, label counts |
 | `export` | `--format json\|csv`, `--out FILE` | Pages with their extracted fields |
 
 Global options: `--config` (default `config/default.yaml`), `--db` (overrides `storage.db_path`),
 `-v` (log every page).
 
+### Profiles
+
+A config's `profile` picks what the crawl targets:
+
+| Profile | Config | Labels | Structured table |
+|---|---|---|---|
+| `python_docs` (default) | `config/default.yaml` | `REFERENCE`, `TUTORIAL`, `HOWTO`, `CHANGELOG`, `OTHER` | `doc_pages` (package, kind, title, version, module, symbols, counts) |
+| `academic` (M1) | `config/academic.yaml` | `COURSE`, `FACULTY`, `LAB`, `OTHER` | `courses`, `faculty`, `labs` |
+
 ```
-fcrawl crawl --max-pages 200
+# Python documentation: docs.python.org + 19 package docs sites -> data/pydocs.db
+fcrawl crawl --max-pages 500
+fcrawl search "json.dumps"
+fcrawl search "dependency injection" --label TUTORIAL -k 5
+
+# Academic (M1): gatech.edu -> data/crawl.db
+fcrawl --config config/academic.yaml crawl --max-pages 200
+fcrawl --config config/academic.yaml search "CS 6675"
+
 fcrawl stats
-fcrawl search "CS 6675"
-fcrawl search "machine learning" --label LAB -k 5
 fcrawl export --format csv --out data/pages.csv
 ```
 
-### Config (`config/default.yaml`)
+Dotted names are indexed both as parts and as one token, so `json.dumps` matches the `json`
+module page rather than every page that mentions "json" or "dumps".
+
+### Config keys
 
 | Key | Default | Meaning |
 |---|---|---|
-| `domain` | `gatech.edu` | Registered domain; every subdomain is in scope |
-| `seeds` | 5 Georgia Tech URLs | Start URLs |
+| `profile` | `academic` if omitted | `python_docs` or `academic` |
+| `domain` / `domains` | (required) | One scope or a list. A scope is a host (subdomains included), optionally with a path prefix: `numpy.org/doc/stable/` only admits URLs under that path |
+| `exclude` | none | Regexes searched in the full URL; matches are never crawled (e.g. `/_sources/`, translations) |
+| `seeds` | (required) | Start URLs |
 | `crawl.max_pages` | 500 | Page budget |
-| `crawl.max_depth` | 6 | Link depth from a seed |
-| `crawl.per_host_max` | 200 | Pages per host |
-| `crawl.delay_seconds` | 1.0 | Minimum delay between requests to one host |
+| `crawl.max_depth` | 6 (5 for docs) | Link depth from a seed |
+| `crawl.per_host_max` | 200 (40 for docs) | Pages per host |
+| `crawl.host_penalty` | 0 (0.02 for docs) | Priority lost per page already crawled on a host; spreads a multi-site budget |
+| `crawl.delay_seconds` | 1.0 | Minimum delay between requests to one host (must be ≥ 1) |
 | `crawl.timeout_seconds`, `crawl.max_retries` | 15.0, 2 | HTTP timeout and retries on 429/5xx |
 | `crawl.user_agent` | course-project UA | Identifying User-Agent |
-| `storage.db_path` | `data/crawl.db` | SQLite output (gitignored) |
-| `selectors` | see file | Extra fields per label: `"css"` for text or `"css@attr"` for an attribute; `"*"` applies to every label |
+| `storage.db_path` | `data/crawl.db` | SQLite output (gitignored); the docs config uses `data/pydocs.db` |
+| `selectors` | see files | Extra fields per label: `"css"` for text or `"css@attr"` for an attribute; `"*"` applies to every label |
 | `ranking.w_tf`, `w_field`, `w_recency` | 1.0, 3.0, 0.5 | Weights reserved for the metadata-aware ranker (M1 R2, not built yet) |
 
 ### Reading the database
 
-`data/crawl.db` is a plain SQLite file. Open it with [DB Browser for SQLite](https://sqlitebrowser.org/)
-or the VS Code "SQLite Viewer" extension. The main tables are `pages`, `links`, `courses`,
-`faculty`, `labs` and `postings`.
+The databases are plain SQLite files. Open them with
+[DB Browser for SQLite](https://sqlitebrowser.org/) or the VS Code "SQLite Viewer" extension.
+The main tables are `pages`, `links`, `postings`, `doc_pages` (Python docs) and `courses`,
+`faculty`, `labs` (academic). For example:
+
+```sql
+SELECT package, module, n_symbols, version FROM doc_pages WHERE kind = 'reference'
+ORDER BY n_symbols DESC;
+```
 
 ## 2. Crawl ledger (M2/M3)
 
