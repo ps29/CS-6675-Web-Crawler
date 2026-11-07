@@ -76,17 +76,29 @@ M3 header IDs and tests are unchanged.
 |---|---|---|---|---|---|---|
 | `live_run3` (RTD regex only) | 27 | 2 | 1/1 | 0/26 | 54 | 24 s |
 | `live_run4` (+ self-hosted docs) | 44 | 17 | 4/4 | 2/40 (5%) | 88 | 34 s |
+| `live_run5` (+ canonical hashing) | 41 | 16 | 2/2 | 0/39 | 81 | 486 s |
 
 - Only 2 of 20 PyPI packages host docs on `*.readthedocs.io`, but 18 publish a `Documentation`
   project URL. The extractor now follows that URL (or a `docs.*` homepage) as source `docs`,
   and also accepts `readthedocs.org`. That gives 8.5x more docs records.
-- **New failure mode: CDN per-response nonces.** `sqlalchemy/docs` and `matplotlib/docs` failed
-  audit seconds after the crawl. Both sit behind Cloudflare, which injects a fresh token into
-  every response (a challenge ray ID; a Rocket Loader `type="<nonce>-text/javascript"`). The
-  docs did not change, and `Last-Modified` is old, so the audit says FAIL instead of
-  INCONCLUSIVE. A raw-byte hash is too strict for such hosts. The fix is to hash a canonical
-  form (strip known CDN-injected tokens) on both the crawl and audit side, or to mark such
-  hosts as audit-INCONCLUSIVE.
+- **Failure mode in `live_run4`: CDN per-response nonces.** `sqlalchemy/docs` and
+  `matplotlib/docs` failed audit seconds after the crawl. Both sit behind Cloudflare, which
+  injects a fresh token into every response (a challenge ray ID and timestamp; a Rocket Loader
+  `type="<nonce>-text/javascript"`). The docs did not change, and `Last-Modified` is old, so the
+  audit said FAIL instead of INCONCLUSIVE.
+- **Fix: canonical hashing.** Crawl and audit now hash the page with those tokens removed
+  (`canonical_content` in `record.py`). Only the tokens go, so script paths and comments still
+  count, and pages without them hash as before. Three fetches each of `matplotlib.org/`,
+  `matplotlib.org/stable/` and `docs.sqlalchemy.org/en/20/` gave 3 raw hashes but 1 canonical
+  hash. In `live_run5` both pages pass audit.
+- **Caveats on `live_run5`.** PyPI was very slow from this network, so the crawl took 486 s and
+  records were 268-459 s old when audited (25-34 s in `live_run4`). The docs column counts honest
+  records only. `requests/pypi` and `django/docs` could not be fetched (3 records fewer, as
+  `requests/rtd` depends on the first), and `json/pydocs` was INCONCLUSIVE after a 20.7 s audit,
+  which matches the fetch timeout. Neither forged record landed on a nonce page, so that case is
+  covered only by offline tests (`tests/ledger/test_canonical.py`). Forged counts differ between
+  runs because peer keys, and so package ownership, are regenerated each run. The patterns match
+  only the tokens seen so far; another CDN or Cloudflare feature would need its own.
 
 ## 3. Serving layer (M4), `v0.2.0`
 
@@ -144,7 +156,6 @@ deltas as hits. All edges are honest, but a dishonest edge could misreport `sync
 | M1 R1 learned classifier | Label about 200 pages per class from a larger crawl; TF-IDF + logistic regression with a rules fallback |
 | M1 R2 metadata ranking | `w1*TF + w2*field_match + w3*recency`, boost only for field-pattern queries |
 | M1 evaluation | 30-50 judged queries; P@5, MRR, yield, coverage |
-| Ledger audits on CDN-fronted docs | Canonicalize page bytes before hashing (strip Cloudflare nonces), re-run `live_run4` |
 | M4 R2 under cache pressure | `python -m edge_serving.sim --compare --packages 2000 --proof-capacity 500` |
 | M4 dishonest edges | Simulate a misreported `synced_epoch` and replayed statuses; measure stale accepts |
 | M4 real deployment | Run the aiohttp edges on separate hosts to measure, not model, latency |
