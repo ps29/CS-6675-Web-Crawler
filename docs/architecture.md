@@ -43,7 +43,7 @@ flowchart LR
     X --> ST[(SQLite)]
     P --> I[Indexer<br/>Porter-stemmed postings] --> ST
     P -->|outlinks| SC[score_link] --> F
-    ST --> R[TFRanker] --> Q[fcrawl search]
+    ST --> R[TFRanker or BM25FRanker] --> Q[fcrawl search]
 ```
 
 | Module | Responsibility |
@@ -87,7 +87,7 @@ flowchart LR
     PD & PY & RTD & DOC & GH --> REC[record: url, hash, time,<br/>prev hash, Ed25519 signature]
     REC --> LOG[per-peer hash-chained log]
     LOG --> BLK[Merkle block headers<br/>HeaderChain, final_depth = 2]
-    REC --> AUD[audit: verify + re-fetch + compare]
+    REC --> AUD[audit: verify + re-fetch + compare<br/>raw hash, or canonical blocks]
 ```
 
 | Module | M3 component |
@@ -108,8 +108,22 @@ flowchart LR
 Dishonest peers publish the hash of altered content for a share of their records (`--forge-rate`).
 The forged flag is kept only as ground truth, so detection can be measured.
 
-**Header extension for M4.** `Header` has an optional `delta_root`. It enters the header ID only when
-set, so M3 header IDs and tests are unchanged.
+**Optional fields.** `Header` has an optional `delta_root` (M4 R1) and `state_root` (M4 R1-S), and
+`Record` has an optional `canon` (the canonical block-digest root). Each enters the header ID or the
+signed record fields only when set, so M3 header and record IDs and tests are unchanged.
+
+**Canonical audits.** `canonical.digest` keeps a page's main content (or a PyPI document's fields)
+as a versioned list of heading, text, code and link blocks. A record made with
+`make_canonical_record` commits to their Merkle root. `canonical_audit` passes on equal roots;
+otherwise it re-fetches and fails only on a changed *sensitive* block (code, link, install command,
+version, metadata field) when its own two fetches agree, else returns INCONCLUSIVE. It is opt-in:
+`sim.py` and `sim_m3.py` still audit with the raw hash.
+
+**Host coordinators.** `hostrate.CoordinatorRing` maps each host to `successor(hash(host))`, which
+grants leases from one token bucket per host (at most `horizon` seconds ahead) and caches robots.txt
+and ETag/Last-Modified validators. `CoordinatedFetcher` wraps a fetcher with lease, wait and
+conditional requests. Only `rate_sim.py` and the tests use it; the live crawl still runs all peers in
+one process with one shared `Fetcher`.
 
 ---
 

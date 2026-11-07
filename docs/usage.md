@@ -64,7 +64,7 @@ module page rather than every page that mentions "json" or "dumps".
 | `crawl.user_agent` | course-project UA | Identifying User-Agent |
 | `storage.db_path` | `data/crawl.db` | SQLite output (gitignored); the docs config uses `data/pydocs.db` |
 | `selectors` | see files | Extra fields per label: `"css"` for text or `"css@attr"` for an attribute; `"*"` applies to every label |
-| `ranking.w_tf`, `w_field`, `w_recency` | 1.0, 3.0, 0.5 | Weights reserved for the metadata-aware ranker (M1 R2, not built yet) |
+| `ranking.w_tf`, `w_field`, `w_recency` | 1.0, 3.0, 0.5 | Not read by any ranker. `--ranker bm25f` takes its parameters from `BM25FParams` in `ranker.py` |
 
 ### Reading the database
 
