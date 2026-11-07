@@ -157,7 +157,7 @@ entirely (`docs/m4-results.md`).
 | M1 R2 metadata ranking | `w1*TF + w2*field_match + w3*recency`, boost only for field-pattern queries |
 | M1 evaluation | 30-50 judged queries; P@5, MRR, yield, coverage |
 | M4 R2 under cache pressure | `python -m edge_serving.sim --compare --packages 2000 --proof-capacity 500` |
-| M4 dishonest edges | Simulated (`docs/m4-results.md`): under attack R1's stale window has no bound, while the baseline's stops near 1800 s. Next: design a defense, such as a proof of non-revocation or client spot-checks against the gateway |
+| M4 dishonest edges | Defended (`docs/m4-results.md`): R1-S proofs of non-revocation bound every attack by `max_lag` (about 1800 s, vs. unbounded for R1), and 5% client spot-checks blocked the lying edge in every run. Next: get client headers from several sources, and avoid spot-check false strikes against TTL-cached baseline statuses |
 | M4 real deployment | Run the aiohttp edges on separate hosts to measure, not model, latency |
 
 ## 5. Engineering notes
