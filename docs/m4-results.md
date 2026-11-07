@@ -34,5 +34,46 @@ The stale window is the longest such gap.
 - R1's hit ratio counts statuses and pointers served from applied deltas as hits.
 - With only 25 packages, R2 has little to share. Re-run with `--packages 2000 --proof-capacity 500`
   to see sibling sharing under cache pressure.
-- R1 edges trust their own `synced_epoch`. A dishonest edge could misstate it (M4 Section 3.1);
-  the simulation has only honest edges.
+- The table above has only honest edges. See the next section for dishonest ones.
+
+## Dishonest edges (2026-11-07)
+
+Command, for each seed 0-4: `python -m edge_serving.sim --variant r1 --dishonest-edges 1 --attack
+withhold --seed 0`. Same setup as above, T_status = 60 s for the baseline, raw rows in
+`results/m4/dishonest_edges.json`. Edges cannot forge anything here; they only hide revocations
+(`src/edge_serving/dishonest.py`):
+
+- **Baseline replay:** keep serving the last signed status from before the revocation.
+- **R1 `freeze`:** stop applying deltas and overstate `synced_epoch`.
+- **R1 `withhold`:** apply everything except revocations, and report `synced_epoch` truthfully.
+
+| Build | Attack | Dishonest edges | Stale accepts, mean (range) | Stale window, mean | Share of revoked reads accepted |
+|---|---|---|---|---|---|
+| baseline | none | 0 of 3 | 7 (0-13) | 24 s | 0.6% |
+| baseline | replay | 1 of 3 | 179 (144-268) | 1775 s | 14.2% |
+| baseline | replay | 3 of 3 | 519 (421-787) | 1797 s | 41.3% |
+| +R1 | none | 0 of 3 | 2 (0-2) | 2 s | 0.1% |
+| +R1 | withhold | 1 of 3 | 589 (456-891) | 6533 s | 32.9% |
+| +R1 | withhold | 3 of 3 | 1788 (1288-2806) | 6579 s | 100% |
+| +R1 | freeze | 1 of 3 | 600 (445-961) | 6579 s | 33.4% |
+| +R1 | freeze | 3 of 3 | 1818 (1277-3009) | 6586 s | 100% |
+
+### What this shows
+- **R1 is weaker than the baseline against a dishonest edge.** Baseline statuses carry a
+  gateway-signed epoch, so `max_lag` caps the replay at about 3 epochs (1800 s). R1 statuses have
+  no signed freshness, so the window has no bound: 6600 s is simply the first revocation (600 s)
+  to the end of the 7200 s run.
+- **Signing `synced_epoch` would not fix this.** `withhold` reports it truthfully and does as well
+  as `freeze`. The client cannot tell "no revocation exists" from "the edge left it out", because
+  an absent delta entry proves nothing: `INCLUDED` is implied, and an old `PASS` keeps a valid
+  branch. A fix needs a proof of non-revocation, or a check that does not go through the edge.
+- **Damage scales with the share of reads the edge serves.** One edge of three hides about a third
+  of revoked reads, for as long as it keeps lying.
+- **What R1 still stops.** A lying edge cannot make a revoked record pass a policy it never met: a
+  record with no earlier `PASS` is still rejected by the RAG policy. An edge that freezes and
+  admits its lag gets `REFETCH`.
+
+### Caveats on these runs
+- Five seeds and one workload. Ranges are wide, probably because revoking a popular record
+  dominates a run. Client retries are not modeled: `REFETCH` counts as not accepted.
+- The attacker is always active and never detected. No defense is implemented yet.

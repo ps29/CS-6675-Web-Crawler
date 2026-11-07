@@ -17,6 +17,9 @@ All notable changes to this project are documented here. Format follows
   `readthedocs.org` links. The live crawl went from 2 to 17 docs records (`results/m3/live_run4.json`).
 - Project documentation: `docs/architecture.md`, `docs/usage.md`, `docs/development.md`, a docs
   index, and a rewritten top-level README.
+- `edge_serving` dishonest edges (`--dishonest-edges`, `--attack`): baseline status replay and R1
+  `freeze` / `withhold`. Under attack R1's stale window has no bound, while the baseline's stops
+  near 1800 s (`docs/m4-results.md`, `results/m4/dishonest_edges.json`).
 
 ### Fixed
 - Fetcher decodes pages as UTF-8 when the server declares no charset (titles were mojibake,
