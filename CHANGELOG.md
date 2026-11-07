@@ -34,6 +34,12 @@ All notable changes to this project are documented here. Format follows
   (`docs/audit-results.md`, `results/m3/audit_eval.json`).
 - `python -m crawl_ledger.audit_eval` (collect / evaluate), a resumable, polite drift collector
   and a forgery suite (`forgery.py`) that compares raw, canonical, block and SimHash audits.
+- `crawl_ledger` host coordinators (`hostrate.py`): `successor(hash(host))` keeps one token
+  bucket per host for the whole ring (crawls and audits), short leases that survive a
+  coordinator leaving, and shared robots.txt and ETag/Last-Modified caches. `Fetcher.fetch`
+  accepts conditional headers and returns validators. In a virtual-time simulation against mock
+  hosts (`python -m crawl_ledger.rate_sim`), the peak load on pypi.org stayed at 1 req/s with
+  5-50 peers, vs. 4.7-36 req/s with per-peer delays (`docs/host-rate-results.md`).
 
 ### Fixed
 - Fetcher decodes pages as UTF-8 when the server declares no charset (titles were mojibake,
