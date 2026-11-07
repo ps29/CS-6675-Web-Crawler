@@ -157,7 +157,7 @@ deltas as hits. All edges are honest, but a dishonest edge could misreport `sync
 | M1 R2 metadata ranking | `w1*TF + w2*field_match + w3*recency`, boost only for field-pattern queries |
 | M1 evaluation | 30-50 judged queries; P@5, MRR, yield, coverage |
 | M4 R2 under cache pressure | `python -m edge_serving.sim --compare --packages 2000 --proof-capacity 500` |
-| M4 dishonest edges | Simulate a misreported `synced_epoch` and replayed statuses; measure stale accepts |
+| M4 dishonest edges | Simulated (`docs/m4-results.md`): under attack R1's stale window has no bound, while the baseline's stops near 1800 s. Next: design a defense, such as a proof of non-revocation or client spot-checks against the gateway |
 | M4 real deployment | Run the aiohttp edges on separate hosts to measure, not model, latency |
 
 ## 5. Engineering notes

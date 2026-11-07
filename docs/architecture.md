@@ -144,7 +144,8 @@ flowchart LR
 | `delta.py`, `revocation.py` | **R1**: per-epoch status deltas committed by `delta_root`. Edges apply gossiped headers, fetch gaps and fall back to TTLs. Statuses are checked by Merkle branch; `INCLUDED` is implied once the proof's block is final |
 | `summary.py` | **R2**: Kirsch–Mitzenmacher Bloom-filter summaries of cached proofs; fetch from a sibling, verify, else fall back to the gateway |
 | `http_app.py` | aiohttp gateway and edge servers; concurrent misses for one path share a single upstream fetch |
-| `sim.py` | Trace-driven simulation: Zipf reads, epochs, releases, revocations, gossip delay, modeled latency |
+| `dishonest.py` | Attacker edges for the evaluation: baseline status replay, R1 `freeze` and `withhold` |
+| `sim.py` | Trace-driven simulation: Zipf reads, epochs, releases, revocations, gossip delay, modeled latency, optional dishonest edges |
 
 ### Security checks (all covered by tests)
 
@@ -156,5 +157,7 @@ Each of these is rejected, refetched or sent back to the gateway:
 - an implied-`INCLUDED` claim on a non-final block
 - a status older than `max_lag`
 
-**Known limit:** an R1 edge reports its own `synced_epoch`, and a dishonest edge could misstate it
-(M4 Section 3.1). The simulation has only honest edges.
+**Known limit:** R1 statuses have no signed freshness. A dishonest edge can overstate its
+`synced_epoch` or simply leave revocations out, and the client cannot detect either, so a revoked
+record stays accepted for as long as the edge lies (M4 Section 3.1). Baseline statuses are capped
+by `max_lag` instead. Measured in `docs/m4-results.md`; no defense is implemented yet.
