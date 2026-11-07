@@ -97,6 +97,8 @@ flowchart LR
 | `verify.py` | Record ID, signature and chain checks; R1 Merkle-branch verification |
 | `merkle.py`, `blocks.py` | Merkle roots and branches, block headers, `HeaderChain` with finality |
 | `audit.py` | `PASS` if the hash matches, `INCONCLUSIVE` if the source signals a change (newest PyPI upload or `Last-Modified`), else `FAIL` |
+| `canonical.py`, `canonical_audit.py` | Versioned block digest of a page's main content (or PyPI JSON fields) and the block-level audit: FAIL only on a changed sensitive block, two-fetch rule |
+| `forgery.py`, `audit_eval.py` | Forgery and rebuild-noise suite; drift collection and audit-scheme comparison |
 | `r2.py` | Deterministic auditor selection, verdict settlement, reputation |
 | `sim.py` | Live (or `--offline`) baseline run: crawl, verify, audit, metrics |
 | `sim_m3.py` | Synthetic comparison of baseline vs R1 (blocks) vs R2 (audits + reputation) vs both |

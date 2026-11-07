@@ -117,6 +117,17 @@ Run `python -m crawl_ledger.sim_m3 --help` for every option, including `--versio
 `--epoch-size`, `--auditors`, `--change-rate`, `--silent-share`, `--no-collude` and `--live`
 (real pages instead of synthetic ones).
 
+### Audit evaluation: `python -m crawl_ledger.audit_eval`
+
+Fetches real pages several times, then compares raw, canonical, block-level and SimHash audits on
+honest and forged claims (`docs/audit-results.md`). Both steps stop after `--budget` seconds and
+resume when run again. `data/drift/` holds the fetched pages.
+
+```
+python -m crawl_ledger.audit_eval collect --passes 3 --interval 86400
+python -m crawl_ledger.audit_eval evaluate --out results/m3/audit_eval.json
+```
+
 ## 3. Edge serving (M4)
 
 ### Simulation: `python -m edge_serving.sim`

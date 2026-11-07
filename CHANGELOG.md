@@ -26,6 +26,14 @@ All notable changes to this project are documented here. Format follows
   unbounded, and withholding fails safe (`results/m4/state_proofs.json`).
 - `edge_serving` client spot-checks (`--spot-check`, `--spot-strikes`) and a `replay` attack for
   R1-family edges. At 5% the lying edge was blocked in every run.
+- `crawl_ledger` canonical, block-level audits (`canonical.py`, `canonical_audit.py`): records can
+  commit to a versioned Merkle root of content blocks (optional, signed `canon` field). An audit
+  FAILs only when a sensitive block (code, link, install command, version, metadata field)
+  differs, and needs two agreeing auditor fetches. With synthetic rebuild noise, honest false
+  FAILs went from 100% (raw hash) to 0%, and every sensitive content edit was still detected
+  (`docs/audit-results.md`, `results/m3/audit_eval.json`).
+- `python -m crawl_ledger.audit_eval` (collect / evaluate), a resumable, polite drift collector
+  and a forgery suite (`forgery.py`) that compares raw, canonical, block and SimHash audits.
 
 ### Fixed
 - Fetcher decodes pages as UTF-8 when the server declares no charset (titles were mojibake,

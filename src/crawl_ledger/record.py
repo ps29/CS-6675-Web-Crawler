@@ -44,9 +44,13 @@ class Record:
     prev: str  # id of the previous record in this peer's log
     id: str = ""
     sig: str = ""
+    canon: str = ""  # optional: root of the canonical block digest (canonical.py)
 
     def signed_fields(self) -> dict:
-        return {k: getattr(self, k) for k in SIGNED_FIELDS}
+        fields = {k: getattr(self, k) for k in SIGNED_FIELDS}
+        if self.canon:  # absent in M3 records, so their IDs are unchanged
+            fields["canon"] = self.canon
+        return fields
 
     def compute_id(self) -> str:
         blob = json.dumps(self.signed_fields(), sort_keys=True, separators=(",", ":"))
