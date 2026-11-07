@@ -6,7 +6,7 @@ import time
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
-from .record import GENESIS, Record, sha256_hex
+from .record import GENESIS, Record, content_hash, sha256_hex
 
 
 class Peer:
@@ -45,7 +45,7 @@ class Peer:
             pkg,
             source,
             url,
-            sha256_hex(body),
+            content_hash(body),
             time.time() if now is None else now,
             self.head_hash,
         )

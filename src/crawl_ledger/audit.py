@@ -1,6 +1,6 @@
 """AUDIT(): verify the record, re-fetch the page, compare hashes (M3 Section 2.4)."""
 
-from .record import sha256_hex
+from .record import content_hash
 from .verify import verify
 
 PASS, FAIL, INCONCLUSIVE = "PASS", "FAIL", "INCONCLUSIVE"
@@ -17,7 +17,7 @@ def audit(rec, directory, fetcher) -> str:
     result = fetcher.fetch(rec.url)
     if result is None or result.status != 200:
         return INCONCLUSIVE
-    if sha256_hex(result.content) == rec.hash:
+    if content_hash(result.content) == rec.hash:
         return PASS
     if source_changed_since(result, rec.time):
         return INCONCLUSIVE
