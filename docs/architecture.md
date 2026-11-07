@@ -155,7 +155,7 @@ Each of these is rejected, refetched or sent back to the gateway:
 - a forged or dropped delta entry (`delta_root` mismatch)
 - a forged sibling copy
 - an implied-`INCLUDED` claim on a non-final block
-- a status older than `max_lag`
+- a gateway-signed status older than `max_lag` (baseline only; see the known limit below for R1)
 
 **Known limit:** R1 statuses have no signed freshness. A dishonest edge can overstate its
 `synced_epoch` or simply leave revocations out, and the client cannot detect either, so a revoked

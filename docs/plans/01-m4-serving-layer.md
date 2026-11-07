@@ -46,9 +46,11 @@ src/edge_serving/      M4
 ## Status (2026-10-26)
 Milestones 1-7 are done. Evaluation ran before HTTP because it produces the M4 comparison.
 Deviation: the crawl-ledger import landed as one commit (verbatim code + lint fixes), since a
-verbatim-only commit would fail the ruff hook. Open follow-ups: an evaluation under cache pressure
-for R2 (`--packages 2000 --proof-capacity 500`), and dishonest-edge (misreported synced_epoch)
-experiments.
+verbatim-only commit would fail the ruff hook. Open follow-up: an evaluation under cache pressure
+for R2 (`--packages 2000 --proof-capacity 500`).
+
+Update (2026-11-07): the dishonest-edge experiments are done (`docs/m4-results.md`). They found no
+bound on R1's stale window under attack, so a defense is a new open follow-up.
 
 ## Testing
 Offline pytest for every component. Security tests cover a tampered proof, a tampered status
