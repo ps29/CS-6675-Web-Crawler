@@ -39,7 +39,7 @@ All notable changes to this project are documented here. Format follows
   coordinator leaving, and shared robots.txt and ETag/Last-Modified caches. `Fetcher.fetch`
   accepts conditional headers and returns validators. In a virtual-time simulation against mock
   hosts (`python -m crawl_ledger.rate_sim`), the peak load on pypi.org stayed at 1 req/s with
-  5-50 peers, vs. 4.7-36 req/s with per-peer delays (`docs/host-rate-results.md`).
+  5-50 peers, vs. 4.7-36 req/s with per-peer delays (5-37 req/s after seeding keys) (`docs/host-rate-results.md`).
 - `focused_crawler` BM25F ranker (`fcrawl search --ranker bm25f`): title, meta (package, module,
   symbols, description) and body fields, a query-intent label boost and a named-package boost.
   `python -m focused_crawler.evaluate` reports P@5, MRR and nDCG@10 with paired randomization
@@ -48,6 +48,10 @@ All notable changes to this project are documented here. Format follows
   (`docs/ranking-results.md`). The default ranker is still `tf`.
 
 ### Changed
+- Simulations seed peer keys (`Peer(key_seed=...)`), so a `--seed` reproduces node IDs, ownership
+  and verdicts; this removes the flaky M3 simulation test. Results JSONs carry a `provenance`
+  block (`src/runinfo`). `results/m3/host_rate*.json` and `docs/host-rate-results.md` were
+  regenerated with seeded keys: the findings hold, magnitudes moved by up to about 20%.
 - Docs refreshed for the canonical audits, host coordinators and BM25F ranker: README status,
   commands and headline results, development test counts (256) and layout, architecture notes on
   optional record/header fields. A flaky M3 simulation test is recorded in `docs/development.md`.

@@ -160,6 +160,7 @@ entirely (`docs/m4-results.md`).
 | M4 dishonest edges | Defended (`docs/m4-results.md`): R1-S proofs of non-revocation bound every attack by `max_lag` (about 1800 s, vs. unbounded for R1), and 5% client spot-checks blocked the lying edge in every run. Next: get client headers from several sources, and avoid spot-check false strikes against TTL-cached baseline statuses |
 | Canonical audits (`docs/audit-results.md`) | Rerun `audit_eval collect --interval 86400` over 1-2 weeks (the measured drift window was minutes); add `--audit-mode canonical` to `crawl_ledger.sim` with a content-scope forgery model; flag raw-only mismatches (chrome edits) for review |
 | Host coordinators (`docs/host-rate-results.md`) | Use `CoordinatedFetcher` in a multi-process crawl; let peers report lease grants to detect a coordinator that stalls or overloads a host |
+| Results made before seeded keys | `results/m3/live_run*`, `m3_*.json` and `results/m4/*` were produced with random peer keys and have no provenance block; re-running gives somewhat different numbers. The reported tables match those files |
 | M4 real deployment | Run the aiohttp edges on separate hosts to measure, not model, latency |
 
 ## 5. Engineering notes

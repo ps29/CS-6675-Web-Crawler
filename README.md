@@ -48,7 +48,7 @@ python -m edge_serving.http_app demo
 | M2/M3 live ledger crawl (25 packages) | 41 records, 2/2 forged records caught, 0/39 honest false FAILs after canonical hashing (previous run: 4/4 caught, 2/40 false FAILs from CDN per-response nonces) |
 | M4 serving simulation | R1 cuts the revoked-record window from up to 1791 s (TTL baseline) to 3 s, with about 75x less gateway load, if edges are honest. A dishonest R1 edge can hide a revocation with no time limit; R1-S state proofs bound it by `max_lag` (about 1800 s), and 5% client spot-checks blocked the lying edge in every run |
 | Canonical block audits (104 re-fetched pages) | With synthetic rebuild noise, honest false FAILs 100% (raw hash) → 0%; every sensitive edit inside the main content still caught. Edits to page chrome are not caught; real drift window was minutes |
-| Host coordinators (simulated, mock hosts) | Peak load on pypi.org 1 req/s at 5-50 peers, vs. 4.7-36 req/s with per-peer delays; holds when the coordinator leaves |
+| Host coordinators (simulated, mock hosts) | Peak load on pypi.org 1 req/s at 5-50 peers, vs. 5-37 req/s with per-peer delays; holds when the coordinator leaves |
 | BM25F ranking (48 **draft** judged queries) | nDCG@10 0.557 (tf) → 0.905; the intent and package boosts are not significant vs. plain BM25F. Judgments not yet reviewed |
 
 Details and caveats: [docs/FINDINGS.md](docs/FINDINGS.md).
