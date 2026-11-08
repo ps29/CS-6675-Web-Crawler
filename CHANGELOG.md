@@ -6,6 +6,11 @@ All notable changes to this project are documented here. Format follows
 ## [Unreleased]
 
 ### Added
+- `lab_gui`: a Windows GUI (Tkinter, `lab-gui` or `python -m lab_gui`) that runs every
+  experiment, test suite and lint check. Option forms are generated from each program's
+  argparse parser, output streams live with Stop, the exact command can be copied, and a
+  Results tab browses `results/`. `crawl_ledger.sim`, `sim_m3`, `audit_eval`,
+  `focused_crawler.evaluate` and `edge_serving.http_app` now expose `build_parser()`.
 - `focused_crawler` profiles. The new default `python_docs` profile crawls docs.python.org and
   19 package docs sites, labels pages REFERENCE / TUTORIAL / HOWTO / CHANGELOG, and stores package,
   version, module and API symbols in a `doc_pages` table. The M1 academic crawl moved to

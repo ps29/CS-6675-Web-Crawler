@@ -3,6 +3,28 @@
 All commands assume the virtual environment is active and the package is installed
 (`pip install -e ".[dev]"`, see [development.md](development.md)).
 
+## 0. Lab GUI: `lab-gui`
+
+A Windows desktop app (Tkinter, no extra dependencies) that runs every experiment, test suite and
+lint check below. Start it with `lab-gui` (installed by `pip install -e .`, opens without a console)
+or `python -m lab_gui`.
+
+- **Left:** tasks grouped by milestone. "Uses the network" appears next to the title when the
+  current options make a live crawl (`fcrawl crawl`, the ledger sim without `--offline`,
+  `sim_m3 --live`, `audit_eval collect`).
+- **Options:** generated from each program's own `build_parser()`, so they match the CLI. Only
+  options changed from their defaults are passed. An invalid value is flagged next to its field
+  and disables Run.
+- **Command line:** the exact command, with a Copy button, so any GUI run can be repeated in a
+  terminal. Runs are child processes started from the repo root, so `provenance` in result files
+  records them like terminal runs.
+- **Output:** streams live; Stop ends the run. On pytest runs the summary line turns green or red.
+  Save log writes the output, by default next to `--out` (matching `results/m3/live_run5.log`).
+- **Results tab:** browses `results/*/` (JSON shown with `provenance` first) and opens the folder.
+
+One run at a time. The task list is `src/lab_gui/registry.py`; a new experiment needs a
+`build_parser()` and one `Task(...)` line there.
+
 ## 1. Focused crawler: `fcrawl`
 
 ```
