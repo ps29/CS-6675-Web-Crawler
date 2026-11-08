@@ -22,6 +22,7 @@ pip install -e ".[dev]" && pre-commit install
 python -m pytest                                   # all tests, fully offline
 python -m pytest tests/test_crawler.py::test_name  # single test
 python -m pytest tests/edge -k revocation          # one suite / keyword
+lab-gui                                            # Tkinter GUI for experiments/tests (or python -m lab_gui)
 python -m pytest --cov
 ruff check . && ruff format .
 pre-commit run --all-files
@@ -47,11 +48,13 @@ python -m edge_serving.http_app demo
 
 **edge_serving**: serves three object types (immutable `Proof`, TTL'd `Status`, `Pointer`) via a stateless `gateway.py` signing statuses, `edge.py` caches, and `client.py` verifiers (IDE and RAG policies differ in accepted statuses and `max_lag`). `ledger_view.py` seals epochs and builds the delta; `delta.py`/`revocation.py` implement R1, `summary.py` R2. `sim.py` is a trace-driven simulation with an injected clock; `dishonest.py` adds attacker edges (`--dishonest-edges`). Plain R1 statuses have no signed freshness, so a lying edge can hide a revocation indefinitely; `state_proofs.py` (R1-S, `--variant r1s`) fixes this with a header `state_root` over every final record's state, bounding a lying edge by `max_lag`, and `sim.py --spot-check` adds client re-checks against the gateway (`docs/m4-results.md`). Like `delta_root`, `state_root` enters the header ID only when set.
 
+**lab_gui**: Tkinter front end. Forms are generated from each program's `build_parser()` (`forms.py`, Tk-free and unit-tested), runs are subprocesses (`runner.py`), and tasks are listed in `registry.py`. Every runnable module must keep a module-level `build_parser()`. GUI tests share one `tk.Tk()` per module: a second root in one process intermittently fails on Windows.
+
 **Cross-package invariant**: the ledger `Header` has an optional `delta_root` that enters the header ID only when set, so M3 header IDs and tests are unchanged by M4. Preserve this when touching `blocks.py`.
 
 ## Testing conventions
 
-Tests never touch the network: M1 uses fixture HTML (`tests/fixtures/`) and fake fetchers (`tests/fakes.py`), the ledger uses `OfflineFetcher`, and M4 uses an injected clock (`tests/edge/helpers.py`). Layout: `tests/` (focused_crawler), `tests/ledger/`, `tests/edge/`.
+Tests never touch the network: M1 uses fixture HTML (`tests/fixtures/`) and fake fetchers (`tests/fakes.py`), the ledger uses `OfflineFetcher`, and M4 uses an injected clock (`tests/edge/helpers.py`). Layout: `tests/` (focused_crawler), `tests/ledger/`, `tests/edge/`, `tests/gui/`.
 
 ## Style and git workflow
 

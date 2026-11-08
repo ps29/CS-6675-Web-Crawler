@@ -122,13 +122,17 @@ def print_report(result: dict, status: str) -> None:
         print(f"  {g} (n={row['n']}): {cells}")
 
 
-def main(argv: list[str] | None = None) -> int:
+def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(prog="python -m focused_crawler.evaluate", description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)  # fmt: skip
     ap.add_argument("--db", default="data/pydocs.db")
     ap.add_argument("--queries", default="config/eval_queries.yaml")
     ap.add_argument("--out", default="")
-    a = ap.parse_args(argv)
+    return ap
+
+
+def main(argv: list[str] | None = None) -> int:
+    a = build_parser().parse_args(argv)
     status, queries = load_queries(Path(a.queries))
     with Storage(a.db) as storage:
         result = evaluate(storage, queries)

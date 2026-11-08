@@ -290,7 +290,7 @@ def print_table(results):
         print("  ".join(f"{str(r[k]):>10}" for k, _ in cols))
 
 
-def main(argv=None):
+def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
@@ -349,7 +349,11 @@ def main(argv=None):
     )
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--out", default="")
-    a = ap.parse_args(argv)
+    return ap
+
+
+def main(argv=None):
+    a = build_parser().parse_args(argv)
 
     cfg = Config.from_json(a.config) if a.config else Config()
     peers = make_peers(a.peers, a.dishonest, a.forge_rate, a.seed)
