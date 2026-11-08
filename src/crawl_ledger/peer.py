@@ -1,5 +1,6 @@
 """A peer: key pair, node ID, and its append-only, hash-chained record log."""
 
+import hashlib
 import random
 import time
 
@@ -10,8 +11,21 @@ from .record import GENESIS, Record, content_hash, sha256_hex
 
 
 class Peer:
-    def __init__(self, addr: str, forge_rate: float = 0.0, rng: random.Random | None = None):
-        self._sk = Ed25519PrivateKey.generate()
+    def __init__(
+        self,
+        addr: str,
+        forge_rate: float = 0.0,
+        rng: random.Random | None = None,
+        key_seed: bytes | None = None,
+    ):
+        """`key_seed` derives the signing key deterministically, so that simulations (and hence
+        node IDs and package ownership) are reproducible. Simulations only: a seeded key is only
+        as secret as its seed. Without it the key is random, as a real peer's must be."""
+        if key_seed is None:
+            self._sk = Ed25519PrivateKey.generate()
+        else:
+            secret = hashlib.sha256(b"peer-key-v1:" + key_seed).digest()
+            self._sk = Ed25519PrivateKey.from_private_bytes(secret)
         self.public_key = self._sk.public_key()
         pk_raw = self.public_key.public_bytes(Encoding.Raw, PublicFormat.Raw)
         self.addr = addr

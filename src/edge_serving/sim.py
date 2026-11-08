@@ -24,6 +24,7 @@ from pathlib import Path
 
 from crawl_ledger.blocks import HeaderChain
 from crawl_ledger.verify import verify_record_r1
+from runinfo import provenance
 
 from .client import ACCEPT, IDE_POLICY, Client
 from .dishonest import (
@@ -387,7 +388,8 @@ def main(argv: list[str] | None = None) -> int:
     print(f"({time.time() - started:.1f}s)")
     if a.out:
         Path(a.out).parent.mkdir(parents=True, exist_ok=True)
-        Path(a.out).write_text(json.dumps({"config": vars(a), "results": results}, indent=2))
+        out = {"provenance": provenance(vars(a)), "config": vars(a), "results": results}
+        Path(a.out).write_text(json.dumps(out, indent=2))
     return 0
 
 

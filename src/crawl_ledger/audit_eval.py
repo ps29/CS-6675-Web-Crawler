@@ -29,6 +29,8 @@ from urllib.parse import urljoin, urlparse
 
 from bs4 import BeautifulSoup
 
+from runinfo import provenance
+
 from .audit import FAIL, INCONCLUSIVE, PASS
 from .canonical import Digest, digest, hamming, simhash64
 from .canonical_audit import decide_digests
@@ -244,7 +246,8 @@ def evaluate(a) -> dict:
     print_table(summary)
     if a.out:
         Path(a.out).parent.mkdir(parents=True, exist_ok=True)
-        Path(a.out).write_text(json.dumps(summary, indent=2))
+        out = {"provenance": provenance(vars(a)), **summary}
+        Path(a.out).write_text(json.dumps(out, indent=2))
     return summary
 
 
