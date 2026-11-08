@@ -130,11 +130,15 @@ async def demo(base_port: int = 8080, n_edges: int = 3) -> dict:
             await runner.cleanup()
 
 
-def main(argv: list[str] | None = None) -> int:
+def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(prog="python -m edge_serving.http_app", description=__doc__)
     ap.add_argument("command", choices=("demo",))
     ap.add_argument("--port", type=int, default=8080)
-    a = ap.parse_args(argv)
+    return ap
+
+
+def main(argv: list[str] | None = None) -> int:
+    a = build_parser().parse_args(argv)
     print(json.dumps(asyncio.run(demo(a.port)), indent=2))
     return 0
 

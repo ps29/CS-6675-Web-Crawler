@@ -273,7 +273,7 @@ def print_table(summary: dict) -> None:
             print(case.ljust(18) + "".join(x.rjust(16) for x in cells))
 
 
-def main(argv: list[str] | None = None) -> int:
+def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(prog="python -m crawl_ledger.audit_eval", description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)  # fmt: skip
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -290,7 +290,11 @@ def main(argv: list[str] | None = None) -> int:
     e.add_argument("--dir", default=str(ROOT / "data" / "drift"))
     e.add_argument("--out", default="")
     e.add_argument("--budget", type=float, default=150.0, help="seconds per run, then resume")
-    a = ap.parse_args(argv)
+    return ap
+
+
+def main(argv: list[str] | None = None) -> int:
+    a = build_parser().parse_args(argv)
     if a.cmd == "collect":
         collect(a)
     else:
