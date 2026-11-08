@@ -25,6 +25,9 @@ dev = ["pytest>=8", "pytest-cov>=5", "ruff==0.17.2", "pre-commit>=3.7"]
 [project.scripts]
 fcrawl = "focused_crawler.cli:main"
 
+[project.gui-scripts]
+lab-gui = "lab_gui.app:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 

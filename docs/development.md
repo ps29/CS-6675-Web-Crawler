@@ -14,7 +14,7 @@ pre-commit install
 ## Tests and linting
 
 ```
-python -m pytest                  # 256 tests, fully offline
+python -m pytest                  # 303 tests, fully offline
 python -m pytest --cov            # with coverage
 ruff check . && ruff format .
 pre-commit run --all-files
@@ -38,6 +38,7 @@ that will be reported, so `git_dirty` is false.
 | `tests/` | `focused_crawler` (15 modules, both profiles, BM25F ranker and evaluation metrics) |
 | `tests/ledger/` | `crawl_ledger` baseline, M3 refinements, canonical block audits, host coordinators |
 | `tests/edge/` | `edge_serving` objects, gateway, edge/client, R1, R2, R1-S, dishonest edges, HTTP, simulation |
+| `tests/gui/` | `lab_gui` forms, runner, task registry, and a window smoke test (skipped without a display) |
 
 ## Repository layout
 
@@ -50,6 +51,8 @@ results/           raw run outputs: m1/ (ranking evaluation), m3/ (live ledger r
 src/focused_crawler/   M1
 src/crawl_ledger/      M2/M3
 src/edge_serving/      M4
+src/lab_gui/           Windows GUI that runs the experiments and tests
+src/runinfo/          provenance block for results files
 tests/             offline test suites
 data/              crawl databases (gitignored)
 ```
