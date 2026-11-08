@@ -28,6 +28,8 @@ from collections import defaultdict, deque
 from dataclasses import dataclass
 from pathlib import Path
 
+from runinfo import provenance
+
 from .hostrate import CoordinatorRing
 from .peer import Peer
 from .ring import Ring
@@ -66,8 +68,11 @@ class Sim:
     def __init__(self, mode: str, n_peers: int, a, seed: int):
         self.mode, self.a = mode, a
         self.rng = random.Random(seed)
-        self.peers = [Peer(f"10.0.{i // 250}.{i % 250}:7000", rng=random.Random(seed * 1000 + i))
-                      for i in range(n_peers)]  # fmt: skip
+        self.peers = [
+            Peer(f"10.0.{i // 250}.{i % 250}:7000", rng=random.Random(seed * 1000 + i),
+                 key_seed=f"rate_sim:{seed}:{i}".encode())
+            for i in range(n_peers)
+        ]  # fmt: skip
         self.ring = Ring(self.peers)
         self.coords = CoordinatorRing(self.ring, rate=1.0 / a.delay, horizon=a.horizon)
         self.alive = {p.id for p in self.peers}
@@ -345,8 +350,8 @@ def main(argv: list[str] | None = None) -> int:
     print_table(agg)
     if a.out:
         Path(a.out).parent.mkdir(parents=True, exist_ok=True)
-        Path(a.out).write_text(json.dumps({"config": vars(a), "summary": agg, "runs": rows},
-                                          indent=2))  # fmt: skip
+        out = {"provenance": provenance(vars(a)), "config": vars(a), "summary": agg, "runs": rows}
+        Path(a.out).write_text(json.dumps(out, indent=2))
     return 0
 
 

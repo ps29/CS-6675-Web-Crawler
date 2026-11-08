@@ -16,6 +16,8 @@ import statistics
 import time
 from pathlib import Path
 
+from runinfo import provenance
+
 from .audit import FAIL, INCONCLUSIVE, PASS, audit
 from .blocks import HeaderChain, build_header
 from .config import Config
@@ -139,6 +141,7 @@ def make_peers(n, dishonest, forge_rate, seed):
             f"10.0.0.{i}:7000",
             forge_rate=forge_rate if i < n_bad else 0.0,
             rng=random.Random(seed * 1000 + i),
+            key_seed=f"sim_m3:{seed}:{i}".encode(),
         )
         for i in range(n)
     ]
@@ -378,7 +381,15 @@ def main(argv=None):
     if a.out:
         Path(a.out).parent.mkdir(parents=True, exist_ok=True)
         Path(a.out).write_text(
-            json.dumps({"config": vars(a), "m3": vars(cfg), "results": results}, indent=2)
+            json.dumps(
+                {
+                    "provenance": provenance(vars(a)),
+                    "config": vars(a),
+                    "m3": vars(cfg),
+                    "results": results,
+                },
+                indent=2,
+            )  # fmt: skip
         )
     return results
 

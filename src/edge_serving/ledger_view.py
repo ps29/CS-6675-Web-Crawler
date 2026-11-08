@@ -167,7 +167,8 @@ def build_demo_ledger(
     """A ledger with one record per (package, source) per epoch, then enough empty blocks
     for every record block to become final."""
     rng = random.Random(seed)
-    peers = [Peer(f"10.0.0.{i}", rng=rng) for i in range(n_peers)]
+    peers = [Peer(f"10.0.0.{i}", rng=rng, key_seed=f"demo:{seed}:{i}".encode())
+             for i in range(n_peers)]  # fmt: skip
     ledger = Ledger(peers, final_depth, state_proofs)
     t = 1000.0
     for epoch in range(epochs):

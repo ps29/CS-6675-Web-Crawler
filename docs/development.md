@@ -24,10 +24,14 @@ Tests never touch the network: M1 uses fixture HTML and a fake fetcher, the ledg
 `OfflineFetcher`, stub fetchers and mock origins, and M4 uses an injected clock
 (`tests/edge/helpers.py`).
 
-Known flaky test: `tests/ledger/test_m3.py::TestSim::test_all_forgeries_caught_without_collusion_or_drift`
-failed once in 20 full-suite runs (2026-11-08) and never in 529 standalone runs. Peer keys
-come from an unseeded `Ed25519PrivateKey.generate()`, so package ownership and auditor choice change
-every run; the cause of that one failure was not confirmed.
+Simulations are deterministic for a given `--seed`: peers get a `key_seed`, so keys, node IDs and
+package ownership repeat (`tests/ledger/test_determinism.py`). Before that, peer keys were random
+and `test_m3.py::TestSim::test_all_forgeries_caught_without_collusion_or_drift` failed once in 20
+full-suite runs; the exact failing case was not captured. Real peers still use random keys.
+
+Every experiment that writes a results JSON adds a `provenance` block (`src/runinfo`): git commit,
+`git_dirty`, Python version, platform, arguments and config. Commit code before generating results
+that will be reported, so `git_dirty` is false.
 
 | Directory | Covers |
 |---|---|
