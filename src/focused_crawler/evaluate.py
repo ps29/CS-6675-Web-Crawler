@@ -20,6 +20,8 @@ from pathlib import Path
 
 import yaml
 
+from runinfo import provenance
+
 from .ranker import BM25FParams, BM25FRanker, TFRanker, query_intent
 from .storage import Storage
 
@@ -131,6 +133,7 @@ def main(argv: list[str] | None = None) -> int:
     with Storage(a.db) as storage:
         result = evaluate(storage, queries)
     result["judgments"] = status
+    result = {"provenance": provenance(vars(a)), **result}
     print_report(result, status)
     if a.out:
         Path(a.out).parent.mkdir(parents=True, exist_ok=True)

@@ -11,6 +11,8 @@ import statistics
 import time
 from pathlib import Path
 
+from runinfo import provenance
+
 from .audit import FAIL, INCONCLUSIVE, PASS, audit
 from .fetcher import Fetcher, OfflineFetcher, extract_links, source_urls
 from .peer import Directory, Peer
@@ -136,6 +138,7 @@ def main(argv=None):
             f"10.0.0.{i}:7000",
             forge_rate=a.forge_rate if i < n_bad else 0.0,
             rng=random.Random(a.seed * 1000 + i),
+            key_seed=f"sim:{a.seed}:{i}".encode(),
         )
         for i in range(a.peers)
     ]
@@ -167,7 +170,8 @@ def main(argv=None):
     print(json.dumps(summary, indent=2))
     if a.out:
         Path(a.out).parent.mkdir(parents=True, exist_ok=True)
-        Path(a.out).write_text(json.dumps({"summary": summary, "audits": rows}, indent=2))
+        out = {"provenance": provenance(vars(a)), "summary": summary, "audits": rows}
+        Path(a.out).write_text(json.dumps(out, indent=2))
         log(f"Saved {a.out}")
     return summary
 
