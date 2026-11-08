@@ -107,7 +107,7 @@ def summarize(published, rows, crawl_stats, verify_times):
     }
 
 
-def main(argv=None):
+def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
@@ -128,7 +128,11 @@ def main(argv=None):
     ap.add_argument("--offline", action="store_true")
     ap.add_argument("--out", default="")
     ap.add_argument("--quiet", action="store_true")
-    a = ap.parse_args(argv)
+    return ap
+
+
+def main(argv=None):
+    a = build_parser().parse_args(argv)
 
     log = (lambda *_: None) if a.quiet else print
     rng = random.Random(a.seed)

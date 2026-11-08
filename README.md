@@ -15,7 +15,8 @@ crawling and serving systems:
 python -m venv .venv
 .venv\Scripts\activate              # Windows; `source .venv/bin/activate` elsewhere
 pip install -e ".[dev]"
-python -m pytest                    # 256 offline tests
+python -m pytest                    # 303 offline tests
+lab-gui                             # Windows GUI for every experiment and test
 ```
 
 ```
