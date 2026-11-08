@@ -40,19 +40,21 @@ access.
   then re-crawls it conditionally.
 
 **Parameters.** 1 s per host, a 10 ms lease round trip, and 0.2 s per full response (0.05 s for
-a 304), each with up to 50% jitter. Means over 3 seeds. Raw outputs are in
+a 304), each with up to 50% jitter. Means over 3 seeds; peer keys are seeded too, so a re-run
+with the same options gives the same numbers (before commit `67dc773` they were random, and
+magnitudes moved by up to about 20% between runs). Raw outputs are in
 `results/m3/host_rate.json` and `results/m3/host_rate_kill.json`.
 
 ## Results
 
 | Mode | Peers | Gaps < 1 s | Peak req/s at pypi.org | pypi.org mean req/s | Phase 1 (s) | Phase 1 req/s | Wait p95 (s) | robots.txt fetches | 304 share after churn |
 |---|---|---|---|---|---|---|---|---|---|
-| independent | 5 | 265 | 4.7 | 0.78 | 174 | 3.9 | 1.0 | 117 | 60% |
-| coordinated | 5 | **0** | 1 | 0.55 | 268 | 2.2 | 3.4 | 46 | 90% |
-| independent | 20 | 477 | 17.7 | 1.89 | 77 | 9.1 | 1.0 | 165 | 77% |
-| coordinated | 20 | **0** | 1 | 0.79 | 176 | 3.3 | 5.0 | 46 | 89% |
-| independent | 50 | 637 | 36.3 | 2.46 | 61 | 12.1 | 1.0 | 200 | 75% |
-| coordinated | 50 | **0** | 1 | 0.95 | 135 | 4.2 | 5.0 | 46 | 90% |
+| independent | 5 | 264 | 5.0 | 0.57 | 216 | 3.0 | 1.0 | 116 | 62% |
+| coordinated | 5 | **0** | 1 | 0.48 | 296 | 2.0 | 3.2 | 46 | 90% |
+| independent | 20 | 494 | 16.3 | 1.60 | 81 | 8.6 | 1.0 | 170 | 65% |
+| coordinated | 20 | **0** | 1 | 0.85 | 164 | 3.5 | 5.0 | 46 | 90% |
+| independent | 50 | 674 | 36.7 | 3.31 | 48 | 15.1 | 1.0 | 209 | 70% |
+| coordinated | 50 | **0** | 1 | 0.91 | 142 | 4.1 | 5.0 | 46 | 90% |
 
 "Gaps < 1 s" counts consecutive requests to the same host less than 1 s apart, summed over all
 hosts. "Peak req/s" is the most requests to pypi.org inside any 1 s window. With 10% of pages
@@ -65,21 +67,22 @@ per second.
 ## What this shows
 
 - **Independent delays do not bound the aggregate rate.** The peak load on pypi.org grew with
-  the ring: 4.7 requests per second with 5 peers, 36 with 50. That breaks the 1 request per second
+  the ring: 5 requests per second with 5 peers, 37 with 50. That breaks the 1 request per second
   per host policy as soon as peers fetch independently.
 - **Coordinators keep every host at 1 request per second at every ring size,** including through
   a coordinator failure.
 - **Throughput is bounded by the busiest host.** Every package needs pypi.org, so phase 1 cannot
   finish faster than one request per second to it. Adding peers raised coordinated throughput
-  from 2.2 to 4.2 requests per second (the other hosts are served in parallel), but it stays below
+  from 2.0 to 4.1 requests per second (the other hosts are served in parallel), but it stays below
   the impolite independent rate. The independent baseline is faster only because it overloads
   hosts.
 - **Shared caches save requests.** robots.txt was fetched once per host (46) instead of once per
-  peer and host (117-200). After 20% churn, re-crawls got 89-90% 304s, against 60-77% when each
+  peer and host (116-209). After 20% churn, re-crawls got 90% 304s, against 62-70% when each
   peer keeps its own validators, because new owners inherit the coordinator's cache.
 - **The costs.** Lease waits reach the 5 s horizon at the 95th percentile. A coordinator gets
-  about 2 messages per request at 20-50 peers, because of refused leases and retries. Load is
-  uneven: the pypi.org coordinator handled 250-450 leases of about 1,000 requests.
+  about 1.1 messages per request at 5 peers and 2.4-3.8 at 20-50 peers, because of refused
+  leases and retries. Load is uneven: the busiest coordinator handled 171-377 leases of about
+  1,000-1,240 requests.
 
 ## Limits
 
