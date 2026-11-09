@@ -75,8 +75,9 @@ def ruff_parser(description: str, *flags: tuple[str, str]) -> Callable[[], argpa
     return build
 
 
-M1, LEDGER, EDGE, CHECKS = (
-    "M1 focused crawler", "M2/M3 crawl ledger", "M4 edge serving", "Tests and lint"
+M1, LEDGER, EDGE, M5, CHECKS = (
+    "M1 focused crawler", "M2/M3 crawl ledger", "M4 edge serving", "M5 corpus jobs",
+    "Tests and lint",
 )  # fmt: skip
 FCRAWL = "focused_crawler.cli"
 
@@ -99,6 +100,9 @@ TASKS: tuple[Task, ...] = (
     Task(EDGE, "Edge sim", "edge_serving.sim"),
     Task(EDGE, "Edge sim (compare all)", "edge_serving.sim", preset={"compare": True}),
     Task(EDGE, "HTTP demo (aiohttp)", "edge_serving.http_app", preset={"command": "demo"}),
+    Task(M5, "Benchmark (bench)", "corpus_jobs.bench",
+         preset={"scenarios": "easy", "repeats": "1"}),
+    Task(M5, "Estimate an unrun scenario", "corpus_jobs.estimate"),
     Task(CHECKS, "pytest: all", "pytest", pytest_parser),
     Task(CHECKS, "pytest: M2/M3 ledger", "pytest", pytest_parser,
          preset={"paths": "tests/ledger"}),
