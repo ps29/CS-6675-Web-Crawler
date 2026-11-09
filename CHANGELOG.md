@@ -5,6 +5,12 @@ All notable changes to this project are documented here. Format follows
 
 ## [Unreleased]
 
+### Added
+- `docs/m5-reproduce.md`: what the M5 work did, the machine it ran on, and step-by-step
+  instructions to repeat it (Java, Hadoop, Common Crawl files and corpus checksums).
+- `docs/crawler-optimization.md`: a live 500-page run of the M1 crawler (356 s, 1.4 pages/s, no
+  errors) and a prioritized optimization plan; the crawl is limited by sequential fetching.
+
 ### Changed
 - M5 benchmark finished: all five engines measured on the 81,842-page corpus (3 runs at 2 cores)
   and on 1 core for the easy and average corpora, replacing the hard-corpus estimate
