@@ -47,6 +47,11 @@ pinned to one docs version by a path prefix. Live runs: `fcrawl crawl --max-page
 |---|---|---|---|---|---|
 | First run (no host penalty) | 20 (13 got only the seed) | 1-40 | 89.1% | REFERENCE 97, CHANGELOG 16, TUTORIAL 12, HOWTO 6, OTHER 16 | 151 s |
 | + `host_penalty: 0.02`, fixes | 20 | 2-17 | 89.2% | REFERENCE 59, TUTORIAL 29, CHANGELOG 26, HOWTO 18, OTHER 16 | 108 s |
+| 500 pages, same config (2026-11-10, cloud VM) | 20 | 6-40 | 96.2% | REFERENCE 239, TUTORIAL 83, CHANGELOG 83, HOWTO 70, OTHER 19 | 356 s |
+
+The 500-page run and a code review of where the crawl's time goes are in
+`docs/crawler-optimization.md`: the crawl fetches one page at a time, so it reached 1.4 pages/s
+where the 1 s per-host rule would allow about 20 across 20 sites.
 
 - **Crawling many sites needs host diversity.** With priority alone, the two sites whose links
   scored highest (docs.python.org, matplotlib) used their whole 40-page cap before most other
