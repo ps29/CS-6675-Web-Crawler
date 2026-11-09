@@ -5,6 +5,9 @@
 > cloud VM with Hadoop's local job runner and no HDFS, so nothing here says how the engines scale
 > across machines.
 
+Where it ran, what was done, and step-by-step instructions to repeat the runs are in
+[m5-reproduce.md](m5-reproduce.md).
+
 `corpus_jobs` builds three outputs from a crawl snapshot (JSON lines `doc, url, text`) with five
 engine setups. The tokenizer, MinHash and output format are shared, so every engine produces the
 same files.
@@ -133,11 +136,8 @@ Before the hard corpus was run, a linear model from the easy and average corpora
 
 ## Reproduce
 
-```
-python -m corpus_jobs.corpus wet data/cc/wet0.warc.wet.gz --out data/m5/average.jsonl --inject-dups 200
-HADOOP_HOME=... python -m corpus_jobs.bench --scenarios easy average hard --repeats 3 --out results/m5/bench.json
-HADOOP_HOME=... python -m corpus_jobs.bench --scenarios easy average --cores 1 --repeats 1 --out results/m5/bench.json
-```
+See [m5-reproduce.md](m5-reproduce.md) for the full steps (installing Java and Hadoop, downloading
+the Common Crawl files, building the corpora with checksums, and running the benchmark).
 
 Raw results are in `results/m5/bench.json`, with provenance. The benchmark resumes: configurations
 already in the output file are skipped.
