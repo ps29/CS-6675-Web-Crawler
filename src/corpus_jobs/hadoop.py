@@ -105,8 +105,10 @@ def run_job(job: Job, corpus: Path, work: Path, cores: int) -> dict:
     proc = subprocess.run(cmd, capture_output=True, text=True)
     elapsed = time.perf_counter() - t
     if proc.returncode != 0 or "completed successfully" not in proc.stderr:
+        log = work / f"{job.name}.stderr.log"  # the tail alone rarely shows the cause
+        log.write_text(proc.stderr, encoding="utf-8")
         tail = "\n".join(proc.stderr.splitlines()[-30:])
-        raise RuntimeError(f"Hadoop job {job.name} failed:\n{tail}")
+        raise RuntimeError(f"Hadoop job {job.name} failed (full log: {log}):\n{tail}")
     return {"job": job.name, "seconds": elapsed, **parse_counters(proc.stderr)}
 
 
