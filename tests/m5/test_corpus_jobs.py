@@ -10,9 +10,11 @@ from pathlib import Path
 
 import pytest
 
-from corpus_jobs import core, local, streaming
-from corpus_jobs.bench import canonical
-from corpus_jobs.corpus import build, perturb, wet_records
+pytest.importorskip("numpy")
+
+from corpus_jobs import core, local, streaming  # noqa: E402
+from corpus_jobs.bench import canonical  # noqa: E402
+from corpus_jobs.corpus import build, perturb, wet_records  # noqa: E402
 
 TEXTS = [
     "Python json module encodes objects as JSON text and decodes JSON text into objects " * 3,
@@ -122,3 +124,14 @@ def test_hadoop_matches_local(corpus, tmp_path):
     hadoop.run(corpus, tmp_path / "hadoop", 1, "refined", ("index", "topk", "dedup"))
     for job in ("index", "topk", "dedup"):
         assert canonical(tmp_path / "hadoop", job) == canonical(tmp_path / "local", job), job
+
+
+def test_estimate_is_linear_in_input_size():
+    from corpus_jobs.estimate import estimate
+
+    def cell(t, m, b):
+        return {"bytes": b, "engines": {"local@2": {"wall_s_median": t, "peak_rss_mb_max": m}}}
+
+    bench = {"scenarios": {"easy": cell(1.0, 100, 10), "average": cell(11.0, 200, 100)}}
+    r = estimate(bench, {"docs": 4, "bytes": 400}, "easy", "average", 2)["engines"]["local"]
+    assert r["target_s_est"] == 41 and r["target_peak_mb_est"] == 500

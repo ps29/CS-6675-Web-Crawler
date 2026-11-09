@@ -14,7 +14,7 @@ pre-commit install
 ## Tests and linting
 
 ```
-python -m pytest                  # 303 tests, fully offline
+python -m pytest                  # 313 tests, fully offline
 python -m pytest --cov            # with coverage
 ruff check . && ruff format .
 pre-commit run --all-files
@@ -38,6 +38,7 @@ that will be reported, so `git_dirty` is false.
 | `tests/` | `focused_crawler` (15 modules, both profiles, BM25F ranker and evaluation metrics) |
 | `tests/ledger/` | `crawl_ledger` baseline, M3 refinements, canonical block audits, host coordinators |
 | `tests/edge/` | `edge_serving` objects, gateway, edge/client, R1, R2, R1-S, dishonest edges, HTTP, simulation |
+| `tests/m5/` | `corpus_jobs` Streaming roles vs. the single node, MinHash, WET reader, corpus builder, estimate; real Hadoop only when `HADOOP_HOME` is set |
 | `tests/gui/` | `lab_gui` forms, runner, task registry, and a window smoke test (skipped without a display) |
 
 ## Repository layout

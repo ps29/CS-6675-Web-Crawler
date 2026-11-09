@@ -7,6 +7,7 @@ crawling and serving systems:
 |---|---|---|---|
 | [`focused_crawler`](src/focused_crawler) | M1 | Focused crawler and search engine with profiles. Default: Python documentation (docs.python.org + 19 package docs sites), labeled REFERENCE / TUTORIAL / HOWTO / CHANGELOG, with module, API symbols and version per page. Also: the academic `gatech.edu` profile (COURSE / FACULTY / LAB) | Baseline + Python-docs profile, BM25F ranker (opt-in) |
 | [`crawl_ledger`](src/crawl_ledger) | M2/M3 | Decentralized Python-docs crawler: peers on a Chord ring publish Ed25519-signed, hash-chained records, which are committed in Merkle blocks and audited by re-fetching | Baseline, R1, R2, canonical block audits, host coordinators |
+| [`corpus_jobs`](src/corpus_jobs) | M5 | Data-parallel processing of a crawl snapshot: inverted index, top-k terms and MinHash/LSH near-duplicates on a single node, Hadoop MapReduce (Streaming) and Spark | Baseline, R1, R2, benchmark (preliminary) |
 | [`edge_serving`](src/edge_serving) | M4 | Edge caching for verified crawl records: immutable proofs, signed statuses, R1 revocation deltas, R2 Bloom-filter proof sharing | Baseline, R1, R2, R1-S state proofs, HTTP, evaluation (`v0.2.0`) |
 
 ## Quick start
@@ -15,7 +16,7 @@ crawling and serving systems:
 python -m venv .venv
 .venv\Scripts\activate              # Windows; `source .venv/bin/activate` elsewhere
 pip install -e ".[dev]"
-python -m pytest                    # 303 offline tests
+python -m pytest                    # 313 offline tests
 lab-gui                             # Windows GUI for every experiment and test
 ```
 
@@ -50,6 +51,7 @@ python -m edge_serving.http_app demo
 | M4 serving simulation | R1 cuts the revoked-record window from up to 1791 s (TTL baseline) to 3 s, with about 75x less gateway load, if edges are honest. A dishonest R1 edge can hide a revocation with no time limit; R1-S state proofs bound it by `max_lag` (about 1800 s), and 5% client spot-checks blocked the lying edge in every run |
 | Canonical block audits (104 re-fetched pages) | With synthetic rebuild noise, honest false FAILs 100% (raw hash) → 0%; every sensitive edit inside the main content still caught. Edits to page chrome are not caught; real drift window was minutes |
 | Host coordinators (simulated, mock hosts) | Peak load on pypi.org 1 req/s at 5-50 peers, vs. 5-37 req/s with per-peer delays; holds when the coordinator leaves |
+| M5 corpus jobs (20,205 Common Crawl pages, 2 cores, **few runs**) | Hadoop 189 s (naive) → 110 s (refined); Spark 72 s; single node 66 s; identical outputs. Near-duplicates: 93% precision, 94% recall. The 81,842-page corpus is estimated, not run |
 | BM25F ranking (48 **draft** judged queries) | nDCG@10 0.557 (tf) → 0.905; the intent and package boosts are not significant vs. plain BM25F. Judgments not yet reviewed |
 
 Details and caveats: [docs/FINDINGS.md](docs/FINDINGS.md).
