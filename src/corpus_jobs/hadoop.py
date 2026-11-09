@@ -26,6 +26,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 SRC = Path(__file__).resolve().parents[1]
+SHUFFLE_BUFFER = 0.35  # share of reducer heap for in-memory map output (Hadoop default 0.70)
 COUNTERS = {
     "map_output_records": "Map output records",
     "map_output_bytes": "Map output bytes",
@@ -96,6 +97,9 @@ def run_job(job: Job, corpus: Path, work: Path, cores: int) -> dict:
            "-D", f"mapreduce.local.map.tasks.maximum={cores}",
            "-D", f"mapreduce.local.reduce.tasks.maximum={cores}",
            "-D", "mapreduce.job.name=corpus_jobs." + job.name,
+           # The local runner runs every reducer in one JVM, and each may hold up to 70% of the
+           # heap of map output in memory; two at once ran out of heap on the 716 MB corpus.
+           "-D", f"mapreduce.reduce.shuffle.input.buffer.percent={SHUFFLE_BUFFER}",
            "-cmdenv", f"PYTHONPATH={SRC}",
            "-input", str(src), "-output", str(dst),
            "-mapper", job.mapper, "-reducer", job.reducer]  # fmt: skip
