@@ -19,6 +19,7 @@ import argparse
 import hashlib
 import json
 import os
+import shutil
 import statistics
 import subprocess
 import sys
@@ -66,6 +67,7 @@ def digest(lines: list[str]) -> str:
 def run_once(engine: str, corpus: Path, out: Path, cores: int) -> dict:
     cmd = [sys.executable, "-m", "corpus_jobs.run", engine, str(corpus), str(out),
            "--cores", str(cores)]  # fmt: skip
+    shutil.rmtree(out, ignore_errors=True)  # Spark refuses to overwrite earlier output
     env = {**os.environ, "PYTHONPATH": f"{ROOT / 'src'}{os.pathsep}{ROOT}"}
     stop, peak = threading.Event(), []
     t = time.perf_counter()
