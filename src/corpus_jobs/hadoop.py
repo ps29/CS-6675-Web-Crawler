@@ -26,6 +26,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 SRC = Path(__file__).resolve().parents[1]
+SHUFFLE_BUFFER = 0.35  # share of reducer heap for in-memory map output (Hadoop default 0.70)
 COUNTERS = {
     "map_output_records": "Map output records",
     "map_output_bytes": "Map output bytes",
@@ -96,6 +97,9 @@ def run_job(job: Job, corpus: Path, work: Path, cores: int) -> dict:
            "-D", f"mapreduce.local.map.tasks.maximum={cores}",
            "-D", f"mapreduce.local.reduce.tasks.maximum={cores}",
            "-D", "mapreduce.job.name=corpus_jobs." + job.name,
+           # The local runner runs every reducer in one JVM, and each may hold up to 70% of the
+           # heap of map output in memory; two at once ran out of heap on the 716 MB corpus.
+           "-D", f"mapreduce.reduce.shuffle.input.buffer.percent={SHUFFLE_BUFFER}",
            "-cmdenv", f"PYTHONPATH={SRC}",
            "-input", str(src), "-output", str(dst),
            "-mapper", job.mapper, "-reducer", job.reducer]  # fmt: skip
@@ -105,8 +109,10 @@ def run_job(job: Job, corpus: Path, work: Path, cores: int) -> dict:
     proc = subprocess.run(cmd, capture_output=True, text=True)
     elapsed = time.perf_counter() - t
     if proc.returncode != 0 or "completed successfully" not in proc.stderr:
+        log = work / f"{job.name}.stderr.log"  # the tail alone rarely shows the cause
+        log.write_text(proc.stderr, encoding="utf-8")
         tail = "\n".join(proc.stderr.splitlines()[-30:])
-        raise RuntimeError(f"Hadoop job {job.name} failed:\n{tail}")
+        raise RuntimeError(f"Hadoop job {job.name} failed (full log: {log}):\n{tail}")
     return {"job": job.name, "seconds": elapsed, **parse_counters(proc.stderr)}
 
 
