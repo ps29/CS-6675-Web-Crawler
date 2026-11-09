@@ -5,6 +5,18 @@ All notable changes to this project are documented here. Format follows
 
 ## [Unreleased]
 
+### Changed
+- M5 benchmark finished: all five engines measured on the 81,842-page corpus (3 runs at 2 cores)
+  and on 1 core for the easy and average corpora, replacing the hard-corpus estimate
+  (`docs/m5-results.md`). Single node 250 s, Spark 258 s, refined Hadoop 334 s, naive Hadoop
+  609 s; near-duplicates at 94.6% precision and 95.0% recall.
+
+### Fixed
+- `corpus_jobs.hadoop`: naive Hadoop ran out of Java heap on the hard corpus because the local
+  runner runs both reducers in one JVM. The reducer shuffle buffer is now 0.35 of the heap
+  (default 0.70); the average-corpus Hadoop runs were repeated with it (naive 189 s → 174 s,
+  refined 110 s → 109 s). A failed job now writes its full stderr next to the output.
+
 ### Added
 - `corpus_jobs` (M5): inverted index, top-1000 terms and MinHash/LSH near-duplicate pairs from a
   crawl snapshot on a single node, Hadoop 3.x Streaming (naive baseline and a refined version with

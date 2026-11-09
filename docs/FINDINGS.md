@@ -161,7 +161,7 @@ entirely (`docs/m4-results.md`).
 | Canonical audits (`docs/audit-results.md`) | Rerun `audit_eval collect --interval 86400` over 1-2 weeks (the measured drift window was minutes); add `--audit-mode canonical` to `crawl_ledger.sim` with a content-scope forgery model; flag raw-only mismatches (chrome edits) for review |
 | Host coordinators (`docs/host-rate-results.md`) | Use `CoordinatedFetcher` in a multi-process crawl; let peers report lease grants to detect a coordinator that stalls or overloads a host |
 | Results made before seeded keys | `results/m3/live_run*`, `m3_*.json` and `results/m4/*` were produced with random peer keys and have no provenance block; re-running gives somewhat different numbers. The reported tables match those files |
-| M5 corpus jobs (`docs/m5-results.md`) | Few runs on one 2-core VM; run the 81,842-page corpus (now estimated) and more repetitions, on a multi-node cluster with HDFS; measure ranking with duplicates collapsed; make `test_baseline.py` link tests independent of `GITHUB_TOKEN` |
+| M5 corpus jobs (`docs/m5-results.md`) | Few runs on one 2-core VM with Hadoop's local runner (shuffle buffer lowered to 0.35 to avoid a heap OOM); repeat with more runs on a multi-node cluster with HDFS; measure ranking with duplicates collapsed; make `test_baseline.py` link tests independent of `GITHUB_TOKEN` |
 | M4 real deployment | Run the aiohttp edges on separate hosts to measure, not model, latency |
 
 ## 5. Engineering notes
