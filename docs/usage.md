@@ -168,12 +168,16 @@ Needs the `m5` extra (`pip install -e ".[m5]"`: numpy, psutil, pyspark). Hadoop 
 `docs/m5-results.md`.
 
 ```
-python -m corpus_jobs.corpus wet data/cc/wet0.warc.wet.gz --out data/m5/average.jsonl --inject-dups 200
 python -m corpus_jobs.corpus drift data/drift --out data/m5/easy.jsonl
+python -m corpus_jobs.corpus wet data/cc/wet0.warc.wet.gz --out data/m5/average.jsonl --inject-dups 200
+python -m corpus_jobs.corpus wet data/cc/wet{0,1,2,3}.warc.wet.gz --out data/m5/hard.jsonl --inject-dups 800
 python -m corpus_jobs.run spark data/m5/easy.jsonl data/m5/out/spark --cores 2   # one engine
-python -m corpus_jobs.bench --scenarios easy average --repeats 3 --out results/m5/bench.json
+python -m corpus_jobs.bench --scenarios easy average hard --repeats 3 --out results/m5/bench.json
 python -m corpus_jobs.estimate --out results/m5/hard_estimate.json   # estimate an unrun scenario
 ```
+
+Step-by-step setup (Java, Hadoop, Common Crawl downloads with checksums) and where the published
+runs were made: `docs/m5-reproduce.md`.
 
 Engines: `local`, `hadoop-naive`, `hadoop`, `spark`, `spark-nocache`. Every engine's output is
 checked against `local`.

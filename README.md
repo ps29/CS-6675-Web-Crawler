@@ -63,6 +63,8 @@ Details and caveats: [docs/FINDINGS.md](docs/FINDINGS.md).
 - [Development](docs/development.md): setup, tests, layout and git workflow
 - [Findings](docs/FINDINGS.md), [M4 results](docs/m4-results.md), [audit results](docs/audit-results.md),
   [host-rate results](docs/host-rate-results.md) and [ranking results](docs/ranking-results.md)
+- [M5 results](docs/m5-results.md) and [how to reproduce them](docs/m5-reproduce.md)
+- [Crawler optimization plan](docs/crawler-optimization.md): live run and where the M1 crawler's time goes
 - [Plans](docs/plans/) and the [changelog](CHANGELOG.md)
 
 ## Politeness
