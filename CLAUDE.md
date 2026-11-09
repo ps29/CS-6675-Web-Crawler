@@ -4,11 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-CS 6675 course project: three Python packages under `src/` (Python 3.11+). They share tooling, not code,
-except that `edge_serving` builds on `crawl_ledger`; `focused_crawler` is independent.
+CS 6675 course project: Python packages under `src/` (Python 3.11+). They share tooling, not code,
+except that `edge_serving` builds on `crawl_ledger`, and `corpus_jobs` reuses a crawl_ledger helper for drift pages; `focused_crawler` is independent.
 
 - `focused_crawler` (M1): profile-driven focused crawler + search engine. CLI: `fcrawl`.
 - `crawl_ledger` (M2/M3): decentralized Python-docs crawler; peers on a Chord ring publish Ed25519-signed, hash-chained records, committed in Merkle blocks and audited by re-fetching.
+- `corpus_jobs` (M5): index, top-k terms and MinHash/LSH near-duplicates over a crawl snapshot on a single node, Hadoop Streaming and Spark; the record logic is shared (`core.py`), so every engine's output must match `local` byte for byte. Needs the `m5` extra; Hadoop needs `HADOOP_HOME`.
 - `edge_serving` (M4): edge caching of verified ledger records, with R1 (revocation deltas) and R2 (Bloom-filter proof sharing) refinements.
 
 Fuller detail lives in `docs/architecture.md` (components, protocols), `docs/usage.md` (every command/config key) and `docs/development.md`. Read those rather than re-deriving.
@@ -54,14 +55,14 @@ python -m edge_serving.http_app demo
 
 ## Testing conventions
 
-Tests never touch the network: M1 uses fixture HTML (`tests/fixtures/`) and fake fetchers (`tests/fakes.py`), the ledger uses `OfflineFetcher`, and M4 uses an injected clock (`tests/edge/helpers.py`). Layout: `tests/` (focused_crawler), `tests/ledger/`, `tests/edge/`, `tests/gui/`.
+Tests never touch the network: M1 uses fixture HTML (`tests/fixtures/`) and fake fetchers (`tests/fakes.py`), the ledger uses `OfflineFetcher`, and M4 uses an injected clock (`tests/edge/helpers.py`). Layout: `tests/` (focused_crawler), `tests/ledger/`, `tests/edge/`, `tests/m5/` (skips without numpy; the real-Hadoop test needs `HADOOP_HOME`), `tests/gui/`.
 
 ## Style and git workflow
 
 - Ruff, line length 100, rules `E,F,W,I,B,UP,SIM`. The ruff version in `.pre-commit-config.yaml` must equal the dev dependency in `pyproject.toml` (`0.17.2`).
 - Work on `feat/*`, `fix/*` or `docs/*` branches, merged to `main` with `--no-ff`; `main` stays green. Conventional Commits (`feat(ledger): ...`). Each merge adds a `CHANGELOG.md` entry.
 - Pre-commit stashes unstaged changes but leaves untracked files; for a partial commit run `git stash push --keep-index --include-untracked` first and `git stash pop` after. If `end-of-file-fixer` rewrites new JSON and blocks the commit, restage and commit again.
-- `data/` (crawl DBs), `.env` and caches are gitignored; raw run outputs go in `results/m3/` and `results/m4/`.
+- `data/` (crawl DBs), `.env` and caches are gitignored; raw run outputs go in `results/m1/`, `results/m3/`, `results/m4/` and `results/m5/` (with a `provenance` block).
 
 ## Politeness
 

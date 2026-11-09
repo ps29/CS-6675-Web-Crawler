@@ -27,17 +27,16 @@ import threading
 import time
 from pathlib import Path
 
-import psutil
-
 from runinfo import provenance
 
-from .core import THRESHOLD, exact_jaccard, parse, tokens
 from .run import ENGINES, JOBS
 
 ROOT = Path(__file__).resolve().parents[2]
 
 
 def peak_rss(proc: subprocess.Popen, stop: threading.Event, out: list) -> None:
+    import psutil
+
     peak = 0
     p = psutil.Process(proc.pid)
     while not stop.is_set():
@@ -89,6 +88,8 @@ def run_once(engine: str, corpus: Path, out: Path, cores: int) -> dict:
 
 
 def dedup_quality(corpus: Path, out: Path) -> dict:
+    from .core import THRESHOLD, exact_jaccard, parse, tokens
+
     meta = json.loads(Path(f"{corpus}.truth.json").read_text())
     found = {}
     for line in canonical(out, "dedup"):
@@ -156,6 +157,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     a = build_parser().parse_args(argv)
+    from .core import THRESHOLD
+
     result = {"provenance": provenance(vars(a)), "threshold": THRESHOLD, "scenarios": {}}
     if a.out:
         out_path = Path(a.out)
