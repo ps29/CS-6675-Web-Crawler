@@ -6,6 +6,15 @@ All notable changes to this project are documented here. Format follows
 ## [Unreleased]
 
 ### Added
+- `corpus_jobs` (M5): inverted index, top-1000 terms and MinHash/LSH near-duplicate pairs from a
+  crawl snapshot on a single node, Hadoop 3.x Streaming (naive baseline and a refined version with
+  in-mapper combining, a combiner and local top-k) and Spark (cached and uncached). A corpus
+  builder for Common Crawl WET files and the M3 drift pages, with injected near-copies as ground
+  truth; a benchmark with output checks and peak memory; an estimator for unrun scenarios; GUI
+  entries. Preliminary results from a few runs (`docs/m5-results.md`): on 20,205 pages the refined
+  Hadoop job is 42% faster than the naive one, Spark 35% faster than refined Hadoop, and all
+  outputs are identical; near-duplicates at 93% precision and 94% recall. The 81,842-page corpus is
+  estimated, not run. Optional dependencies: `pip install -e ".[m5]"`.
 - `lab_gui`: a Windows GUI (Tkinter, `lab-gui` or `python -m lab_gui`) that runs every
   experiment, test suite and lint check. Option forms are generated from each program's
   argparse parser, output streams live with Stop, the exact command can be copied, and a

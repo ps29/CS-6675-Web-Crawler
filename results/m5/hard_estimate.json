@@ -1,0 +1,37 @@
+{
+ "method": "T_target = T_small + (T_large - T_small) * bytes_target / bytes_large; estimates, not measurements",
+ "small": "easy",
+ "large": "average",
+ "cores": 2,
+ "bytes_ratio": 4.069,
+ "target_docs": 81842,
+ "target_bytes": 715536544,
+ "engines": {
+  "local": {
+   "small_s": 0.81,
+   "large_s": 66.11,
+   "target_s_est": 266,
+   "target_peak_mb_est": 3823
+  },
+  "hadoop-naive": {
+   "small_s": 20.26,
+   "large_s": 189.03,
+   "target_s_est": 707
+  },
+  "hadoop": {
+   "small_s": 18.24,
+   "large_s": 110.12,
+   "target_s_est": 392
+  },
+  "spark": {
+   "small_s": 14.01,
+   "large_s": 71.61,
+   "target_s_est": 248
+  },
+  "spark-nocache": {
+   "small_s": 13.78,
+   "large_s": 70.8,
+   "target_s_est": 246
+  }
+ }
+}
