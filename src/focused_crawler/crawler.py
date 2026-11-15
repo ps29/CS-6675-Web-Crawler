@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from .classifier import OTHER
 from .config import Config
 from .extractor import extract_fields
-from .fetcher import Fetcher
+from .fetcher import Fetcher, FetchResult
 from .frontier import Frontier, FrontierItem
 from .indexer import content_hash, term_positions
 from .parser import parse_html
@@ -99,7 +99,10 @@ class Crawler:
         return self.stats
 
     def _process(self, item: FrontierItem) -> None:
-        result = self.fetcher.fetch(item.url)
+        self._handle(item, self.fetcher.fetch(item.url))
+
+    def _handle(self, item: FrontierItem, result: FetchResult | None) -> None:
+        """Everything after the fetch: classify, extract, index, store and enqueue links."""
         if result is None:
             self.stats.blocked_or_failed += 1
             log.debug("skipped (robots or network): %s", item.url)

@@ -26,6 +26,7 @@ class CrawlSettings:
     timeout_seconds: float = 15.0
     max_retries: int = 2
     user_agent: str = DEFAULT_USER_AGENT
+    concurrency: int = 1  # 1 = the sequential crawler; > 1 = the async host-queue crawler
 
 
 @dataclass(frozen=True)
@@ -96,6 +97,8 @@ def parse_config(raw: dict[str, Any]) -> Config:
     crawl = _build(CrawlSettings, raw.get("crawl"), "crawl")
     if crawl.delay_seconds < 1.0:
         raise ConfigError("crawl.delay_seconds must be >= 1.0 (politeness)")
+    if crawl.concurrency < 1:
+        raise ConfigError("crawl.concurrency must be >= 1")
     if crawl.max_pages < 1 or crawl.max_depth < 0:
         raise ConfigError("crawl.max_pages must be >= 1 and crawl.max_depth >= 0")
 
