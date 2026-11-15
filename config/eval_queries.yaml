@@ -1,8 +1,8 @@
 # Judged queries for ranking evaluation (python -m focused_crawler.evaluate) on data/pydocs.db.
 #
-# STATUS: DRAFT. Queries and grades were written by Claude from the page titles and URLs of the
-# 149-page crawl, after the BM25F intent rules were written, and have not been reviewed by a
-# person. Review every grade (and add queries written without looking at the index) before
+# STATUS: DRAFT. Queries and grades were written by an AI assistant from the page titles and URLs
+# of the 149-page crawl, after the BM25F intent rules were written, and have not been reviewed by
+# a person. Review every grade (and add queries written without looking at the index) before
 # reporting the numbers as results.
 #
 # Grades: 2 = the page answers the query, 1 = partly relevant (a related or index page).

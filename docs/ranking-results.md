@@ -1,8 +1,8 @@
 # Ranking: BM25F with intent and package boosts (results, 2026-11-08)
 
-> **The judgments are a draft.** Claude wrote the 48 queries and their grades from the page
-> titles and URLs of the 149-page index, after writing the intent rules, and no person has
-> reviewed them. The numbers below are preliminary until the grades in
+> **The judgments are a draft.** An AI assistant wrote the 48 queries and their grades from
+> the page titles and URLs of the 149-page index, after writing the intent rules, and no person
+> has reviewed them. The numbers below are preliminary until the grades in
 > `config/eval_queries.yaml` are reviewed and queries written without looking at the index
 > are added.
 
@@ -86,8 +86,8 @@ nDCG@10 by the intent `query_intent` detected:
 
 ## Limits
 
-- **Draft, possibly biased judgments.** Claude wrote both the intent rules and the judgments,
-  after seeing the index. That favours the boosts.
+- **Draft, possibly biased judgments.** An AI assistant wrote both the intent rules and the
+  judgments, after seeing the index. That favours the boosts.
 - **Small sample.** 48 queries over 149 pages from 20 sites, so per-group numbers rest on 9-15
   queries.
 - **The CLI default is unchanged.** `fcrawl search` still defaults to `--ranker tf`. Switch to
