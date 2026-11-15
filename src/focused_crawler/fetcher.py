@@ -55,6 +55,15 @@ class Fetcher:
         self._last_hit: dict[str, float] = {}
         self._robots: dict[str, urllib.robotparser.RobotFileParser | None] = {}
         self.requests_made = 0
+        self.request_log: list[tuple[str, float, float]] = []  # (host, start, end), clock time
+
+    def _get(self, url: str, **kwargs):
+        """One GET, logged with its start and end time."""
+        start = self._clock()
+        try:
+            return self.session.get(url, timeout=self.timeout, **kwargs)
+        finally:
+            self.request_log.append((urlsplit(url).netloc.lower(), start, self._clock()))
 
     def _polite_wait(self, host: str) -> None:
         last = self._last_hit.get(host)
@@ -71,7 +80,7 @@ class Fetcher:
             self._polite_wait(parts.netloc)
             rp = urllib.robotparser.RobotFileParser()
             try:
-                r = self.session.get(f"{key}/robots.txt", timeout=self.timeout)
+                r = self._get(f"{key}/robots.txt")
                 self.requests_made += 1
                 if r.status_code in (401, 403):
                     rp.disallow_all = True
@@ -91,7 +100,7 @@ class Fetcher:
         for attempt in range(self.max_retries + 1):
             self._polite_wait(host)
             try:
-                r = self.session.get(url, timeout=self.timeout, allow_redirects=True)
+                r = self._get(url, allow_redirects=True)
             except requests.RequestException:
                 if attempt == self.max_retries:
                     return None
@@ -104,6 +113,29 @@ class Fetcher:
             text = _decode(r, header) if ctype in HTML_TYPES else ""
             return FetchResult(url, r.url, r.status_code, ctype, text, _last_modified(r.headers))
         return None
+
+
+def request_gaps(log: list[tuple[str, float, float]]) -> dict:
+    """Politeness seen from the crawler's side: for each host, the gaps between consecutive
+    requests, from start to start and from the end of one to the start of the next. A redirect
+    to another host is logged under the host that was asked first."""
+    by_host: dict[str, list[tuple[float, float]]] = {}
+    for host, start, end in log:
+        by_host.setdefault(host, []).append((start, end))
+    start_gaps, rest_gaps, overlaps = [], [], 0
+    for spans in by_host.values():
+        spans.sort()
+        for (s0, e0), (s1, _) in zip(spans, spans[1:], strict=False):
+            start_gaps.append(s1 - s0)
+            rest_gaps.append(s1 - e0)
+            overlaps += s1 < e0
+    return {
+        "hosts": len(by_host),
+        "requests": len(log),
+        "min_start_to_start_s": round(min(start_gaps), 3) if start_gaps else None,
+        "min_end_to_start_s": round(min(rest_gaps), 3) if rest_gaps else None,
+        "overlapping_requests_to_one_host": overlaps,
+    }
 
 
 def _decode(r, content_type: str) -> str:
