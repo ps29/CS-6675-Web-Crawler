@@ -103,6 +103,7 @@ TASKS: tuple[Task, ...] = (
     Task(M5, "Benchmark (bench)", "corpus_jobs.bench",
          preset={"scenarios": "easy", "repeats": "1"}),
     Task(M5, "Estimate an unrun scenario", "corpus_jobs.estimate"),
+    Task(M5, "Load a job's index into a search database", "corpus_jobs.load"),
     Task(CHECKS, "pytest: all", "pytest", pytest_parser),
     Task(CHECKS, "pytest: M2/M3 ledger", "pytest", pytest_parser,
          preset={"paths": "tests/ledger"}),
