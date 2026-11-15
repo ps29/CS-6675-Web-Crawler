@@ -97,10 +97,11 @@ def collapse_duplicates(pairs: Path, mapping: dict[str, int], storage: Storage) 
                 if ra != rb:
                     parent[max(ra, rb)] = min(ra, rb)  # the root is the group's lowest id
     marks = [(find(p), p) for p in parent if find(p) != p]
-    storage.conn.executemany(
+    # pages the crawler already marked as exact duplicates stay as they are and are not counted
+    cur = storage.conn.executemany(
         "UPDATE pages SET duplicate_of = ? WHERE id = ? AND duplicate_of IS NULL", marks
     )
-    return len(marks)
+    return cur.rowcount
 
 
 def check(source_db: Path, storage: Storage) -> dict:
