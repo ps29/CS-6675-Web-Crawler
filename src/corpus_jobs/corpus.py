@@ -77,7 +77,8 @@ def drift_records(root: Path) -> Iterator[tuple[str, str]]:
 
 def crawldb_records(path: Path) -> Iterator[tuple[str, str]]:
     """(url, token stream) for each indexed page of an M1 crawl database, in page-id order."""
-    conn = sqlite3.connect(f"file:{path}?mode=ro", uri=True)
+    # as_uri() escapes "#", "?" and "%", which would otherwise end the file name in the URI
+    conn = sqlite3.connect(f"{path.resolve().as_uri()}?mode=ro", uri=True)
     try:
         pages = conn.execute(
             "SELECT id, url FROM pages WHERE doc_length > 0 ORDER BY id"
