@@ -38,7 +38,7 @@ The work happened in this order:
 
 ## Where it ran
 
-All measurements were taken on one cloud virtual machine (the cloud workspace that Claude uses),
+All measurements were taken on one cloud virtual machine (an AI assistant's cloud workspace),
 not on the project owner's laptop:
 
 | Item | Value |
