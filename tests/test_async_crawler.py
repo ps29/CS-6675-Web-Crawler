@@ -7,7 +7,7 @@ import time
 from focused_crawler.async_crawler import AsyncCrawler
 from focused_crawler.config import Config, CrawlSettings
 from focused_crawler.crawler import Crawler
-from focused_crawler.fetcher import Fetcher, FetchResult
+from focused_crawler.fetcher import Fetcher, FetchResult, request_gaps
 from focused_crawler.host_queues import HostQueues
 from focused_crawler.storage import Storage
 from focused_crawler.url_utils import host_of
@@ -171,3 +171,33 @@ def test_hosts_are_fetched_in_parallel():
 def test_page_budget_is_respected():
     stats, storage, _, _, _ = crawl_async(max_pages=7)
     assert stats.fetched == 7 and len(urls(storage)) == 7
+
+
+# --- request log ---------------------------------------------------------------------------
+
+
+def test_request_gaps_summarizes_per_host_gaps_and_overlaps():
+    log = [("a.org", 0.0, 0.3), ("b.org", 0.1, 0.2), ("a.org", 1.5, 1.8), ("b.org", 0.15, 0.4)]
+    summary = request_gaps(log)
+    assert summary["hosts"] == 2 and summary["requests"] == 4
+    assert summary["min_start_to_start_s"] == 0.05  # b.org
+    assert summary["overlapping_requests_to_one_host"] == 1  # b.org's second began before 0.2
+    assert request_gaps([])["min_start_to_start_s"] is None
+
+
+def test_sequential_fetcher_logs_requests_one_delay_apart():
+    routes = {u: FakeResponse(text=t) for u, t in site().items()}
+    clock = FakeClock()
+    fetcher = Fetcher(session=FakeSession(routes), sleep=clock.sleep, clock=clock, delay=1.0)
+    Crawler(config(max_pages=8), Storage(":memory:"), fetcher=fetcher).run()
+    summary = request_gaps(fetcher.request_log)
+    assert summary["requests"] == fetcher.requests_made == len(fetcher.request_log)
+    assert summary["min_start_to_start_s"] >= 1.0
+    assert summary["overlapping_requests_to_one_host"] == 0
+
+
+def test_async_request_log_has_no_overlap_and_keeps_the_delay():
+    _, _, fetcher, _, _ = crawl_async()
+    summary = request_gaps(fetcher.request_log)
+    assert summary["hosts"] == len(HOSTS) and summary["overlapping_requests_to_one_host"] == 0
+    assert summary["min_end_to_start_s"] >= DELAY - 0.005
