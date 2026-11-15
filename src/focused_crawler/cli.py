@@ -31,7 +31,13 @@ def cmd_crawl(args) -> int:
     config = load_config(args.config)
     db_path = Path(args.db) if args.db else config.db_path
     with Storage(db_path) as storage:
-        crawler = Crawler(config, storage)
+        workers = args.concurrency or config.crawl.concurrency
+        if workers > 1:
+            from .async_crawler import AsyncCrawler
+
+            crawler = AsyncCrawler(config, storage, concurrency=workers)
+        else:
+            crawler = Crawler(config, storage)
         try:
             stats = crawler.run(max_pages=args.max_pages)
         except KeyboardInterrupt:
@@ -95,6 +101,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     crawl = sub.add_parser("crawl", help="run a focused crawl")
     crawl.add_argument("--max-pages", type=int, help="override crawl.max_pages")
+    crawl.add_argument(
+        "--concurrency",
+        type=int,
+        help="requests in flight, one per host at most (default: crawl.concurrency; 1: sequential)",
+    )
     crawl.set_defaults(func=cmd_crawl)
 
     search = sub.add_parser("search", help="query the index")

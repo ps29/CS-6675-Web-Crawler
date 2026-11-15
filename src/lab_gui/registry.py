@@ -87,6 +87,8 @@ TASKS: tuple[Task, ...] = (
     Task(M1, "Stats (fcrawl stats)", FCRAWL, subcommand="stats"),
     Task(M1, "Export (fcrawl export)", FCRAWL, subcommand="export"),
     Task(M1, "Ranking evaluation", "focused_crawler.evaluate"),
+    Task(M1, "Crawl benchmark (sequential vs async)", "focused_crawler.crawl_bench",
+         preset={"pages": "60", "repeats": "1", "workers": "20"}),
     Task(LEDGER, "Ledger sim (offline)", "crawl_ledger.sim", preset={"offline": True},
          online=lambda v: not v.get("offline")),
     Task(LEDGER, "Ledger sim (live PyPI)", "crawl_ledger.sim",
