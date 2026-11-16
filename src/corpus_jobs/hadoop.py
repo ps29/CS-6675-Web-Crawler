@@ -12,6 +12,8 @@ signatures: a map-only job writes the signatures once, and the band reducers rea
 they need from its output. The side input is read from the local file system, which is right
 for the local runner; on a cluster it has to be shipped with the job or read from HDFS.
 
+With `hdfs` set, every job is submitted to a YARN cluster instead (`corpus_jobs.cluster`).
+
 `naive` emits a record per token occurrence and has no combiner; its top-k job sends every term
 to the single reducer. `refined` aggregates before the shuffle (in-mapper combining per
 document and per task, a combiner for term counts, a local top-k in every map task). The dedup
@@ -92,6 +94,14 @@ def mapred() -> str:
     return str(Path(home) / "bin" / "mapred")
 
 
+def hadoop_fs(*args: str, check: bool = True) -> subprocess.CompletedProcess:
+    home = os.environ.get("HADOOP_HOME")
+    if not home:
+        raise SystemExit("set HADOOP_HOME to a Hadoop 3.x installation")
+    cmd = [str(Path(home) / "bin" / "hadoop"), "fs", *args]
+    return subprocess.run(cmd, capture_output=True, text=True, check=check)
+
+
 def parse_counters(log: str) -> dict[str, int]:
     out = {}
     for key, label in COUNTERS.items():
@@ -99,22 +109,34 @@ def parse_counters(log: str) -> dict[str, int]:
     return out
 
 
-def run_job(job: Job, corpus: Path, work: Path, cores: int) -> dict:
-    src = work / job.input_from if job.input_from else corpus
-    dst = work / job.name
-    shutil.rmtree(dst, ignore_errors=True)
+def run_job(job: Job, corpus, work: Path, cores: int, hdfs: str | None = None) -> dict:
+    """One Streaming job. Without `hdfs`, it runs in the local job runner on local files. With
+    `hdfs` (a directory URI such as hdfs://localhost:9000/user/root/cj), it is submitted to the
+    cluster in HADOOP_CONF_DIR, reads and writes HDFS, and its output is copied back to `work`.
+    `cores` is the number of reducers, and in local mode also the number of task slots."""
+    base = hdfs if hdfs else work
+    src = f"{base}/{job.input_from}" if job.input_from else corpus
+    dst = f"{base}/{job.name}"
+    shutil.rmtree(work / job.name, ignore_errors=True)
+    if hdfs:
+        hadoop_fs("-rm", "-r", "-f", "-skipTrash", dst, check=False)
+        mode = []
+        env = ["-cmdenv", f"HADOOP_HOME={os.environ['HADOOP_HOME']}",
+               "-cmdenv", f"JAVA_HOME={os.environ.get('JAVA_HOME', '')}"]  # fmt: skip
+    else:
+        mode = ["-D", "mapreduce.framework.name=local", "-D", "fs.defaultFS=file:///",
+                "-D", f"mapreduce.local.map.tasks.maximum={cores}",
+                "-D", f"mapreduce.local.reduce.tasks.maximum={cores}"]  # fmt: skip
+        env = []
     reducers = cores if job.reducers is None else job.reducers
-    cmd = [mapred(), "streaming",
-           "-D", "mapreduce.framework.name=local", "-D", "fs.defaultFS=file:///",
+    cmd = [mapred(), "streaming", *mode,
            "-D", f"mapreduce.job.reduces={reducers}",
-           "-D", f"mapreduce.local.map.tasks.maximum={cores}",
-           "-D", f"mapreduce.local.reduce.tasks.maximum={cores}",
            "-D", "mapreduce.job.name=corpus_jobs." + job.name,
            # The local runner runs every reducer in one JVM, and each may hold up to 70% of the
            # heap of map output in memory; two at once ran out of heap on the 716 MB corpus.
            "-D", f"mapreduce.reduce.shuffle.input.buffer.percent={SHUFFLE_BUFFER}",
-           "-cmdenv", f"PYTHONPATH={SRC}",
-           *(["-cmdenv", f"SIDE_INPUT={work / job.side_input}"] if job.side_input else []),
+           "-cmdenv", f"PYTHONPATH={SRC}", *env,
+           *(["-cmdenv", f"SIDE_INPUT={base}/{job.side_input}"] if job.side_input else []),
            "-input", str(src), "-output", str(dst),
            "-mapper", job.mapper, "-reducer", job.reducer]  # fmt: skip
     if job.combiner:
@@ -127,14 +149,23 @@ def run_job(job: Job, corpus: Path, work: Path, cores: int) -> dict:
         log.write_text(proc.stderr, encoding="utf-8")
         tail = "\n".join(proc.stderr.splitlines()[-30:])
         raise RuntimeError(f"Hadoop job {job.name} failed (full log: {log}):\n{tail}")
+    if hdfs:
+        hadoop_fs("-get", dst, str(work / job.name))
     return {"job": job.name, "seconds": elapsed, **parse_counters(proc.stderr)}
 
 
-def run(corpus: Path, out: Path, cores: int, variant: str, jobs: tuple[str, ...]) -> dict:
+def run(corpus: Path, out: Path, cores: int, variant: str, jobs: tuple[str, ...],
+        hdfs: str | None = None) -> dict:  # fmt: skip
     out.mkdir(parents=True, exist_ok=True)
+    source = str(corpus)
+    if hdfs:  # the corpus is uploaded once and reused (corpus_jobs.cluster upload does it ahead)
+        source = f"{hdfs}/input/{corpus.name}"
+        if hadoop_fs("-test", "-e", source, check=False).returncode:
+            hadoop_fs("-mkdir", "-p", f"{hdfs}/input")
+            hadoop_fs("-put", str(corpus), source)
     results = []
     for step in jobs:
         for job in PIPELINES[variant][step]:
-            results.append(run_job(job, corpus, out, cores))
+            results.append(run_job(job, source, out, cores, hdfs))
     totals = {k: sum(r[k] for r in results) for k in COUNTERS}
     return {"jobs": results, "counters": totals}
