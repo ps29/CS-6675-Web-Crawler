@@ -13,9 +13,11 @@ Hadoop counters are reported through stderr (`reporter:counter:group,name,amount
 from __future__ import annotations
 
 import heapq
+import os
 import sys
 from collections import Counter
 from itertools import groupby
+from pathlib import Path
 
 from .core import (
     MAX_BUCKET,
@@ -159,9 +161,63 @@ def pairs_reduce(stdin, out):  # a pair found in several bands is kept once
         out.write(pair_line(a, b, max(float(s) for s in sims)) + "\n")
 
 
+# --- near-duplicates, compact shuffle (Refinement 3) ----------------------------------------
+#
+# The jobs above send each document's full signature (128 numbers) through the shuffle once per
+# band, 16 times in all. Here a map-only job writes each signature once, the band job shuffles
+# only (band key, document) pairs, and each band reducer reads the signatures it needs from the
+# map-only job's output (a side input, named by the SIDE_INPUT environment variable). The pairs
+# and their estimated similarities are the same as above.
+
+
+def sig_map(stdin, out):  # map-only: one line per document, nothing is shuffled
+    for line in stdin:
+        doc, text = parse(line)
+        sig = signature(tokens(text))
+        if sig is not None:
+            out.write(f"{doc}\t{sig_to_str(sig)}\n")
+
+
+def band_map(stdin, out):  # input: the sig_map output
+    for line in stdin:
+        doc, s = line.rstrip("\n").split("\t")
+        for b in bands(sig_from_str(s)):
+            out.write(f"{b}\t{doc}\n")
+
+
+def side_signatures(needed: set[str], root: Path | None = None) -> dict:
+    """The signatures of `needed` documents, read from the sig_map output directory."""
+    root = root or Path(os.environ["SIDE_INPUT"])
+    sigs = {}
+    for part in sorted(root.glob("part-*")):
+        with part.open(encoding="utf-8") as f:
+            for line in f:
+                doc, s = line.rstrip("\n").split("\t")
+                if doc in needed:
+                    sigs[doc] = sig_from_str(s)
+    return sigs
+
+
+def band_reduce(stdin, out, root: Path | None = None):
+    # First pass: keep the buckets that can hold a pair. Most buckets have one document, so only
+    # the signatures of documents that share a bucket are loaded in the second pass.
+    buckets = []
+    for _, docs in keyed(stdin):
+        if len(docs) > MAX_BUCKET:
+            counter("skipped_buckets")
+        elif len(docs) > 1:
+            buckets.append(docs)
+    sigs = side_signatures({d for docs in buckets for d in docs}, root)
+    counter("side_signatures_loaded", len(sigs))
+    for docs in buckets:
+        for a, b, sim in bucket_pairs([(d, sigs[d]) for d in docs]):
+            out.write(f"{a}|{b}\t{sim:.4f}\n")
+
+
 ROLES = {f.__name__: f for f in (
     index_map_naive, index_reduce_naive, index_map, index_reduce, wc_map_naive, wc_map,
     wc_reduce, topk_map_naive, topk_map, topk_reduce, dedup_map, dedup_reduce, pairs_reduce,
+    sig_map, band_map, band_reduce,
 )}  # fmt: skip
 
 

@@ -7,6 +7,11 @@ as in the original model (Dean and Ghemawat 2004):
     topk    corpus -> term counts -> top-k terms                       2 jobs (top-k: 1 reducer)
     dedup   corpus -> LSH buckets -> candidate pairs -> distinct pairs  2 jobs
 
+`lsh` is `refined` with a dedup whose band job shuffles (band, document) pairs and not
+signatures: a map-only job writes the signatures once, and the band reducers read the ones
+they need from its output. The side input is read from the local file system, which is right
+for the local runner; on a cluster it has to be shipped with the job or read from HDFS.
+
 `naive` emits a record per token occurrence and has no combiner; its top-k job sends every term
 to the single reducer. `refined` aggregates before the shuffle (in-mapper combining per
 document and per task, a combiner for term counts, a local top-k in every map task). The dedup
@@ -35,6 +40,7 @@ COUNTERS = {
     "spilled_records": "Spilled Records",
     "combine_input_records": "Combine input records",
     "skipped_buckets": "skipped_buckets",
+    "side_signatures_loaded": "side_signatures_loaded",
 }
 
 
@@ -46,6 +52,7 @@ class Job:
     combiner: str | None = None
     reducers: int | None = None  # None: one per core
     input_from: str | None = None  # a previous job's output instead of the corpus
+    side_input: str | None = None  # a previous job's output that the reducers read directly
 
 
 def py(role: str) -> str:
@@ -70,6 +77,12 @@ DEDUP = [Job("bands", py("dedup_map"), py("dedup_reduce")),
          Job("pairs", "cat", py("pairs_reduce"), input_from="bands")]  # fmt: skip
 for _p in PIPELINES.values():
     _p["dedup"] = DEDUP
+# Refinement 3: the refined pipeline with a dedup that shuffles (band, document) pairs only.
+PIPELINES["lsh"] = {**PIPELINES["refined"], "dedup": [
+    Job("sigs", py("sig_map"), "NONE", reducers=0),
+    Job("bands", py("band_map"), py("band_reduce"), input_from="sigs", side_input="sigs"),
+    Job("pairs", "cat", py("pairs_reduce"), input_from="bands"),
+]}  # fmt: skip
 
 
 def mapred() -> str:
@@ -90,7 +103,7 @@ def run_job(job: Job, corpus: Path, work: Path, cores: int) -> dict:
     src = work / job.input_from if job.input_from else corpus
     dst = work / job.name
     shutil.rmtree(dst, ignore_errors=True)
-    reducers = job.reducers or cores
+    reducers = cores if job.reducers is None else job.reducers
     cmd = [mapred(), "streaming",
            "-D", "mapreduce.framework.name=local", "-D", "fs.defaultFS=file:///",
            "-D", f"mapreduce.job.reduces={reducers}",
@@ -101,6 +114,7 @@ def run_job(job: Job, corpus: Path, work: Path, cores: int) -> dict:
            # heap of map output in memory; two at once ran out of heap on the 716 MB corpus.
            "-D", f"mapreduce.reduce.shuffle.input.buffer.percent={SHUFFLE_BUFFER}",
            "-cmdenv", f"PYTHONPATH={SRC}",
+           *(["-cmdenv", f"SIDE_INPUT={work / job.side_input}"] if job.side_input else []),
            "-input", str(src), "-output", str(dst),
            "-mapper", job.mapper, "-reducer", job.reducer]  # fmt: skip
     if job.combiner:
