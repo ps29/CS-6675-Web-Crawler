@@ -18,6 +18,9 @@ Notes:
   rankers already honor for exact duplicates.
 - Injected test copies (`<doc>~dup<i>`) have no page of their own and are skipped.
 - `--check` compares the loaded postings with the source database's own (M1-built) postings.
+- `--from-corpus` is for a corpus built from a ledger snapshot (`corpus ledger`), which has no
+  crawl database: the pages are created from the corpus, and each page's fields name the ledger
+  record that vouches for it.
 """
 
 from __future__ import annotations
@@ -27,6 +30,7 @@ import json
 import shutil
 from collections import defaultdict
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from focused_crawler.storage import Storage
 
@@ -122,13 +126,46 @@ def check(source_db: Path, storage: Storage) -> dict:
     return result
 
 
-def load(source_db: Path, corpus: Path, job_out: Path, out_db: Path, collapse: bool,
+def pages_from_corpus(corpus: Path, storage: Storage) -> int:
+    """Create one page per corpus document, for a corpus that has no crawl database behind it
+    (a ledger snapshot). If `<corpus>.records.json` exists, each page's fields name the ledger
+    record that vouches for it, so a search result can be traced to a verified fetch."""
+    sidecar = Path(f"{corpus}.records.json")
+    records = json.loads(sidecar.read_text())["records"] if sidecar.exists() else {}
+    n = 0
+    with corpus.open(encoding="utf-8") as f:
+        for line in f:
+            rec = json.loads(line)
+            if "~dup" in rec["doc"]:
+                continue
+            url = rec["url"]
+            r = records.get(url)
+            fields = (
+                {"record": r["id"][:16], "peer": r["peer_id"][:16], "audit": r["audit"]}
+                if r
+                else {}
+            )
+            storage.upsert_page(url, urlsplit(url).netloc.lower(), 0, 200, title=url,
+                                fields=fields)  # fmt: skip
+            n += 1
+    return n
+
+
+def load(source_db: Path | None, corpus: Path, job_out: Path, out_db: Path, collapse: bool,
          verify: bool = False) -> dict:  # fmt: skip
-    if out_db.resolve() == source_db.resolve():
-        raise SystemExit("--out-db must differ from --source-db (the source is left untouched)")
+    """`source_db` None builds the pages from the corpus itself (see `pages_from_corpus`)."""
     out_db.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(source_db, out_db)
+    if source_db is None:
+        if verify:
+            raise SystemExit("--check needs a source database to compare with")
+        out_db.unlink(missing_ok=True)
+    else:
+        if out_db.resolve() == source_db.resolve():
+            raise SystemExit("--out-db must differ from --source-db (the source is left untouched)")
+        shutil.copyfile(source_db, out_db)
     with Storage(out_db) as storage:
+        if source_db is None:
+            pages_from_corpus(corpus, storage)
         mapping, skipped = doc_pages(corpus, storage)
         result = {"documents": len(mapping), "skipped_documents": skipped,
                   "postings": load_postings(job_out / "index.tsv", mapping, storage)}  # fmt: skip
@@ -157,6 +194,11 @@ def build_parser() -> argparse.ArgumentParser:
     ap.add_argument(
         "--out-db", default="data/project/pydocs_m5.db", help="search database to write"
     )
+    ap.add_argument(
+        "--from-corpus",
+        action="store_true",
+        help="ignore --source-db and create the pages from the corpus (a ledger snapshot corpus)",
+    )
     ap.add_argument("--collapse-dups", action="store_true", help="hide near-duplicate pages")
     ap.add_argument("--check", action="store_true", help="compare with the source postings")
     return ap
@@ -164,7 +206,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: list[str] | None = None) -> int:
     a = build_parser().parse_args(argv)
-    result = load(Path(a.source_db), Path(a.corpus), Path(a.job_out), Path(a.out_db),
+    source = None if a.from_corpus else Path(a.source_db)
+    result = load(source, Path(a.corpus), Path(a.job_out), Path(a.out_db),
                   a.collapse_dups, a.check)  # fmt: skip
     print(json.dumps(result, indent=1))
     return 0

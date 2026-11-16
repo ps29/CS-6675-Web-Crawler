@@ -1,5 +1,7 @@
 """The crawl-database corpus source and the loader that hands a job's index to the M1 rankers."""
 
+import json
+
 import pytest
 
 pytest.importorskip("numpy")
@@ -73,3 +75,28 @@ def test_source_database_is_left_untouched(tmp_path):
         assert s.summary()["duplicates"] == 0
     with pytest.raises(SystemExit):
         load.load(db, tmp_path / "corpus.jsonl", tmp_path / "job", db, False)
+
+
+def test_ledger_snapshot_becomes_a_searchable_index_with_record_ids(tmp_path):
+    from crawl_ledger.snapshot import build_parser, run
+
+    snap = tmp_path / "ledger"
+    args = build_parser().parse_args(
+        ["--offline", "--quiet", "--dishonest", "0.5", "--forge-rate", "0.5", "--audit-rate", "0.5"]
+    )
+    made = run(args, snap)
+    jsonl = tmp_path / "ledger.jsonl"
+    records = corpus.ledger_records(snap, "pass", tmp_path / "ledger.jsonl.records.json")
+    meta = corpus.build(records, jsonl, 0, [0.01], 1, 1)
+    assert meta["docs"] == made["verdicts"]["PASS"]  # only audited-PASS pages are indexed
+    local.run(jsonl, tmp_path / "job", ("index", "dedup"))
+    result = load.load(None, jsonl, tmp_path / "job", tmp_path / "search.db", False)
+    assert result["indexed_pages"] == meta["docs"]
+    with Storage(tmp_path / "search.db") as s:
+        hits = TFRanker(s).search("content", k=100)  # the offline pages all say "content of <url>"
+    sidecar = json.loads((tmp_path / "ledger.jsonl.records.json").read_text())
+    assert sidecar["verification"]["forged_accepted"] == 0
+    assert {h.url for h in hits} == set(sidecar["records"])
+    for h in hits:
+        assert h.fields["audit"] == "PASS"
+        assert sidecar["records"][h.url]["id"].startswith(h.fields["record"])
