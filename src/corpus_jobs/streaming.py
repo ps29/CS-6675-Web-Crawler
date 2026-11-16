@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import heapq
 import os
+import subprocess
 import sys
 from collections import Counter
 from itertools import groupby
@@ -185,16 +186,28 @@ def band_map(stdin, out):  # input: the sig_map output
             out.write(f"{b}\t{doc}\n")
 
 
-def side_signatures(needed: set[str], root: Path | None = None) -> dict:
-    """The signatures of `needed` documents, read from the sig_map output directory."""
-    root = root or Path(os.environ["SIDE_INPUT"])
-    sigs = {}
-    for part in sorted(root.glob("part-*")):
+def _side_lines(root: str | Path):
+    """The lines of a job output directory, on the local file system or (hdfs://...) on HDFS."""
+    if str(root).startswith("hdfs://"):
+        hadoop = Path(os.environ["HADOOP_HOME"]) / "bin" / "hadoop"
+        cmd = [str(hadoop), "fs", "-cat", f"{root}/part-*"]
+        with subprocess.Popen(cmd, stdout=subprocess.PIPE, text=True, encoding="utf-8") as p:
+            yield from p.stdout
+        if p.returncode:
+            raise RuntimeError(f"could not read the side input {root}")
+        return
+    for part in sorted(Path(root).glob("part-*")):
         with part.open(encoding="utf-8") as f:
-            for line in f:
-                doc, s = line.rstrip("\n").split("\t")
-                if doc in needed:
-                    sigs[doc] = sig_from_str(s)
+            yield from f
+
+
+def side_signatures(needed: set[str], root: str | Path | None = None) -> dict:
+    """The signatures of `needed` documents, read from the sig_map output directory."""
+    sigs = {}
+    for line in _side_lines(root or os.environ["SIDE_INPUT"]):
+        doc, s = line.rstrip("\n").split("\t")
+        if doc in needed:
+            sigs[doc] = sig_from_str(s)
     return sigs
 
 
