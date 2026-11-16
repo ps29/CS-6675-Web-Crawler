@@ -9,6 +9,8 @@ from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
 from .record import GENESIS, Record, content_hash, sha256_hex
 
+FORGE_SUFFIX = b"\n<!-- altered install command -->"  # what a forging peer appends
+
 
 class Peer:
     def __init__(
@@ -53,7 +55,7 @@ class Peer:
         A dishonest peer reports a hash of altered content with probability forge_rate.
         Returns (record, forged_flag); the flag is ground truth for the experiment only."""
         forged = self.rng.random() < self.forge_rate
-        body = content + b"\n<!-- altered install command -->" if forged else content
+        body = content + FORGE_SUFFIX if forged else content
         rec = Record(
             self.id,
             pkg,
