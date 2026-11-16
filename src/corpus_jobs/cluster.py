@@ -1,10 +1,10 @@
 """A small Hadoop cluster (HDFS + YARN) of separate daemons: `python -m corpus_jobs.cluster`.
 
-    python -m corpus_jobs.cluster start --workers 2 --dir /tmp/cj-cluster
-    export HADOOP_CONF_DIR=/tmp/cj-cluster/conf-client
+    python -m corpus_jobs.cluster start --workers 2
+    export HADOOP_CONF_DIR=data/cluster/conf-client
     python -m corpus_jobs.bench --scenarios average --engines hadoop hadoop-lsh \
         --hdfs hdfs://localhost:9000/user/cj --out results/project/cluster_bench.json
-    python -m corpus_jobs.cluster stop --dir /tmp/cj-cluster
+    python -m corpus_jobs.cluster stop
 
 `start` writes a configuration directory for each daemon, formats a new NameNode, and starts one
 NameNode, one ResourceManager, and for each worker one DataNode and one NodeManager. Every
@@ -60,6 +60,9 @@ def common(root: Path, workers: int, memory: int, vcores: int) -> dict[str, dict
             "yarn.scheduler.minimum-allocation-mb": 256,
             "yarn.scheduler.maximum-allocation-mb": memory,
             "yarn.log-aggregation-enable": "false",
+            # a shared development disk is often more than 90% full; only stop below 1 GB free
+            "yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage": 100,
+            "yarn.nodemanager.disk-health-checker.min-free-space-per-disk-mb": 1024,
         },
         "mapred-site.xml": {
             "mapreduce.framework.name": "yarn",
@@ -94,13 +97,11 @@ def worker(i: int, root: Path) -> dict[str, dict]:
 
 
 def write_conf(target: Path, base: dict[str, dict], extra: dict[str, dict] | None = None) -> Path:
-    target.mkdir(parents=True, exist_ok=True)
+    """Hadoop's default configuration directory (which holds capacity-scheduler.xml and the
+    log settings), with the four *-site.xml files replaced."""
+    shutil.copytree(Path(os.environ["HADOOP_HOME"]) / "etc" / "hadoop", target, dirs_exist_ok=True)
     for name, props in base.items():
         (target / name).write_text(xml({**props, **(extra or {}).get(name, {})}))
-    src = Path(os.environ["HADOOP_HOME"]) / "etc" / "hadoop"
-    for f in ("log4j.properties", "hadoop-env.sh", "yarn-env.sh", "mapred-env.sh"):
-        if (src / f).exists():
-            shutil.copy(src / f, target / f)
     return target
 
 
@@ -169,7 +170,7 @@ def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(prog="python -m corpus_jobs.cluster", description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)  # fmt: skip
     ap.add_argument("action", choices=("start", "stop"))
-    ap.add_argument("--dir", default="/tmp/cj-cluster")
+    ap.add_argument("--dir", default="data/cluster", help="configuration, data and logs")
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--worker-memory", type=int, default=2304, help="MB each worker offers YARN")
     ap.add_argument("--worker-vcores", type=int, default=1)
