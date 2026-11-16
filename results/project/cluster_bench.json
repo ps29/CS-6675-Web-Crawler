@@ -1,0 +1,326 @@
+{
+ "provenance": {
+  "git_commit": "be9d928706bab0285b30ea72af03a67690676d01",
+  "git_dirty": true,
+  "python": "3.13.18",
+  "platform": "Linux-6.18.44-fc-v470-x86_64-with-glibc2.39",
+  "created_utc": "2026-11-16T05:34:37Z",
+  "argv": [
+   "--scenarios",
+   "hard",
+   "--engines",
+   "hadoop",
+   "hadoop-lsh",
+   "--repeats",
+   "1",
+   "--hdfs",
+   "hdfs://localhost:9000/user/cj",
+   "--work",
+   "data/m5/out-cluster",
+   "--out",
+   "results/project/cluster_bench.json"
+  ],
+  "config": {
+   "scenarios": [
+    "hard"
+   ],
+   "engines": [
+    "hadoop",
+    "hadoop-lsh"
+   ],
+   "cores": [
+    2
+   ],
+   "repeats": 1,
+   "data": "/home/claude/proj/data/m5",
+   "work": "data/m5/out-cluster",
+   "out": "results/project/cluster_bench.json",
+   "hdfs": "hdfs://localhost:9000/user/cj"
+  }
+ },
+ "threshold": 0.8,
+ "scenarios": {
+  "average": {
+   "docs": 20205,
+   "bytes": 175870547,
+   "engines": {
+    "local@2": {
+     "runs": 1,
+     "wall_s_median": 43.87,
+     "wall_s_min": 43.87,
+     "wall_s_max": 43.87,
+     "peak_rss_mb_max": 1068,
+     "digests": {
+      "index": "2a40381bac9ad215",
+      "topk": "57ee6ab55eeae42c",
+      "dedup": "236ff719e4ac7717"
+     },
+     "dedup": {
+      "reported_pairs": 468,
+      "reported_natural_pairs": 337,
+      "precision": 0.9338,
+      "injected_positives": 135,
+      "recall_injected": 0.9407,
+      "found_share_by_edit_rate": {
+       "0.02": 0.68,
+       "0.005": 1.0,
+       "0.05": 0.093,
+       "0.01": 0.922
+      },
+      "mean_abs_estimate_error": 0.016
+     }
+    },
+    "hadoop@2": {
+     "runs": 3,
+     "wall_s_median": 169.84,
+     "wall_s_min": 165.11,
+     "wall_s_max": 171.54,
+     "peak_rss_mb_max": 239,
+     "hadoop": {
+      "map_output_records": 10970353,
+      "map_output_bytes": 537085571,
+      "map_output_materialized_bytes": 543477097,
+      "reduce_shuffle_bytes": 543477097,
+      "spilled_records": 27563601,
+      "combine_input_records": 3018932,
+      "skipped_buckets": 0,
+      "side_signatures_loaded": 0
+     },
+     "hadoop_job_s": {
+      "index": 41.9,
+      "wc": 30.9,
+      "topk": 18.9,
+      "bands": 39.3,
+      "pairs": 19.8
+     },
+     "hadoop_jobs": {
+      "index": {
+       "map_output_records": 7622015,
+       "reduce_shuffle_bytes": 172668345
+      },
+      "wc": {
+       "map_output_records": 3018932,
+       "reduce_shuffle_bytes": 34444250
+      },
+      "topk": {
+       "map_output_records": 2000,
+       "reduce_shuffle_bytes": 34913
+      },
+      "bands": {
+       "map_output_records": 323280,
+       "reduce_shuffle_bytes": 336210454
+      },
+      "pairs": {
+       "map_output_records": 4126,
+       "reduce_shuffle_bytes": 119135
+      }
+     },
+     "digests": {
+      "index": "2a40381bac9ad215",
+      "topk": "57ee6ab55eeae42c",
+      "dedup": "236ff719e4ac7717"
+     },
+     "matches_local": true
+    },
+    "hadoop-lsh@2": {
+     "runs": 3,
+     "wall_s_median": 187.72,
+     "wall_s_min": 184.76,
+     "wall_s_max": 187.74,
+     "peak_rss_mb_max": 224,
+     "hadoop": {
+      "map_output_records": 10990558,
+      "map_output_bytes": 208775731,
+      "map_output_materialized_bytes": 214520697,
+      "reduce_shuffle_bytes": 214520697,
+      "spilled_records": 27240321,
+      "combine_input_records": 3018932,
+      "skipped_buckets": 0,
+      "side_signatures_loaded": 1667
+     },
+     "hadoop_job_s": {
+      "index": 40.3,
+      "wc": 33.0,
+      "topk": 19.2,
+      "sigs": 27.1,
+      "bands": 24.1,
+      "pairs": 20.0
+     },
+     "hadoop_jobs": {
+      "index": {
+       "map_output_records": 7622015,
+       "reduce_shuffle_bytes": 172668345
+      },
+      "wc": {
+       "map_output_records": 3018932,
+       "reduce_shuffle_bytes": 34444250
+      },
+      "topk": {
+       "map_output_records": 2000,
+       "reduce_shuffle_bytes": 34913
+      },
+      "sigs": {
+       "map_output_records": 20205,
+       "reduce_shuffle_bytes": 0
+      },
+      "bands": {
+       "map_output_records": 323280,
+       "reduce_shuffle_bytes": 7254054
+      },
+      "pairs": {
+       "map_output_records": 4126,
+       "reduce_shuffle_bytes": 119135
+      }
+     },
+     "digests": {
+      "index": "2a40381bac9ad215",
+      "topk": "57ee6ab55eeae42c",
+      "dedup": "236ff719e4ac7717"
+     },
+     "matches_local": true
+    }
+   }
+  },
+  "hard": {
+   "docs": 81842,
+   "bytes": 715536544,
+   "engines": {
+    "local@2": {
+     "runs": 1,
+     "wall_s_median": 175.07,
+     "wall_s_min": 175.07,
+     "wall_s_max": 175.07,
+     "peak_rss_mb_max": 3541,
+     "digests": {
+      "index": "ecc653ddd926d501",
+      "topk": "9ade56b8bc9bc403",
+      "dedup": "9b18c105c02f517e"
+     },
+     "dedup": {
+      "reported_pairs": 4719,
+      "reported_natural_pairs": 4186,
+      "precision": 0.9462,
+      "injected_positives": 544,
+      "recall_injected": 0.9504,
+      "found_share_by_edit_rate": {
+       "0.02": 0.63,
+       "0.01": 0.957,
+       "0.05": 0.069,
+       "0.005": 0.996
+      },
+      "mean_abs_estimate_error": 0.0162
+     }
+    },
+    "hadoop@2": {
+     "runs": 1,
+     "wall_s_median": 354.54,
+     "wall_s_min": 354.54,
+     "wall_s_max": 354.54,
+     "peak_rss_mb_max": 222,
+     "hadoop": {
+      "map_output_records": 44013363,
+      "map_output_bytes": 2169084891,
+      "map_output_materialized_bytes": 2187610020,
+      "reduce_shuffle_bytes": 2187610020,
+      "spilled_records": 107519829,
+      "combine_input_records": 12086108,
+      "skipped_buckets": 0,
+      "side_signatures_loaded": 0
+     },
+     "hadoop_job_s": {
+      "index": 108.3,
+      "wc": 70.7,
+      "topk": 18.4,
+      "bands": 112.1,
+      "pairs": 20.9
+     },
+     "hadoop_jobs": {
+      "index": {
+       "map_output_records": 30573864,
+       "reduce_shuffle_bytes": 692947906
+      },
+      "wc": {
+       "map_output_records": 12086108,
+       "reduce_shuffle_bytes": 130911706
+      },
+      "topk": {
+       "map_output_records": 2000,
+       "reduce_shuffle_bytes": 35439
+      },
+      "bands": {
+       "map_output_records": 1309472,
+       "reduce_shuffle_bytes": 1362549540
+      },
+      "pairs": {
+       "map_output_records": 41919,
+       "reduce_shuffle_bytes": 1165429
+      }
+     },
+     "digests": {
+      "index": "ecc653ddd926d501",
+      "topk": "9ade56b8bc9bc403",
+      "dedup": "9b18c105c02f517e"
+     },
+     "matches_local": true
+    },
+    "hadoop-lsh@2": {
+     "runs": 1,
+     "wall_s_median": 355.54,
+     "wall_s_min": 355.54,
+     "wall_s_max": 355.54,
+     "peak_rss_mb_max": 218,
+     "hadoop": {
+      "map_output_records": 44095205,
+      "map_output_bytes": 838541643,
+      "map_output_materialized_bytes": 854447828,
+      "reduce_shuffle_bytes": 854447828,
+      "spilled_records": 106210357,
+      "combine_input_records": 12086108,
+      "skipped_buckets": 0,
+      "side_signatures_loaded": 14207
+     },
+     "hadoop_job_s": {
+      "index": 104.1,
+      "wc": 72.3,
+      "topk": 19.5,
+      "sigs": 80.9,
+      "bands": 36.9,
+      "pairs": 20.7
+     },
+     "hadoop_jobs": {
+      "index": {
+       "map_output_records": 30573864,
+       "reduce_shuffle_bytes": 692947906
+      },
+      "wc": {
+       "map_output_records": 12086108,
+       "reduce_shuffle_bytes": 130911706
+      },
+      "topk": {
+       "map_output_records": 2000,
+       "reduce_shuffle_bytes": 35439
+      },
+      "sigs": {
+       "map_output_records": 81842,
+       "reduce_shuffle_bytes": 0
+      },
+      "bands": {
+       "map_output_records": 1309472,
+       "reduce_shuffle_bytes": 29387348
+      },
+      "pairs": {
+       "map_output_records": 41919,
+       "reduce_shuffle_bytes": 1165429
+      }
+     },
+     "digests": {
+      "index": "ecc653ddd926d501",
+      "topk": "9ade56b8bc9bc403",
+      "dedup": "9b18c105c02f517e"
+     },
+     "matches_local": true
+    }
+   }
+  }
+ }
+}

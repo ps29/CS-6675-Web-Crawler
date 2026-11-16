@@ -5,7 +5,21 @@ All notable changes to this project are documented here. Format follows
 
 ## [Unreleased]
 
+### Fixed
+- `corpus_jobs.hadoop.parse_counters` added every report of a counter in the log; the local job
+  runner prints each counter twice, so every local-mode Hadoop counter (including those reported
+  for M5) was exactly twice its real value. It now takes the job total. `docs/m5-results.md` has
+  a correction note; times and ratios were not affected.
+
 ### Added
+- Term project (branch `feat/project-pipeline`): the index job feeds the search engine
+  (`corpus_jobs.load`), an async crawler with per-host queues (`fcrawl crawl --concurrency`,
+  `--request-log`, `focused_crawler.crawl_bench`), an index built from verified ledger records
+  (`crawl_ledger.snapshot`, `corpus ledger`, `load --from-corpus`), a compact LSH shuffle
+  (`hadoop-lsh`: band shuffle 1.36 GB → 29 MB, 210.6 s → 199.1 s on 81,842 pages), a
+  duplicate-collapsing ranking experiment (`corpus_jobs.dup_eval`), and a two-worker HDFS/YARN
+  cluster on one machine (`corpus_jobs.cluster`, `--hdfs`). Results in
+  `docs/project-results.md`, `docs/project-ledger-index.md` and `docs/project-refinements.md`.
 - `docs/m5-reproduce.md`: what the M5 work did, the machine it ran on, and step-by-step
   instructions to repeat it (Java, Hadoop, Common Crawl files and corpus checksums).
 - `docs/crawler-optimization.md`: a live 500-page run of the M1 crawler (356 s, 1.4 pages/s, no

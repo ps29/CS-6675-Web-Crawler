@@ -11,6 +11,10 @@
 | [host-rate-results.md](host-rate-results.md) | Ring-wide per-host rate limits with host coordinators (simulation) |
 | [m5-results.md](m5-results.md) | M5: index, top-k and near-duplicate jobs on a single node, Hadoop and Spark (few runs, one VM) |
 | [m5-reproduce.md](m5-reproduce.md) | M5: what was done, where it ran, and how to run it yourself |
+| [project-results.md](project-results.md) | Term project: the M5 job feeding the M1 search engine, with index-equality and ranking checks |
+| [project-refinements.md](project-refinements.md) | Term project: the compact LSH shuffle, collapsing near-duplicates in search results, and the Hadoop cluster |
+| [project-ledger-index.md](project-ledger-index.md) | Term project: the index built from verified ledger records, with the two indexing policies |
+| [project-ai-log.md](project-ai-log.md) | Term project: running AI-usage log |
 | [crawler-optimization.md](crawler-optimization.md) | M1 crawler: a live 500-page run and a prioritized optimization plan |
 | [audit-results.md](audit-results.md) | Canonical block-level audits vs. raw hashing and SimHash on re-fetched pages |
 | [plans/](plans/) | Implementation plans per milestone (`00-overview.md`, `01-m4-serving-layer.md`) |

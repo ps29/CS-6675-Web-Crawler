@@ -1,0 +1,12 @@
+{
+ "documents": 148,
+ "skipped_documents": 0,
+ "postings": 85590,
+ "collapsed_pages": 1,
+ "check": {
+  "source_postings": 85678,
+  "loaded_postings": 85590,
+  "identical": 85590
+ },
+ "indexed_pages": 147
+}

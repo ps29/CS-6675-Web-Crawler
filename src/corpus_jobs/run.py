@@ -1,6 +1,7 @@
 """Run one engine on one corpus: `python -m corpus_jobs.run ENGINE CORPUS OUT [--cores N]`.
 
-Engines: `local` (single node), `hadoop-naive`, `hadoop` (refined), `spark` (cached RDD) and
+Engines: `local` (single node), `hadoop-naive`, `hadoop` (refined), `hadoop-lsh` (refined, with
+the compact near-duplicate shuffle), `spark` (cached RDD) and
 `spark-nocache`. Writes <OUT>/metrics.json with wall time and engine counters. `bench.py` runs
 this in a subprocess so that it can sample the memory of the whole process tree."""
 
@@ -11,11 +12,12 @@ import json
 import time
 from pathlib import Path
 
-ENGINES = ("local", "hadoop-naive", "hadoop", "spark", "spark-nocache")
+ENGINES = ("local", "hadoop-naive", "hadoop", "hadoop-lsh", "spark", "spark-nocache")
 JOBS = ("index", "topk", "dedup")
 
 
-def run(engine: str, corpus: Path, out: Path, cores: int, jobs: tuple[str, ...]) -> dict:
+def run(engine: str, corpus: Path, out: Path, cores: int, jobs: tuple[str, ...],
+        hdfs: str | None = None) -> dict:  # fmt: skip
     t = time.perf_counter()
     if engine == "local":
         from . import local
@@ -24,8 +26,8 @@ def run(engine: str, corpus: Path, out: Path, cores: int, jobs: tuple[str, ...])
     elif engine.startswith("hadoop"):
         from . import hadoop
 
-        detail = hadoop.run(corpus, out, cores, "naive" if engine == "hadoop-naive" else "refined",
-                            jobs)  # fmt: skip
+        variant = {"hadoop-naive": "naive", "hadoop": "refined", "hadoop-lsh": "lsh"}[engine]
+        detail = hadoop.run(corpus, out, cores, variant, jobs, hdfs)
     else:
         from . import spark_job
 
@@ -44,12 +46,15 @@ def build_parser() -> argparse.ArgumentParser:
     ap.add_argument("out")
     ap.add_argument("--cores", type=int, default=2)
     ap.add_argument("--jobs", nargs="+", default=list(JOBS), choices=JOBS)
+    ap.add_argument(
+        "--hdfs", help="Hadoop engines: run on the YARN cluster, in this HDFS directory"
+    )
     return ap
 
 
 def main(argv: list[str] | None = None) -> int:
     a = build_parser().parse_args(argv)
-    r = run(a.engine, Path(a.corpus), Path(a.out), a.cores, tuple(a.jobs))
+    r = run(a.engine, Path(a.corpus), Path(a.out), a.cores, tuple(a.jobs), a.hdfs)
     print(f"{a.engine}: {r['wall_s']:.1f} s")
     return 0
 
