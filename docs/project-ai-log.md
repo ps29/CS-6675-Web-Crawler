@@ -31,6 +31,18 @@ access to the course folder and the built-in browser. https://claude.ai
 | # | Prompt (as typed) | Context given | What the tool did |
 |---|---|---|---|
 | 14 | "ok now work on next part" | The repository | Chose the next open link itself: the index built from verified ledger records. Wrote `crawl_ledger/snapshot.py`, `crawl_ledger/policy_eval.py`, the `ledger` corpus source, `corpus_jobs.load --from-corpus`, tests, and `docs/project-ledger-index.md`. Ran only offline. |
+| 15 | "After writing project checkin 2 Complete all this things Connect the M5 index job to the M1 ranker, Stopped / Add the LSH band-shuffle refinement, Not started / Measure ranking with and without duplicates collapsed, Not started / Repeat the benchmark on a multi-node Hadoop cluster, Not started / Check the work: run tests and lint" | The repository, the Canvas check-in page, the Common Crawl files from Pravesh's laptop | Wrote `Project-CheckIn2-Pravesh-Shrestha.docx`. Added `hadoop-lsh` (compact LSH shuffle) and benchmarked it, wrote and ran `corpus_jobs.dup_eval`, downloaded Hadoop 3.5.0 (checksum verified), wrote `corpus_jobs.cluster` and ran the benchmark on a two-worker HDFS/YARN cluster on one VM, and ran the tests and lint. From here the model was Claude Opus 5.5 (the session's model changed). |
+
+### Decisions the tool made in entry 15 (for review)
+
+- The design of the compact shuffle (a map-only signature job and a side input).
+- The design of the duplicate experiment: synthetic mirrors at rate 0.3, edit rates 0.5% to 2%,
+  10 seeds, and the group-aware score as the main view.
+- The "multi-node" cluster is separate daemons on one 2-vCPU VM, because no second machine was
+  available. It checks correctness on HDFS and YARN; it cannot show scaling.
+- The draft of Check-In 2 first said that M1 proposed a better classifier; the tool checked the
+  M1 PDF, found that M1 proposed topic-biased PageRank and an official-source authority boost,
+  and corrected the text.
 
 ### Decisions the tool made in entry 14 (for review)
 
