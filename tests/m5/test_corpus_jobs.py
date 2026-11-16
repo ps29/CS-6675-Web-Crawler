@@ -135,3 +135,38 @@ def test_estimate_is_linear_in_input_size():
     bench = {"scenarios": {"easy": cell(1.0, 100, 10), "average": cell(11.0, 200, 100)}}
     r = estimate(bench, {"docs": 4, "bytes": 400}, "easy", "average", 2)["engines"]["local"]
     assert r["target_s_est"] == 41 and r["target_peak_mb_est"] == 500
+
+
+def test_compact_lsh_shuffle_gives_the_same_pairs(corpus, tmp_path):
+    local.run(corpus, tmp_path / "local", ("dedup",))
+    sigs = tmp_path / "sigs"
+    sigs.mkdir()
+    (sigs / "part-00000").write_text(
+        "".join(run_role("sig_map", corpus.read_text().splitlines(True)))
+    )
+    mapped = run_role("band_map", (sigs / "part-00000").read_text().splitlines(True))
+    assert all(len(line.split("\t")) == 2 for line in mapped)  # band key and document only
+    out = io.StringIO()
+    streaming.band_reduce(io.StringIO("".join(shuffle(mapped))), out, root=sigs)
+    pairs = run_role("pairs_reduce", shuffle(out.getvalue().splitlines(True)))
+    assert [x.rstrip("\n") for x in pairs] == canonical(tmp_path / "local", "dedup")
+
+
+def test_band_reduce_loads_only_signatures_of_shared_buckets(corpus, tmp_path):
+    sigs = tmp_path / "sigs"
+    sigs.mkdir()
+    (sigs / "part-00000").write_text(
+        "".join(run_role("sig_map", corpus.read_text().splitlines(True)))
+    )
+    loaded = streaming.side_signatures({"d0000000", "d0000003"}, sigs)
+    assert set(loaded) == {"d0000000", "d0000003"}
+
+
+@pytest.mark.skipif(not os.environ.get("HADOOP_HOME") or not shutil.which("java"),
+                    reason="needs HADOOP_HOME and Java")  # fmt: skip
+def test_hadoop_lsh_matches_local(corpus, tmp_path):
+    from corpus_jobs import hadoop
+
+    local.run(corpus, tmp_path / "local", ("dedup",))
+    hadoop.run(corpus, tmp_path / "hadoop", 2, "lsh", ("dedup",))
+    assert canonical(tmp_path / "hadoop", "dedup") == canonical(tmp_path / "local", "dedup")
