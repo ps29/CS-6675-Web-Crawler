@@ -136,6 +136,9 @@ def summarize(runs: list[dict]) -> dict:
     if "counters" in d:
         s["hadoop"] = d["counters"]
         s["hadoop_job_s"] = {j["job"]: round(j["seconds"], 1) for j in d["jobs"]}
+        s["hadoop_jobs"] = {j["job"]: {k: j[k] for k in ("map_output_records",
+                                                         "reduce_shuffle_bytes")}
+                            for j in d["jobs"]}  # fmt: skip
     if "spark" in d:
         s["spark"] = d["spark"]
         s["spark_job_s"] = {k: round(v, 1) for k, v in d["timings"].items()}
