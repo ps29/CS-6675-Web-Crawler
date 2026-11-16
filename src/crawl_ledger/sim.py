@@ -15,7 +15,7 @@ from runinfo import provenance
 
 from .audit import FAIL, INCONCLUSIVE, PASS, audit
 from .fetcher import Fetcher, OfflineFetcher, extract_links, source_urls
-from .peer import Directory, Peer
+from .peer import FORGE_SUFFIX, Directory, Peer
 from .ring import Ring
 from .verify import verify
 
@@ -29,9 +29,11 @@ def load_seeds(path: Path, limit: int) -> list[str]:
     return names[:limit]
 
 
-def crawl(packages, ring, fetcher, log):
+def crawl(packages, ring, fetcher, log, store: dict | None = None):
     """Each package is crawled by its owner on the ring, as in M2.
-    Returns (published records with ground truth, crawl stats)."""
+    Returns (published records with ground truth, crawl stats). If `store` is given, it receives
+    the body each record's hash was computed over (record hash -> bytes), which is what the peer
+    would hand to an indexer: the fetched page, or the altered page for a forged record."""
     published, failed, build_times = [], 0, []
     for pkg in packages:
         owner = ring.owner(pkg)
@@ -47,6 +49,8 @@ def crawl(packages, ring, fetcher, log):
             rec, forged = owner.make_record(pkg, source, url, res.content)
             build_times.append(time.perf_counter() - t0)
             published.append((rec, forged))  # gossip: visible to all peers
+            if store is not None:
+                store[rec.hash] = res.content + FORGE_SUFFIX if forged else res.content
             log(f"  {pkg}/{source} by {owner.addr}{'  [forged]' if forged else ''}")
             for src, link in extract_links(source, res.content).items():
                 frontier.append((src, link))

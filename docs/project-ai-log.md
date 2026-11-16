@@ -24,6 +24,21 @@ access to the course folder and the built-in browser. https://claude.ai
 | 10 | "I need to write a small post in our course group introducing the project and research done for this this should be not more that 300 words" | The check-in draft | Drafted a post of about 230 words. |
 | 11 | "can you download those papers here into the project folder" / "use built in browser" | `Papers` folder | Downloaded the Manku (2007) and Zaharia (2012) papers; opened the Broder (1997) paper on IEEE Xplore, which needs a sign-in. |
 | 12 | Pravesh reported a live run (async 36.4 s against sequential 242.8 s for 200 pages) and answered "ok" to two proposed next steps | The live-run numbers | Added a request log to the sequential fetcher, `request_gaps`, and `fcrawl crawl --request-log`, so that per-host gaps can be reported on live crawls; updated the check-in draft with the live numbers. |
+| 13 | "update this for project checkin" (with the M5 AI usage document attached) | The M5 AI usage document, this conversation | Wrote `AI-Pravesh-Shrestha_Project-CheckIn1.docx` in the same format, with a placeholder for how the live crawls were run. |
+
+## 2026-11-16
+
+| # | Prompt (as typed) | Context given | What the tool did |
+|---|---|---|---|
+| 14 | "ok now work on next part" | The repository | Chose the next open link itself: the index built from verified ledger records. Wrote `crawl_ledger/snapshot.py`, `crawl_ledger/policy_eval.py`, the `ledger` corpus source, `corpus_jobs.load --from-corpus`, tests, and `docs/project-ledger-index.md`. Ran only offline. |
+
+### Decisions the tool made in entry 14 (for review)
+
+- Which part came next. Pravesh did not name one.
+- Two indexing policies, `pass` and `not-failed`, and `pass` as the default.
+- The reader re-checks node ID, record ID, signature, chain position and content hash.
+- If several accepted records name one URL, the newest is indexed.
+- Ledger pages are passed through the M1 tokenizer so that the M1 rankers can search them.
 
 ### Decisions the tool made in entry 8 (for review)
 
