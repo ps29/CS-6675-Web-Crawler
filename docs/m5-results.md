@@ -1,5 +1,13 @@
 # M5: corpus jobs on a single node, Hadoop MapReduce and Spark (results, 2026-11-10)
 
+> **Correction (2026-11-16).** The Hadoop counters in this file (map output records, shuffle
+> bytes, spilled records, combine input records, skipped buckets) are exactly twice their real
+> values. Hadoop's local job runner prints each counter twice, and `parse_counters` added both.
+> The real values are half of those below: for example, on the hard corpus naive Hadoop emitted
+> 167.6 M map output records and shuffled 3.98 GB, and refined Hadoop 44.2 M and 2.22 GB. Times,
+> memory, ratios (such as the 3.8× fewer records) and the Spark numbers are not affected. The
+> parser is fixed; see `docs/project-refinements.md`.
+
 > **Few runs, one machine.** Every configuration has 3 runs at 2 cores on all three corpora,
 > and 1 run at 1 core on the easy and average corpora. Everything ran on one 2-vCPU, 7.8 GB
 > cloud VM with Hadoop's local job runner and no HDFS, so nothing here says how the engines scale

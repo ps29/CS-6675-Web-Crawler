@@ -170,3 +170,15 @@ def test_hadoop_lsh_matches_local(corpus, tmp_path):
     local.run(corpus, tmp_path / "local", ("dedup",))
     hadoop.run(corpus, tmp_path / "hadoop", 2, "lsh", ("dedup",))
     assert canonical(tmp_path / "hadoop", "dedup") == canonical(tmp_path / "local", "dedup")
+
+
+def test_counters_are_the_job_totals_not_the_sum_of_every_report():
+    from corpus_jobs.hadoop import parse_counters
+
+    # the local runner reports per reducer, then the job total (and repeats map counters)
+    log = ("Map output records=4800\nReduce shuffle bytes=2614504\n"
+           "Reduce shuffle bytes=2461836\nCounters: 30\nMap output records=4800\n"
+           "Reduce shuffle bytes=5076340\n")  # fmt: skip
+    c = parse_counters(log)
+    assert c["map_output_records"] == 4800 and c["reduce_shuffle_bytes"] == 5076340
+    assert c["skipped_buckets"] == 0
