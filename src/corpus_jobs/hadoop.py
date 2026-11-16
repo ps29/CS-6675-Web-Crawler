@@ -103,9 +103,14 @@ def hadoop_fs(*args: str, check: bool = True) -> subprocess.CompletedProcess:
 
 
 def parse_counters(log: str) -> dict[str, int]:
+    """The job's counter totals. The job report at the end of the log holds them. The local job
+    runner also prints each counter earlier (per task, or the total once more), so the last
+    value of each counter is the job total; adding them all up, as this function did before
+    2026-11-16, gave exactly twice the real values in local mode."""
     out = {}
     for key, label in COUNTERS.items():
-        out[key] = sum(int(m) for m in re.findall(rf"\b{re.escape(label)}=(\d+)", log))
+        values = re.findall(rf"\b{re.escape(label)}=(\d+)", log)
+        out[key] = int(values[-1]) if values else 0
     return out
 
 
