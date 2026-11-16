@@ -1,0 +1,125 @@
+{
+ "provenance": {
+  "git_commit": "b821b81e7cfd26740f60c383fca9e4251f0ac18d",
+  "git_dirty": true,
+  "python": "3.13.18",
+  "platform": "Linux-6.18.44-fc-v470-x86_64-with-glibc2.39",
+  "created_utc": "2026-11-16T04:21:31Z",
+  "argv": [
+   "--seeds",
+   "20",
+   "--out",
+   "results/project/ledger_policy.json"
+  ],
+  "config": {
+   "seeds": 20,
+   "audit_rates": [
+    0.2,
+    0.5,
+    0.8,
+    1.0
+   ],
+   "peers": 20,
+   "dishonest": 0.2,
+   "forge_rate": 0.5,
+   "limit": 100,
+   "out": "results/project/ledger_policy.json"
+  }
+ },
+ "config": {
+  "seeds": 20,
+  "audit_rates": [
+   0.2,
+   0.5,
+   0.8,
+   1.0
+  ],
+  "peers": 20,
+  "dishonest": 0.2,
+  "forge_rate": 0.5,
+  "limit": 100,
+  "out": "results/project/ledger_policy.json"
+ },
+ "rows": [
+  {
+   "audit_rate": 0.2,
+   "policy": "pass",
+   "runs": 20,
+   "honest_coverage_mean": 0.203,
+   "forged_published_mean": 2.95,
+   "forged_indexed_mean": 0,
+   "forged_indexed_max": 0,
+   "runs_with_a_forged_page_indexed": 0
+  },
+  {
+   "audit_rate": 0.2,
+   "policy": "not-failed",
+   "runs": 20,
+   "honest_coverage_mean": 1.0,
+   "forged_published_mean": 2.95,
+   "forged_indexed_mean": 2.4,
+   "forged_indexed_max": 6,
+   "runs_with_a_forged_page_indexed": 18
+  },
+  {
+   "audit_rate": 0.5,
+   "policy": "pass",
+   "runs": 20,
+   "honest_coverage_mean": 0.512,
+   "forged_published_mean": 2.95,
+   "forged_indexed_mean": 0,
+   "forged_indexed_max": 0,
+   "runs_with_a_forged_page_indexed": 0
+  },
+  {
+   "audit_rate": 0.5,
+   "policy": "not-failed",
+   "runs": 20,
+   "honest_coverage_mean": 1.0,
+   "forged_published_mean": 2.95,
+   "forged_indexed_mean": 1.35,
+   "forged_indexed_max": 4,
+   "runs_with_a_forged_page_indexed": 12
+  },
+  {
+   "audit_rate": 0.8,
+   "policy": "pass",
+   "runs": 20,
+   "honest_coverage_mean": 0.795,
+   "forged_published_mean": 2.95,
+   "forged_indexed_mean": 0,
+   "forged_indexed_max": 0,
+   "runs_with_a_forged_page_indexed": 0
+  },
+  {
+   "audit_rate": 0.8,
+   "policy": "not-failed",
+   "runs": 20,
+   "honest_coverage_mean": 1.0,
+   "forged_published_mean": 2.95,
+   "forged_indexed_mean": 0.5,
+   "forged_indexed_max": 3,
+   "runs_with_a_forged_page_indexed": 6
+  },
+  {
+   "audit_rate": 1.0,
+   "policy": "pass",
+   "runs": 20,
+   "honest_coverage_mean": 1.0,
+   "forged_published_mean": 2.95,
+   "forged_indexed_mean": 0,
+   "forged_indexed_max": 0,
+   "runs_with_a_forged_page_indexed": 0
+  },
+  {
+   "audit_rate": 1.0,
+   "policy": "not-failed",
+   "runs": 20,
+   "honest_coverage_mean": 1.0,
+   "forged_published_mean": 2.95,
+   "forged_indexed_mean": 0,
+   "forged_indexed_max": 0,
+   "runs_with_a_forged_page_indexed": 0
+  }
+ ]
+}

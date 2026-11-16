@@ -1,0 +1,246 @@
+{
+ "provenance": {
+  "git_commit": "ae6cfaf50f61861802a2c5a6848dad5036889f54",
+  "git_dirty": true,
+  "python": "3.13.18",
+  "platform": "Linux-6.18.44-fc-v470-x86_64-with-glibc2.39",
+  "created_utc": "2026-11-16T04:31:49Z",
+  "argv": [
+   "--seeds",
+   "10",
+   "--out",
+   "results/project/dup_eval.json"
+  ],
+  "config": {
+   "db": "data/pydocs.db",
+   "queries": "config/eval_queries.yaml",
+   "mirror_rate": 0.3,
+   "seeds": 10,
+   "out": "results/project/dup_eval.json"
+  }
+ },
+ "judgments": "draft",
+ "detection": {
+  "mirrors_mean": 45.9,
+  "mirrors_hidden_share": 0.871,
+  "other_pages_hidden_total": 10
+ },
+ "summary": {
+  "tf": {
+   "plain_p@5": {
+    "as_is": 0.218,
+    "collapsed": 0.195,
+    "p": 0.0117988201179882
+   },
+   "plain_rr": {
+    "as_is": 0.545,
+    "collapsed": 0.564,
+    "p": 9.999000099990002e-05
+   },
+   "plain_ndcg@10": {
+    "as_is": 0.529,
+    "collapsed": 0.497,
+    "p": 0.024297570242975703
+   },
+   "group_p@5": {
+    "as_is": 0.168,
+    "collapsed": 0.186,
+    "p": 0.00039996000399960006
+   },
+   "group_rr": {
+    "as_is": 0.545,
+    "collapsed": 0.564,
+    "p": 9.999000099990002e-05
+   },
+   "group_ndcg@10": {
+    "as_is": 0.52,
+    "collapsed": 0.56,
+    "p": 9.999000099990002e-05
+   },
+   "redundant@10": {
+    "as_is": 2.119,
+    "collapsed": 0.327,
+    "p": 9.999000099990002e-05
+   }
+  },
+  "bm25f+intent+package": {
+   "plain_p@5": {
+    "as_is": 0.352,
+    "collapsed": 0.287,
+    "p": 9.999000099990002e-05
+   },
+   "plain_rr": {
+    "as_is": 0.893,
+    "collapsed": 0.903,
+    "p": 0.0033996600339966003
+   },
+   "plain_ndcg@10": {
+    "as_is": 0.895,
+    "collapsed": 0.801,
+    "p": 9.999000099990002e-05
+   },
+   "group_p@5": {
+    "as_is": 0.266,
+    "collapsed": 0.273,
+    "p": 0.032296770322967704
+   },
+   "group_rr": {
+    "as_is": 0.893,
+    "collapsed": 0.903,
+    "p": 0.0033996600339966003
+   },
+   "group_ndcg@10": {
+    "as_is": 0.886,
+    "collapsed": 0.903,
+    "p": 9.999000099990002e-05
+   },
+   "redundant@10": {
+    "as_is": 2.154,
+    "collapsed": 0.335,
+    "p": 9.999000099990002e-05
+   }
+  }
+ },
+ "seeds": [
+  {
+   "seed": 1,
+   "mirrors": 46,
+   "as_is": {
+    "collapsed_pages": 0,
+    "hidden_mirrors": 0,
+    "hidden_other_pages": 0
+   },
+   "collapsed": {
+    "collapsed_pages": 43,
+    "hidden_mirrors": 42,
+    "hidden_other_pages": 1
+   }
+  },
+  {
+   "seed": 2,
+   "mirrors": 41,
+   "as_is": {
+    "collapsed_pages": 0,
+    "hidden_mirrors": 0,
+    "hidden_other_pages": 0
+   },
+   "collapsed": {
+    "collapsed_pages": 41,
+    "hidden_mirrors": 40,
+    "hidden_other_pages": 1
+   }
+  },
+  {
+   "seed": 3,
+   "mirrors": 35,
+   "as_is": {
+    "collapsed_pages": 0,
+    "hidden_mirrors": 0,
+    "hidden_other_pages": 0
+   },
+   "collapsed": {
+    "collapsed_pages": 32,
+    "hidden_mirrors": 31,
+    "hidden_other_pages": 1
+   }
+  },
+  {
+   "seed": 4,
+   "mirrors": 56,
+   "as_is": {
+    "collapsed_pages": 0,
+    "hidden_mirrors": 0,
+    "hidden_other_pages": 0
+   },
+   "collapsed": {
+    "collapsed_pages": 43,
+    "hidden_mirrors": 42,
+    "hidden_other_pages": 1
+   }
+  },
+  {
+   "seed": 5,
+   "mirrors": 45,
+   "as_is": {
+    "collapsed_pages": 0,
+    "hidden_mirrors": 0,
+    "hidden_other_pages": 0
+   },
+   "collapsed": {
+    "collapsed_pages": 43,
+    "hidden_mirrors": 42,
+    "hidden_other_pages": 1
+   }
+  },
+  {
+   "seed": 6,
+   "mirrors": 39,
+   "as_is": {
+    "collapsed_pages": 0,
+    "hidden_mirrors": 0,
+    "hidden_other_pages": 0
+   },
+   "collapsed": {
+    "collapsed_pages": 36,
+    "hidden_mirrors": 35,
+    "hidden_other_pages": 1
+   }
+  },
+  {
+   "seed": 7,
+   "mirrors": 54,
+   "as_is": {
+    "collapsed_pages": 0,
+    "hidden_mirrors": 0,
+    "hidden_other_pages": 0
+   },
+   "collapsed": {
+    "collapsed_pages": 49,
+    "hidden_mirrors": 48,
+    "hidden_other_pages": 1
+   }
+  },
+  {
+   "seed": 8,
+   "mirrors": 52,
+   "as_is": {
+    "collapsed_pages": 0,
+    "hidden_mirrors": 0,
+    "hidden_other_pages": 0
+   },
+   "collapsed": {
+    "collapsed_pages": 45,
+    "hidden_mirrors": 44,
+    "hidden_other_pages": 1
+   }
+  },
+  {
+   "seed": 9,
+   "mirrors": 51,
+   "as_is": {
+    "collapsed_pages": 0,
+    "hidden_mirrors": 0,
+    "hidden_other_pages": 0
+   },
+   "collapsed": {
+    "collapsed_pages": 42,
+    "hidden_mirrors": 41,
+    "hidden_other_pages": 1
+   }
+  },
+  {
+   "seed": 10,
+   "mirrors": 40,
+   "as_is": {
+    "collapsed_pages": 0,
+    "hidden_mirrors": 0,
+    "hidden_other_pages": 0
+   },
+   "collapsed": {
+    "collapsed_pages": 36,
+    "hidden_mirrors": 35,
+    "hidden_other_pages": 1
+   }
+  }
+ ]
+}

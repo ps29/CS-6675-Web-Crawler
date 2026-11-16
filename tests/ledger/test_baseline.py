@@ -1,5 +1,6 @@
 import random
 import unittest
+from unittest import mock
 
 from crawl_ledger.audit import FAIL, INCONCLUSIVE, PASS, audit
 from crawl_ledger.fetcher import OfflineFetcher, extract_links
@@ -12,6 +13,10 @@ def setup(n=5, forge_rate=0.0):
     peers = [Peer(f"10.0.0.{i}:7000", rng=random.Random(i)) for i in range(n)]
     peers[0].forge_rate = forge_rate
     return peers, Directory(peers)
+
+
+# extract_links adds a GitHub link only when GITHUB_TOKEN is set, so the link tests fix it.
+NO_TOKEN = mock.patch.dict("os.environ", {"GITHUB_TOKEN": ""})
 
 
 class TestBaseline(unittest.TestCase):
@@ -75,6 +80,7 @@ class TestBaseline(unittest.TestCase):
             extract_links("pypi", body), {"rtd": "https://pathlib.readthedocs.io/en/latest/"}
         )
 
+    @NO_TOKEN
     def test_extract_links_self_hosted_docs(self):
         body = (
             b'{"info": {"project_urls": {"Homepage": "https://numpy.org",'
@@ -83,12 +89,14 @@ class TestBaseline(unittest.TestCase):
         )
         self.assertEqual(extract_links("pypi", body), {"docs": "https://numpy.org/doc/"})
 
+    @NO_TOKEN
     def test_extract_links_docs_homepage_fallback(self):
         body = b'{"info": {"project_urls": {"Homepage": "https://docs.pytest.org/en/latest/"}}}'
         self.assertEqual(
             extract_links("pypi", body), {"docs": "https://docs.pytest.org/en/latest/"}
         )
 
+    @NO_TOKEN
     def test_extract_links_rtd_preferred_and_repo_not_docs(self):
         both = (
             b'{"info": {"project_urls": {"Documentation": "https://rich.readthedocs.io/en/latest/",'
@@ -97,6 +105,13 @@ class TestBaseline(unittest.TestCase):
         self.assertEqual(set(extract_links("pypi", both)), {"rtd"})
         repo = b'{"info": {"project_urls": {"Documentation": "https://github.com/a/b#readme"}}}'
         self.assertEqual(extract_links("pypi", repo), {})
+
+    @mock.patch.dict("os.environ", {"GITHUB_TOKEN": "t"})
+    def test_extract_links_github_readme_only_with_a_token(self):
+        repo = b'{"info": {"project_urls": {"Documentation": "https://github.com/a/b#readme"}}}'
+        self.assertEqual(
+            extract_links("pypi", repo), {"github": "https://api.github.com/repos/a/b/readme"}
+        )
 
 
 if __name__ == "__main__":

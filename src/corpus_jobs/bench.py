@@ -63,9 +63,9 @@ def digest(lines: list[str]) -> str:
     return hashlib.sha256("\n".join(lines).encode()).hexdigest()[:16]
 
 
-def run_once(engine: str, corpus: Path, out: Path, cores: int) -> dict:
+def run_once(engine: str, corpus: Path, out: Path, cores: int, hdfs: str | None = None) -> dict:
     cmd = [sys.executable, "-m", "corpus_jobs.run", engine, str(corpus), str(out),
-           "--cores", str(cores)]  # fmt: skip
+           "--cores", str(cores), *(["--hdfs", hdfs] if hdfs else [])]  # fmt: skip
     shutil.rmtree(out, ignore_errors=True)  # Spark refuses to overwrite earlier output
     env = {**os.environ, "PYTHONPATH": f"{ROOT / 'src'}{os.pathsep}{ROOT}"}
     stop, peak = threading.Event(), []
@@ -136,6 +136,9 @@ def summarize(runs: list[dict]) -> dict:
     if "counters" in d:
         s["hadoop"] = d["counters"]
         s["hadoop_job_s"] = {j["job"]: round(j["seconds"], 1) for j in d["jobs"]}
+        s["hadoop_jobs"] = {j["job"]: {k: j[k] for k in ("map_output_records",
+                                                         "reduce_shuffle_bytes")}
+                            for j in d["jobs"]}  # fmt: skip
     if "spark" in d:
         s["spark"] = d["spark"]
         s["spark_job_s"] = {k: round(v, 1) for k, v in d["timings"].items()}
@@ -152,6 +155,9 @@ def build_parser() -> argparse.ArgumentParser:
     ap.add_argument("--data", default=str(ROOT / "data" / "m5"))
     ap.add_argument("--work", default=str(ROOT / "data" / "m5" / "out"))
     ap.add_argument("--out", default="")
+    ap.add_argument(
+        "--hdfs", help="run the Hadoop engines on the YARN cluster (corpus_jobs.cluster)"
+    )
     return ap
 
 
@@ -177,7 +183,8 @@ def main(argv: list[str] | None = None) -> int:
                 runs = []
                 for i in range(a.repeats):
                     out = Path(a.work) / sc / key
-                    r = run_once(engine, corpus, out, cores)
+                    hdfs = a.hdfs if engine.startswith("hadoop") else None
+                    r = run_once(engine, corpus, out, cores, hdfs)
                     runs.append(r)
                     print(f"{sc} {key} run {i + 1}: {r['wall_s']} s, {r['peak_rss_mb']} MB",
                           flush=True)  # fmt: skip

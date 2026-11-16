@@ -12,6 +12,7 @@ from pathlib import Path
 
 from .config import ConfigError, load_config
 from .crawler import Crawler
+from .fetcher import request_gaps
 from .profiles import ALL_LABELS
 from .ranker import RANKERS
 from .storage import Storage
@@ -31,12 +32,29 @@ def cmd_crawl(args) -> int:
     config = load_config(args.config)
     db_path = Path(args.db) if args.db else config.db_path
     with Storage(db_path) as storage:
-        crawler = Crawler(config, storage)
+        workers = args.concurrency or config.crawl.concurrency
+        if workers > 1:
+            from .async_crawler import AsyncCrawler
+
+            crawler = AsyncCrawler(config, storage, concurrency=workers)
+        else:
+            crawler = Crawler(config, storage)
         try:
             stats = crawler.run(max_pages=args.max_pages)
         except KeyboardInterrupt:
             stats = crawler.stats
             print("interrupted; partial results saved", file=sys.stderr)
+    if args.request_log:
+        log = crawler.fetcher.request_log
+        summary = request_gaps(log)
+        out = Path(args.request_log)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        rows = [{"host": h, "start": round(s, 4), "end": round(e, 4)} for h, s, e in log]
+        out.write_text(json.dumps({"summary": summary, "requests": rows}, indent=1) + "\n")
+        print(f"requests {summary['requests']} to {summary['hosts']} hosts; smallest gap between "
+              f"request starts to one host {summary['min_start_to_start_s']} s; "
+              f"overlapping requests {summary['overlapping_requests_to_one_host']} "
+              f"-> {out}")  # fmt: skip
     print(
         f"fetched {stats.fetched} pages ({stats.html_pages} HTML), "
         f"yield {stats.useful_yield:.1%}, labels {dict(stats.labels)}, "
@@ -95,6 +113,15 @@ def build_parser() -> argparse.ArgumentParser:
 
     crawl = sub.add_parser("crawl", help="run a focused crawl")
     crawl.add_argument("--max-pages", type=int, help="override crawl.max_pages")
+    crawl.add_argument(
+        "--concurrency",
+        type=int,
+        help="requests in flight, one per host at most (default: crawl.concurrency; 1: sequential)",
+    )
+    crawl.add_argument(
+        "--request-log",
+        help="write every request's host, start and end time, with the per-host gaps, to this file",
+    )
     crawl.set_defaults(func=cmd_crawl)
 
     search = sub.add_parser("search", help="query the index")
