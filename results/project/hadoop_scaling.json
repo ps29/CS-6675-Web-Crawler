@@ -1,0 +1,844 @@
+{
+ "provenance": {
+  "git_commit": null,
+  "git_dirty": null,
+  "python": "3.12.16",
+  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+  "created_utc": "2026-11-22T21:37:11Z",
+  "argv": [
+   "--scenarios",
+   "average",
+   "hard",
+   "--engines",
+   "local",
+   "hadoop",
+   "--cores",
+   "1",
+   "2",
+   "4",
+   "8",
+   "16",
+   "--repeats",
+   "1",
+   "--out",
+   "results/project/hadoop_scaling.json"
+  ],
+  "config": {
+   "scenarios": [
+    "average",
+    "hard"
+   ],
+   "engines": [
+    "local",
+    "hadoop"
+   ],
+   "cores": [
+    1,
+    2,
+    4,
+    8,
+    16
+   ],
+   "repeats": 1,
+   "data": "/home/pshrestha/proj/data/m5",
+   "work": "/home/pshrestha/proj/data/m5/out",
+   "out": "results/project/hadoop_scaling.json",
+   "hdfs": null
+  }
+ },
+ "threshold": 0.8,
+ "scenarios": {
+  "average": {
+   "docs": 20205,
+   "bytes": 175870547,
+   "engines": {
+    "local@1": {
+     "runs": 1,
+     "wall_s_median": 74.12,
+     "wall_s_min": 74.12,
+     "wall_s_max": 74.12,
+     "peak_rss_mb_max": 1123,
+     "digests": {
+      "index": "2a40381bac9ad215",
+      "topk": "57ee6ab55eeae42c",
+      "dedup": "236ff719e4ac7717"
+     },
+     "dedup": {
+      "reported_pairs": 468,
+      "reported_natural_pairs": 337,
+      "precision": 0.9338,
+      "injected_positives": 135,
+      "recall_injected": 0.9407,
+      "found_share_by_edit_rate": {
+       "0.02": 0.68,
+       "0.005": 1.0,
+       "0.05": 0.093,
+       "0.01": 0.922
+      },
+      "mean_abs_estimate_error": 0.016
+     }
+    },
+    "hadoop@1": {
+     "runs": 1,
+     "wall_s_median": 143.3,
+     "wall_s_min": 143.3,
+     "wall_s_max": 143.3,
+     "peak_rss_mb_max": 1054,
+     "hadoop": {
+      "map_output_records": 10980462,
+      "map_output_bytes": 537188125,
+      "map_output_materialized_bytes": 551104690,
+      "reduce_shuffle_bytes": 551104690,
+      "spilled_records": 20692308,
+      "combine_input_records": 3030041,
+      "skipped_buckets": 0,
+      "side_signatures_loaded": 0
+     },
+     "hadoop_job_s": {
+      "index": 47.7,
+      "wc": 31.7,
+      "topk": 5.4,
+      "bands": 54.6,
+      "pairs": 3.6
+     },
+     "hadoop_jobs": {
+      "index": {
+       "map_output_records": 7622015,
+       "reduce_shuffle_bytes": 172668357
+      },
+      "wc": {
+       "map_output_records": 3030041,
+       "reduce_shuffle_bytes": 42089865
+      },
+      "topk": {
+       "map_output_records": 1000,
+       "reduce_shuffle_bytes": 16885
+      },
+      "bands": {
+       "map_output_records": 323280,
+       "reduce_shuffle_bytes": 336210466
+      },
+      "pairs": {
+       "map_output_records": 4126,
+       "reduce_shuffle_bytes": 119117
+      }
+     },
+     "digests": {
+      "index": "2a40381bac9ad215",
+      "topk": "57ee6ab55eeae42c",
+      "dedup": "236ff719e4ac7717"
+     },
+     "matches_local": true
+    },
+    "local@2": {
+     "runs": 1,
+     "wall_s_median": 64.52,
+     "wall_s_min": 64.52,
+     "wall_s_max": 64.52,
+     "peak_rss_mb_max": 1123,
+     "digests": {
+      "index": "2a40381bac9ad215",
+      "topk": "57ee6ab55eeae42c",
+      "dedup": "236ff719e4ac7717"
+     },
+     "dedup": {
+      "reported_pairs": 468,
+      "reported_natural_pairs": 337,
+      "precision": 0.9338,
+      "injected_positives": 135,
+      "recall_injected": 0.9407,
+      "found_share_by_edit_rate": {
+       "0.02": 0.68,
+       "0.005": 1.0,
+       "0.05": 0.093,
+       "0.01": 0.922
+      },
+      "mean_abs_estimate_error": 0.016
+     }
+    },
+    "hadoop@2": {
+     "runs": 1,
+     "wall_s_median": 94.83,
+     "wall_s_min": 94.83,
+     "wall_s_max": 94.83,
+     "peak_rss_mb_max": 1025,
+     "hadoop": {
+      "map_output_records": 10981462,
+      "map_output_bytes": 537204147,
+      "map_output_materialized_bytes": 551122844,
+      "reduce_shuffle_bytes": 551122844,
+      "spilled_records": 20694308,
+      "combine_input_records": 3030041,
+      "skipped_buckets": 0,
+      "side_signatures_loaded": 0
+     },
+     "hadoop_job_s": {
+      "index": 29.8,
+      "wc": 22.7,
+      "topk": 4.8,
+      "bands": 33.8,
+      "pairs": 3.6
+     },
+     "hadoop_jobs": {
+      "index": {
+       "map_output_records": 7622015,
+       "reduce_shuffle_bytes": 172668393
+      },
+      "wc": {
+       "map_output_records": 3030041,
+       "reduce_shuffle_bytes": 42089901
+      },
+      "topk": {
+       "map_output_records": 2000,
+       "reduce_shuffle_bytes": 34913
+      },
+      "bands": {
+       "map_output_records": 323280,
+       "reduce_shuffle_bytes": 336210502
+      },
+      "pairs": {
+       "map_output_records": 4126,
+       "reduce_shuffle_bytes": 119135
+      }
+     },
+     "digests": {
+      "index": "2a40381bac9ad215",
+      "topk": "57ee6ab55eeae42c",
+      "dedup": "236ff719e4ac7717"
+     },
+     "matches_local": true
+    },
+    "local@4": {
+     "runs": 1,
+     "wall_s_median": 63.39,
+     "wall_s_min": 63.39,
+     "wall_s_max": 63.39,
+     "peak_rss_mb_max": 1123,
+     "digests": {
+      "index": "2a40381bac9ad215",
+      "topk": "57ee6ab55eeae42c",
+      "dedup": "236ff719e4ac7717"
+     },
+     "dedup": {
+      "reported_pairs": 468,
+      "reported_natural_pairs": 337,
+      "precision": 0.9338,
+      "injected_positives": 135,
+      "recall_injected": 0.9407,
+      "found_share_by_edit_rate": {
+       "0.02": 0.68,
+       "0.005": 1.0,
+       "0.05": 0.093,
+       "0.01": 0.922
+      },
+      "mean_abs_estimate_error": 0.016
+     }
+    },
+    "hadoop@4": {
+     "runs": 1,
+     "wall_s_median": 74.7,
+     "wall_s_min": 74.7,
+     "wall_s_max": 74.7,
+     "peak_rss_mb_max": 1381,
+     "hadoop": {
+      "map_output_records": 10983462,
+      "map_output_bytes": 537235386,
+      "map_output_materialized_bytes": 551158383,
+      "reduce_shuffle_bytes": 551158383,
+      "spilled_records": 20698308,
+      "combine_input_records": 3030041,
+      "skipped_buckets": 0,
+      "side_signatures_loaded": 0
+     },
+     "hadoop_job_s": {
+      "index": 21.7,
+      "wc": 18.6,
+      "topk": 5.7,
+      "bands": 24.9,
+      "pairs": 3.5
+     },
+     "hadoop_jobs": {
+      "index": {
+       "map_output_records": 7622015,
+       "reduce_shuffle_bytes": 172668465
+      },
+      "wc": {
+       "map_output_records": 3030041,
+       "reduce_shuffle_bytes": 42089973
+      },
+      "topk": {
+       "map_output_records": 4000,
+       "reduce_shuffle_bytes": 70164
+      },
+      "bands": {
+       "map_output_records": 323280,
+       "reduce_shuffle_bytes": 336210574
+      },
+      "pairs": {
+       "map_output_records": 4126,
+       "reduce_shuffle_bytes": 119207
+      }
+     },
+     "digests": {
+      "index": "2a40381bac9ad215",
+      "topk": "57ee6ab55eeae42c",
+      "dedup": "236ff719e4ac7717"
+     },
+     "matches_local": true
+    },
+    "local@8": {
+     "runs": 1,
+     "wall_s_median": 60.14,
+     "wall_s_min": 60.14,
+     "wall_s_max": 60.14,
+     "peak_rss_mb_max": 1123,
+     "digests": {
+      "index": "2a40381bac9ad215",
+      "topk": "57ee6ab55eeae42c",
+      "dedup": "236ff719e4ac7717"
+     },
+     "dedup": {
+      "reported_pairs": 468,
+      "reported_natural_pairs": 337,
+      "precision": 0.9338,
+      "injected_positives": 135,
+      "recall_injected": 0.9407,
+      "found_share_by_edit_rate": {
+       "0.02": 0.68,
+       "0.005": 1.0,
+       "0.05": 0.093,
+       "0.01": 0.922
+      },
+      "mean_abs_estimate_error": 0.016
+     }
+    },
+    "hadoop@8": {
+     "runs": 1,
+     "wall_s_median": 60.02,
+     "wall_s_min": 60.02,
+     "wall_s_max": 60.02,
+     "peak_rss_mb_max": 1686,
+     "hadoop": {
+      "map_output_records": 10987462,
+      "map_output_bytes": 537299261,
+      "map_output_materialized_bytes": 551231002,
+      "reduce_shuffle_bytes": 551231002,
+      "spilled_records": 20706308,
+      "combine_input_records": 3030041,
+      "skipped_buckets": 0,
+      "side_signatures_loaded": 0
+     },
+     "hadoop_job_s": {
+      "index": 15.5,
+      "wc": 17.6,
+      "topk": 5.6,
+      "bands": 16.4,
+      "pairs": 4.6
+     },
+     "hadoop_jobs": {
+      "index": {
+       "map_output_records": 7622015,
+       "reduce_shuffle_bytes": 172668609
+      },
+      "wc": {
+       "map_output_records": 3030041,
+       "reduce_shuffle_bytes": 42090117
+      },
+      "topk": {
+       "map_output_records": 8000,
+       "reduce_shuffle_bytes": 142063
+      },
+      "bands": {
+       "map_output_records": 323280,
+       "reduce_shuffle_bytes": 336210718
+      },
+      "pairs": {
+       "map_output_records": 4126,
+       "reduce_shuffle_bytes": 119495
+      }
+     },
+     "digests": {
+      "index": "2a40381bac9ad215",
+      "topk": "57ee6ab55eeae42c",
+      "dedup": "236ff719e4ac7717"
+     },
+     "matches_local": true
+    },
+    "local@16": {
+     "runs": 1,
+     "wall_s_median": 59.98,
+     "wall_s_min": 59.98,
+     "wall_s_max": 59.98,
+     "peak_rss_mb_max": 1123,
+     "digests": {
+      "index": "2a40381bac9ad215",
+      "topk": "57ee6ab55eeae42c",
+      "dedup": "236ff719e4ac7717"
+     },
+     "dedup": {
+      "reported_pairs": 468,
+      "reported_natural_pairs": 337,
+      "precision": 0.9338,
+      "injected_positives": 135,
+      "recall_injected": 0.9407,
+      "found_share_by_edit_rate": {
+       "0.02": 0.68,
+       "0.005": 1.0,
+       "0.05": 0.093,
+       "0.01": 0.922
+      },
+      "mean_abs_estimate_error": 0.016
+     }
+    },
+    "hadoop@16": {
+     "runs": 1,
+     "wall_s_median": 66.78,
+     "wall_s_min": 66.78,
+     "wall_s_max": 66.78,
+     "peak_rss_mb_max": 2700,
+     "hadoop": {
+      "map_output_records": 10995462,
+      "map_output_bytes": 537430837,
+      "map_output_materialized_bytes": 551380642,
+      "reduce_shuffle_bytes": 551380642,
+      "spilled_records": 20722308,
+      "combine_input_records": 3030041,
+      "skipped_buckets": 0,
+      "side_signatures_loaded": 0
+     },
+     "hadoop_job_s": {
+      "index": 17.5,
+      "wc": 20.6,
+      "topk": 6.9,
+      "bands": 15.7,
+      "pairs": 5.7
+     },
+     "hadoop_jobs": {
+      "index": {
+       "map_output_records": 7622015,
+       "reduce_shuffle_bytes": 172668897
+      },
+      "wc": {
+       "map_output_records": 3030041,
+       "reduce_shuffle_bytes": 42090405
+      },
+      "topk": {
+       "map_output_records": 16000,
+       "reduce_shuffle_bytes": 289687
+      },
+      "bands": {
+       "map_output_records": 323280,
+       "reduce_shuffle_bytes": 336211006
+      },
+      "pairs": {
+       "map_output_records": 4126,
+       "reduce_shuffle_bytes": 120647
+      }
+     },
+     "digests": {
+      "index": "2a40381bac9ad215",
+      "topk": "57ee6ab55eeae42c",
+      "dedup": "236ff719e4ac7717"
+     },
+     "matches_local": true
+    }
+   }
+  },
+  "hard": {
+   "docs": 81842,
+   "bytes": 715536544,
+   "engines": {
+    "local@1": {
+     "runs": 1,
+     "wall_s_median": 254.28,
+     "wall_s_min": 254.28,
+     "wall_s_max": 254.28,
+     "peak_rss_mb_max": 3487,
+     "digests": {
+      "index": "ecc653ddd926d501",
+      "topk": "9ade56b8bc9bc403",
+      "dedup": "9b18c105c02f517e"
+     },
+     "dedup": {
+      "reported_pairs": 4719,
+      "reported_natural_pairs": 4186,
+      "precision": 0.9462,
+      "injected_positives": 544,
+      "recall_injected": 0.9504,
+      "found_share_by_edit_rate": {
+       "0.02": 0.63,
+       "0.01": 0.957,
+       "0.05": 0.069,
+       "0.005": 0.996
+      },
+      "mean_abs_estimate_error": 0.0162
+     }
+    },
+    "hadoop@1": {
+     "runs": 1,
+     "wall_s_median": 490.98,
+     "wall_s_min": 490.98,
+     "wall_s_max": 490.98,
+     "peak_rss_mb_max": 1921,
+     "hadoop": {
+      "map_output_records": 44168463,
+      "map_output_bytes": 2170912807,
+      "map_output_materialized_bytes": 2224774621,
+      "reduce_shuffle_bytes": 2224774621,
+      "spilled_records": 82886844,
+      "combine_input_records": 12240208,
+      "skipped_buckets": 0,
+      "side_signatures_loaded": 0
+     },
+     "hadoop_job_s": {
+      "index": 163.4,
+      "wc": 108.4,
+      "topk": 7.7,
+      "bands": 206.5,
+      "pairs": 4.8
+     },
+     "hadoop_jobs": {
+      "index": {
+       "map_output_records": 30573864,
+       "reduce_shuffle_bytes": 692947966
+      },
+      "wc": {
+       "map_output_records": 12240208,
+       "reduce_shuffle_bytes": 168051978
+      },
+      "topk": {
+       "map_output_records": 3000,
+       "reduce_shuffle_bytes": 59666
+      },
+      "bands": {
+       "map_output_records": 1309472,
+       "reduce_shuffle_bytes": 1362549600
+      },
+      "pairs": {
+       "map_output_records": 41919,
+       "reduce_shuffle_bytes": 1165411
+      }
+     },
+     "digests": {
+      "index": "ecc653ddd926d501",
+      "topk": "9ade56b8bc9bc403",
+      "dedup": "9b18c105c02f517e"
+     },
+     "matches_local": true
+    },
+    "local@2": {
+     "runs": 1,
+     "wall_s_median": 247.74,
+     "wall_s_min": 247.74,
+     "wall_s_max": 247.74,
+     "peak_rss_mb_max": 3488,
+     "digests": {
+      "index": "ecc653ddd926d501",
+      "topk": "9ade56b8bc9bc403",
+      "dedup": "9b18c105c02f517e"
+     },
+     "dedup": {
+      "reported_pairs": 4719,
+      "reported_natural_pairs": 4186,
+      "precision": 0.9462,
+      "injected_positives": 544,
+      "recall_injected": 0.9504,
+      "found_share_by_edit_rate": {
+       "0.02": 0.63,
+       "0.01": 0.957,
+       "0.05": 0.069,
+       "0.005": 0.996
+      },
+      "mean_abs_estimate_error": 0.0162
+     }
+    },
+    "hadoop@2": {
+     "runs": 1,
+     "wall_s_median": 290.66,
+     "wall_s_min": 290.66,
+     "wall_s_max": 290.66,
+     "peak_rss_mb_max": 2511,
+     "hadoop": {
+      "map_output_records": 44169463,
+      "map_output_bytes": 2170924886,
+      "map_output_materialized_bytes": 2224789120,
+      "reduce_shuffle_bytes": 2224789120,
+      "spilled_records": 82888844,
+      "combine_input_records": 12240208,
+      "skipped_buckets": 0,
+      "side_signatures_loaded": 0
+     },
+     "hadoop_job_s": {
+      "index": 95.1,
+      "wc": 67.8,
+      "topk": 6.4,
+      "bands": 116.7,
+      "pairs": 4.5
+     },
+     "hadoop_jobs": {
+      "index": {
+       "map_output_records": 30573864,
+       "reduce_shuffle_bytes": 692948098
+      },
+      "wc": {
+       "map_output_records": 12240208,
+       "reduce_shuffle_bytes": 168052110
+      },
+      "topk": {
+       "map_output_records": 4000,
+       "reduce_shuffle_bytes": 73751
+      },
+      "bands": {
+       "map_output_records": 1309472,
+       "reduce_shuffle_bytes": 1362549732
+      },
+      "pairs": {
+       "map_output_records": 41919,
+       "reduce_shuffle_bytes": 1165429
+      }
+     },
+     "digests": {
+      "index": "ecc653ddd926d501",
+      "topk": "9ade56b8bc9bc403",
+      "dedup": "9b18c105c02f517e"
+     },
+     "matches_local": true
+    },
+    "local@4": {
+     "runs": 1,
+     "wall_s_median": 250.31,
+     "wall_s_min": 250.31,
+     "wall_s_max": 250.31,
+     "peak_rss_mb_max": 3487,
+     "digests": {
+      "index": "ecc653ddd926d501",
+      "topk": "9ade56b8bc9bc403",
+      "dedup": "9b18c105c02f517e"
+     },
+     "dedup": {
+      "reported_pairs": 4719,
+      "reported_natural_pairs": 4186,
+      "precision": 0.9462,
+      "injected_positives": 544,
+      "recall_injected": 0.9504,
+      "found_share_by_edit_rate": {
+       "0.02": 0.63,
+       "0.01": 0.957,
+       "0.05": 0.069,
+       "0.005": 0.996
+      },
+      "mean_abs_estimate_error": 0.0162
+     }
+    },
+    "hadoop@4": {
+     "runs": 1,
+     "wall_s_median": 194.73,
+     "wall_s_min": 194.73,
+     "wall_s_max": 194.73,
+     "peak_rss_mb_max": 3550,
+     "hadoop": {
+      "map_output_records": 44169463,
+      "map_output_bytes": 2170923730,
+      "map_output_materialized_bytes": 2224788828,
+      "reduce_shuffle_bytes": 2224788828,
+      "spilled_records": 82888844,
+      "combine_input_records": 12240208,
+      "skipped_buckets": 0,
+      "side_signatures_loaded": 0
+     },
+     "hadoop_job_s": {
+      "index": 59.9,
+      "wc": 50.8,
+      "topk": 6.7,
+      "bands": 72.3,
+      "pairs": 4.8
+     },
+     "hadoop_jobs": {
+      "index": {
+       "map_output_records": 30573864,
+       "reduce_shuffle_bytes": 692948362
+      },
+      "wc": {
+       "map_output_records": 12240208,
+       "reduce_shuffle_bytes": 168052374
+      },
+      "topk": {
+       "map_output_records": 4000,
+       "reduce_shuffle_bytes": 72595
+      },
+      "bands": {
+       "map_output_records": 1309472,
+       "reduce_shuffle_bytes": 1362549996
+      },
+      "pairs": {
+       "map_output_records": 41919,
+       "reduce_shuffle_bytes": 1165501
+      }
+     },
+     "digests": {
+      "index": "ecc653ddd926d501",
+      "topk": "9ade56b8bc9bc403",
+      "dedup": "9b18c105c02f517e"
+     },
+     "matches_local": true
+    },
+    "local@8": {
+     "runs": 1,
+     "wall_s_median": 249.65,
+     "wall_s_min": 249.65,
+     "wall_s_max": 249.65,
+     "peak_rss_mb_max": 3488,
+     "digests": {
+      "index": "ecc653ddd926d501",
+      "topk": "9ade56b8bc9bc403",
+      "dedup": "9b18c105c02f517e"
+     },
+     "dedup": {
+      "reported_pairs": 4719,
+      "reported_natural_pairs": 4186,
+      "precision": 0.9462,
+      "injected_positives": 544,
+      "recall_injected": 0.9504,
+      "found_share_by_edit_rate": {
+       "0.02": 0.63,
+       "0.01": 0.957,
+       "0.05": 0.069,
+       "0.005": 0.996
+      },
+      "mean_abs_estimate_error": 0.0162
+     }
+    },
+    "hadoop@8": {
+     "runs": 1,
+     "wall_s_median": 148.42,
+     "wall_s_min": 148.42,
+     "wall_s_max": 148.42,
+     "peak_rss_mb_max": 3337,
+     "hadoop": {
+      "map_output_records": 44173463,
+      "map_output_bytes": 2170990986,
+      "map_output_materialized_bytes": 2224865980,
+      "reduce_shuffle_bytes": 2224865980,
+      "spilled_records": 82896844,
+      "combine_input_records": 12240208,
+      "skipped_buckets": 0,
+      "side_signatures_loaded": 0
+     },
+     "hadoop_job_s": {
+      "index": 41.1,
+      "wc": 48.0,
+      "topk": 7.7,
+      "bands": 46.8,
+      "pairs": 4.7
+     },
+     "hadoop_jobs": {
+      "index": {
+       "map_output_records": 30573864,
+       "reduce_shuffle_bytes": 692948890
+      },
+      "wc": {
+       "map_output_records": 12240208,
+       "reduce_shuffle_bytes": 168052902
+      },
+      "topk": {
+       "map_output_records": 8000,
+       "reduce_shuffle_bytes": 147875
+      },
+      "bands": {
+       "map_output_records": 1309472,
+       "reduce_shuffle_bytes": 1362550524
+      },
+      "pairs": {
+       "map_output_records": 41919,
+       "reduce_shuffle_bytes": 1165789
+      }
+     },
+     "digests": {
+      "index": "ecc653ddd926d501",
+      "topk": "9ade56b8bc9bc403",
+      "dedup": "9b18c105c02f517e"
+     },
+     "matches_local": true
+    },
+    "local@16": {
+     "runs": 1,
+     "wall_s_median": 250.68,
+     "wall_s_min": 250.68,
+     "wall_s_max": 250.68,
+     "peak_rss_mb_max": 3488,
+     "digests": {
+      "index": "ecc653ddd926d501",
+      "topk": "9ade56b8bc9bc403",
+      "dedup": "9b18c105c02f517e"
+     },
+     "dedup": {
+      "reported_pairs": 4719,
+      "reported_natural_pairs": 4186,
+      "precision": 0.9462,
+      "injected_positives": 544,
+      "recall_injected": 0.9504,
+      "found_share_by_edit_rate": {
+       "0.02": 0.63,
+       "0.01": 0.957,
+       "0.05": 0.069,
+       "0.005": 0.996
+      },
+      "mean_abs_estimate_error": 0.0162
+     }
+    },
+    "hadoop@16": {
+     "runs": 1,
+     "wall_s_median": 152.65,
+     "wall_s_min": 152.65,
+     "wall_s_max": 152.65,
+     "peak_rss_mb_max": 4678,
+     "hadoop": {
+      "map_output_records": 44181463,
+      "map_output_bytes": 2171123516,
+      "map_output_materialized_bytes": 2225018878,
+      "reduce_shuffle_bytes": 2225018878,
+      "spilled_records": 82912844,
+      "combine_input_records": 12240208,
+      "skipped_buckets": 0,
+      "side_signatures_loaded": 0
+     },
+     "hadoop_job_s": {
+      "index": 39.0,
+      "wc": 56.2,
+      "topk": 8.9,
+      "bands": 42.2,
+      "pairs": 6.0
+     },
+     "hadoop_jobs": {
+      "index": {
+       "map_output_records": 30573864,
+       "reduce_shuffle_bytes": 692949946
+      },
+      "wc": {
+       "map_output_records": 12240208,
+       "reduce_shuffle_bytes": 168053958
+      },
+      "topk": {
+       "map_output_records": 16000,
+       "reduce_shuffle_bytes": 296453
+      },
+      "bands": {
+       "map_output_records": 1309472,
+       "reduce_shuffle_bytes": 1362551580
+      },
+      "pairs": {
+       "map_output_records": 41919,
+       "reduce_shuffle_bytes": 1166941
+      }
+     },
+     "digests": {
+      "index": "ecc653ddd926d501",
+      "topk": "9ade56b8bc9bc403",
+      "dedup": "9b18c105c02f517e"
+     },
+     "matches_local": true
+    }
+   }
+  }
+ }
+}

@@ -1,0 +1,246 @@
+{
+ "provenance": {
+  "git_commit": "dacab1527ecd260104fbe106822028202d0af056",
+  "git_dirty": false,
+  "python": "3.14.5",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "created_utc": "2026-11-15T17:54:38Z",
+  "commands": [
+   "fcrawl --db data/project/live_async.db crawl --max-pages 200 --concurrency 20",
+   "fcrawl --db data/project/live_seq.db crawl --max-pages 200 --concurrency 1",
+   "fcrawl --db data/project/live_async_log.db crawl --max-pages 200 --concurrency 20 --request-log results/project/live_requests_async.json",
+   "fcrawl --db data/project/live_seq_log.db crawl --max-pages 200 --concurrency 1 --request-log results/project/live_requests_seq.json"
+  ],
+  "config": "config/default.yaml (profile python_docs, delay_seconds 1.0)",
+  "notes": [
+   "two live runs per crawler (async first in each pair) on the project owner's Windows laptop; the second pair ('_logged') used --request-log at commit b821b81",
+   "wall_seconds is the whole command, including start-up, measured with Measure-Command",
+   "errors and skipped were 0 in all four runs (from the command's summary line)",
+   "request gaps come from the request logs of the second pair; the first pair has none"
+  ]
+ },
+ "runs": {
+  "async_20": {
+   "db": "data/project/live_async.db",
+   "concurrency": 20,
+   "wall_seconds": 36.4,
+   "yield_reported": 0.859,
+   "fetched_reported": 200,
+   "html_reported": 198,
+   "pages_per_second": 5.49,
+   "pages_stored": 199,
+   "status": {
+    "200": 198,
+    "404": 1
+   },
+   "indexed": 197,
+   "exact_duplicates": 1,
+   "hosts": 20,
+   "pages_per_host_min": 5,
+   "pages_per_host_max": 13,
+   "labels": {
+    "CHANGELOG": 26,
+    "HOWTO": 30,
+    "OTHER": 28,
+    "REFERENCE": 69,
+    "TUTORIAL": 45
+   },
+   "pages_per_host": {
+    "click.palletsprojects.com": 10,
+    "docs.celeryq.dev": 11,
+    "docs.djangoproject.com": 6,
+    "docs.pytest.org": 12,
+    "docs.python.org": 7,
+    "docs.scipy.org": 9,
+    "docs.scrapy.org": 12,
+    "docs.sqlalchemy.org": 9,
+    "fastapi.tiangolo.com": 13,
+    "flask.palletsprojects.com": 10,
+    "jinja.palletsprojects.com": 10,
+    "matplotlib.org": 12,
+    "numpy.org": 11,
+    "pandas.pydata.org": 11,
+    "pydantic.dev": 11,
+    "requests.readthedocs.io": 10,
+    "rich.readthedocs.io": 10,
+    "typer.tiangolo.com": 10,
+    "www.attrs.org": 10,
+    "www.python-httpx.org": 5
+   }
+  },
+  "sequential": {
+   "db": "data/project/live_seq.db",
+   "concurrency": 1,
+   "wall_seconds": 242.8,
+   "yield_reported": 0.919,
+   "fetched_reported": 200,
+   "html_reported": 197,
+   "pages_per_second": 0.82,
+   "pages_stored": 199,
+   "status": {
+    "200": 197,
+    "404": 2
+   },
+   "indexed": 197,
+   "exact_duplicates": 0,
+   "hosts": 20,
+   "pages_per_host_min": 2,
+   "pages_per_host_max": 21,
+   "labels": {
+    "CHANGELOG": 40,
+    "HOWTO": 25,
+    "OTHER": 16,
+    "REFERENCE": 86,
+    "TUTORIAL": 30
+   },
+   "pages_per_host": {
+    "click.palletsprojects.com": 3,
+    "docs.celeryq.dev": 11,
+    "docs.djangoproject.com": 14,
+    "docs.pytest.org": 12,
+    "docs.python.org": 17,
+    "docs.scipy.org": 16,
+    "docs.scrapy.org": 8,
+    "docs.sqlalchemy.org": 16,
+    "fastapi.tiangolo.com": 17,
+    "flask.palletsprojects.com": 5,
+    "jinja.palletsprojects.com": 2,
+    "matplotlib.org": 16,
+    "numpy.org": 16,
+    "pandas.pydata.org": 21,
+    "pydantic.dev": 3,
+    "requests.readthedocs.io": 3,
+    "rich.readthedocs.io": 7,
+    "typer.tiangolo.com": 6,
+    "www.attrs.org": 4,
+    "www.python-httpx.org": 2
+   }
+  },
+  "async_20_logged": {
+   "db": "data/project/live_async_log.db",
+   "concurrency": 20,
+   "wall_seconds": 22.7,
+   "yield_reported": 0.863,
+   "fetched_reported": 200,
+   "html_reported": 197,
+   "pages_per_second": 8.81,
+   "pages_stored": 198,
+   "status": {
+    "200": 197,
+    "404": 1
+   },
+   "indexed": 196,
+   "exact_duplicates": 1,
+   "hosts": 20,
+   "pages_per_host_min": 6,
+   "pages_per_host_max": 13,
+   "labels": {
+    "CHANGELOG": 22,
+    "HOWTO": 33,
+    "OTHER": 27,
+    "REFERENCE": 70,
+    "TUTORIAL": 45
+   },
+   "pages_per_host": {
+    "click.palletsprojects.com": 7,
+    "docs.celeryq.dev": 12,
+    "docs.djangoproject.com": 7,
+    "docs.pytest.org": 11,
+    "docs.python.org": 6,
+    "docs.scipy.org": 9,
+    "docs.scrapy.org": 11,
+    "docs.sqlalchemy.org": 7,
+    "fastapi.tiangolo.com": 13,
+    "flask.palletsprojects.com": 10,
+    "jinja.palletsprojects.com": 11,
+    "matplotlib.org": 10,
+    "numpy.org": 10,
+    "pandas.pydata.org": 11,
+    "pydantic.dev": 12,
+    "requests.readthedocs.io": 10,
+    "rich.readthedocs.io": 11,
+    "typer.tiangolo.com": 10,
+    "www.attrs.org": 12,
+    "www.python-httpx.org": 8
+   },
+   "request_log": "results/project/live_requests_async.json",
+   "request_gaps": {
+    "hosts": 20,
+    "requests": 220,
+    "min_start_to_start_s": 1.024,
+    "min_end_to_start_s": 1.0,
+    "overlapping_requests_to_one_host": 0
+   }
+  },
+  "sequential_logged": {
+   "db": "data/project/live_seq_log.db",
+   "concurrency": 1,
+   "wall_seconds": 364.7,
+   "yield_reported": 0.919,
+   "fetched_reported": 200,
+   "html_reported": 197,
+   "pages_per_second": 0.55,
+   "pages_stored": 199,
+   "status": {
+    "200": 197,
+    "404": 2
+   },
+   "indexed": 197,
+   "exact_duplicates": 0,
+   "hosts": 20,
+   "pages_per_host_min": 2,
+   "pages_per_host_max": 21,
+   "labels": {
+    "CHANGELOG": 40,
+    "HOWTO": 25,
+    "OTHER": 16,
+    "REFERENCE": 86,
+    "TUTORIAL": 30
+   },
+   "pages_per_host": {
+    "click.palletsprojects.com": 3,
+    "docs.celeryq.dev": 11,
+    "docs.djangoproject.com": 14,
+    "docs.pytest.org": 12,
+    "docs.python.org": 17,
+    "docs.scipy.org": 16,
+    "docs.scrapy.org": 8,
+    "docs.sqlalchemy.org": 16,
+    "fastapi.tiangolo.com": 17,
+    "flask.palletsprojects.com": 5,
+    "jinja.palletsprojects.com": 2,
+    "matplotlib.org": 16,
+    "numpy.org": 16,
+    "pandas.pydata.org": 21,
+    "pydantic.dev": 3,
+    "requests.readthedocs.io": 3,
+    "rich.readthedocs.io": 7,
+    "typer.tiangolo.com": 6,
+    "www.attrs.org": 4,
+    "www.python-httpx.org": 2
+   },
+   "request_log": "results/project/live_requests_seq.json",
+   "request_gaps": {
+    "hosts": 20,
+    "requests": 227,
+    "min_start_to_start_s": 1.0,
+    "min_end_to_start_s": 0.0,
+    "overlapping_requests_to_one_host": 0
+   }
+  }
+ },
+ "comparisons": {
+  "first_pair": {
+   "speed_up": 6.67,
+   "urls_in_both": 142,
+   "same_label": 142,
+   "same_doc_length": 142
+  },
+  "second_pair_logged": {
+   "speed_up": 16.07,
+   "urls_in_both": 133,
+   "same_label": 133,
+   "same_doc_length": 133
+  }
+ }
+}

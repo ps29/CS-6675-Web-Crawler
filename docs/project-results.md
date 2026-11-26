@@ -55,7 +55,7 @@ leaves out. 148 of the 149 pages are indexed; the other page has no text.
 > **A local test web, not real sites.** 20 test sites on 127.0.0.1 (one port each), 60 pages of
 > 30 KB per site, every response delayed by 0.15 to 0.45 s (mean 0.3 s). The speed-up depends on
 > these choices. 5 runs per configuration on the 2-vCPU cloud VM; each crawl fetches 150 pages
-> with the 1 s per-host delay. No live crawl has been run with the new crawler yet.
+> with the 1 s per-host delay. One live run is reported in the next section.
 
 The research report's first recommendation was a Mercator-style frontier (Heydon & Najork, 1999):
 priorities in front, one queue per host behind, so that many hosts are in flight while each host
@@ -86,9 +86,58 @@ implement it; `fcrawl crawl --concurrency N` selects it (the default, 1, is the 
 Reproduce: `python -m focused_crawler.crawl_bench --hosts 20 --pages 150 --latency 0.3
 --repeats 5 --workers 5 10 20 40 --out results/project/crawl_bench.json`.
 
+## Crawler: live run on the documentation sites (2026-11-15)
+
+> **Two runs each.** A 200-page crawl of the real Python documentation sites with the default
+> profile, run with the async crawler (20 workers) and then with the sequential crawler, twice,
+> from the project owner's Windows laptop. The second pair used `--request-log`. The times
+> include start-up and depend on the network at that moment; the two pairs differ a lot, so the
+> speed-up is not a measured distribution.
+
+| | Async, pair 1 | Sequential, pair 1 | Async, pair 2 | Sequential, pair 2 |
+|---|---|---|---|---|
+| Wall-clock time | 36.4 s | 242.8 s | 22.7 s | 364.7 s |
+| Pages per second | 5.49 | 0.82 | 8.81 | 0.55 |
+| Pages fetched (HTML) | 200 (198) | 200 (197) | 200 (197) | 200 (197) |
+| Errors / skipped | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 |
+| Hosts reached | 20 | 20 | 20 | 20 |
+| Pages per host (min-max) | 5-13 | 2-21 | 6-13 | 2-21 |
+| Pages indexed | 197 | 197 | 196 | 197 |
+| Yield | 85.9% | 91.9% | 86.3% | 91.9% |
+| OTHER pages | 28 | 16 | 27 | 16 |
+
+Per-host politeness, from the request logs of pair 2 (the crawler's own clock, robots.txt
+requests included):
+
+| | Async, 20 workers | Sequential |
+|---|---|---|
+| Requests | 220 to 20 hosts | 227 to 20 hosts |
+| Smallest gap between request starts to one host | 1.024 s | 1.000 s |
+| Smallest gap from a response's end to the next start | 1.000 s | 0.000 s |
+| Overlapping requests to one host | 0 | 0 |
+
+- Both crawlers kept the 1 s per-host rule on the real sites, and no host had two requests open.
+  The sequential crawler counts the delay from the start of a request, so after a response that
+  takes more than a second the next request follows at once (the 0.000 s); the async crawler
+  rests a full second after each response.
+- The async crawl took 6.7 times less time in pair 1 and 16.1 times less in pair 2. The
+  sequential crawl alone took 242.8 s and then 364.7 s, so the ratio depends heavily on how slow
+  the sites were during that run. The local benchmark above gave 6.1 with 20 workers.
+- 142 URLs (pair 1) and 133 URLs (pair 2) were fetched by both crawls of a pair, and every one
+  has the same label and document length in both databases.
+- The two crawlers chose different pages beyond those, because the async crawler takes the best
+  URL of each free host and not the best URL overall. It spread pages more evenly over the hosts
+  and fetched more OTHER pages, which is why its yield is lower.
+
+The numbers are in `results/project/live_crawl.json` and the request logs in
+`results/project/live_requests_async.json` and `live_requests_seq.json`. Reproduce:
+`fcrawl --db data/project/live_async_log.db crawl --max-pages 200 --concurrency 20 --request-log
+results/project/live_requests_async.json`, and the same with `--concurrency 1` for the
+sequential crawl.
+
 ## Not done yet
 
-- No live crawl with `--concurrency`; the cloud VM cannot reach the documentation sites.
+- The live crawl was run twice per crawler; more repeated runs are needed for a statistical test.
 - The async crawler does not read `Crawl-delay` from robots.txt or slow down for slow hosts.
 - From the research report: the learned classifier and link scorer, and WARC storage with
   conditional GET, are not started.
